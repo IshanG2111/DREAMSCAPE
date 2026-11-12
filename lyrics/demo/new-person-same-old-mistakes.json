@@ -1,0 +1,70 @@
+{
+  "version": 1,
+  "type": "lyrics.loaded",
+  "trackKey": "tame impala currents new person same old mistakes",
+  "timingPrecision": "word",
+  "title": "New Person, Same Old Mistakes",
+  "artist": "Tame Impala",
+  "album": "Currents",
+  "durationMs": 363000,
+  "lines": [
+    {
+      "startMs": 160000,
+      "endMs": 164000,
+      "words": [
+        { "text": "Feel", "startMs": 160000, "endMs": 160800 },
+        { "text": "like", "startMs": 160800, "endMs": 161400 },
+        { "text": "a", "startMs": 161400, "endMs": 161800 },
+        { "text": "brand", "startMs": 161800, "endMs": 162600 },
+        { "text": "new", "startMs": 162600, "endMs": 163200 },
+        { "text": "person", "startMs": 163200, "endMs": 164000 }
+      ]
+    },
+    {
+      "startMs": 164200,
+      "endMs": 172000,
+      "words": [
+        { "text": "I", "startMs": 164200, "endMs": 165400 },
+        { "text": "know", "startMs": 165400, "endMs": 166700 },
+        { "text": "that", "startMs": 166700, "endMs": 168300 },
+        { "text": "you", "startMs": 168300, "endMs": 169600 },
+        { "text": "want", "startMs": 169600, "endMs": 170900 },
+        { "text": "it", "startMs": 170900, "endMs": 172000 }
+      ]
+    },
+    {
+      "startMs": 172400,
+      "endMs": 178000,
+      "words": [
+        { "text": "Finally", "startMs": 172400, "endMs": 173900 },
+        { "text": "taking", "startMs": 173900, "endMs": 175300 },
+        { "text": "flight", "startMs": 175300, "endMs": 178000 }
+      ]
+    },
+    {
+      "startMs": 178200,
+      "endMs": 184500,
+      "words": [
+        { "text": "I", "startMs": 178200, "endMs": 179200 },
+        { "text": "know", "startMs": 179200, "endMs": 180400 },
+        { "text": "it's", "startMs": 180400, "endMs": 181200 },
+        { "text": "hard", "startMs": 181200, "endMs": 182300 },
+        { "text": "to", "startMs": 182300, "endMs": 182900 },
+        { "text": "digest", "startMs": 182900, "endMs": 184500 }
+      ]
+    },
+    {
+      "startMs": 185000,
+      "endMs": 191000,
+      "words": [
+        { "text": "A", "startMs": 185000, "endMs": 185600 },
+        { "text": "new", "startMs": 185600, "endMs": 186400 },
+        { "text": "person,", "startMs": 186400, "endMs": 187800 },
+        { "text": "same", "startMs": 187800, "endMs": 189000 },
+        { "text": "old", "startMs": 189000, "endMs": 189800 },
+        { "text": "mistakes", "startMs": 189800, "endMs": 191000 }
+      ]
+    }
+  ]
+}
+

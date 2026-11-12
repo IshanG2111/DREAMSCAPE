@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Song-Node • Cinematic Liquid Chrome Lyric Wallpaper</title>
+
+  <!-- High-Fashion Editorial Typography: Cormorant Garamond, Playfair Display & Space Grotesk -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,400;1,600&family=Playfair+Display:ital,wght@1,400;1,600&family=Space+Grotesk:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Layer 0: Hardware WebGL Liquid Chrome Background (Molten Mercury GLSL Shader) -->
+  <canvas id="liquidCanvas"></canvas>
+
+  <!-- Layer 1: Foreground 2D Canvas Stage (Rose Spline Filament, Word Nodes, Camera Rig, Optical Blooms) -->
+  <canvas id="stageCanvas"></canvas>
+
+  <!-- Layer 2: Soft Vignette Edge Falloff -->
+  <div class="vignette-veil"></div>
+
+  <!-- Layer 3: Minimalist Editorial HUD Layer -->
+  <div class="hud-layer">
+    <!-- Top Bar: Clock (Left) and Audio Status (Right) -->
+    <div class="hud-top-bar">
+      <!-- Top-Left: Editorial Date & Clock -->
+      <div class="clock-hud" id="clockHud">
+        <div class="date-label" id="dateLabel">THU 12 NOV</div>
+        <div class="time-label" id="timeLabel">
+          <span id="clockHours">03</span><span class="colon">:</span><span id="clockMinutes">19</span><span class="seconds" id="clockSeconds">57</span>
+        </div>
+      </div>
+
+      <!-- Top-Right: Subtle Spectrum Bars & Track Identity -->
+      <div class="audio-hud" id="audioHud">
+        <div class="audio-bars-icon" id="audioBars">
+          <div class="audio-bar" style="height: 12px;"></div>
+          <div class="audio-bar" style="height: 18px;"></div>
+          <div class="audio-bar" style="height: 9px;"></div>
+          <div class="audio-bar" style="height: 15px;"></div>
+          <div class="audio-bar" style="height: 7px;"></div>
+        </div>
+        <div class="track-identity-top">
+          <span class="album-line" id="hudAlbum">CURRENTS</span>
+          <span class="artist-line" id="hudArtist">TAME IMPALA</span>
+        </div>
+        <div class="transport-glyphs">
+          <span>&#9668;&#9668;</span>
+          <span>&#9646;&#9646;</span>
+          <span>&#9658;&#9658;</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom-Left: Track Progress Line & Timeline -->
+    <div class="timeline-hud" id="timelineHud">
+      <div class="timeline-info">
+        <div class="timeline-track-name">
+          <span class="symbol">&#8734;</span>
+          <span id="hudTrackTitle">NEW PERSON, SAME OLD MISTAKES</span>
+        </div>
+        <div class="timeline-time" id="hudTrackTime">2:47 / 6:03</div>
+      </div>
+      <div class="timeline-bar-bg">
+        <div class="timeline-bar-fill" id="timelineFill" style="width: 46%;"></div>
+        <div class="timeline-bar-bead" id="timelineBead" style="left: 46%;"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modular High-Performance Architecture -->
+  <script src="js/audioReact.js"></script>
+  <script src="js/media/track.matcher.js"></script>
+  <script src="js/media/media.normalizer.js"></script>
+  <script src="js/lyrics/lyric.parser.js"></script>
+  <script src="js/lyrics/lyric.clock.js"></script>
+  <script src="js/lyrics/lyric.provider.js"></script>
+  <script src="js/adapters/bridge.adapter.js"></script>
+  <script src="js/adapters/lively.adapter.js"></script>
+  <script src="js/scene/liquid-chrome.shader.js"></script>
+  <script src="js/scene/spline-path.js"></script>
+  <script src="js/scene/camera-rig.js"></script>
+  <script src="js/scene/word-graph.js"></script>
+  <script src="js/scene/scene-renderer.js"></script>
+  <script src="js/hud/dev-hud.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

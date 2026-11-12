@@ -1,0 +1,360 @@
+/* =========================================================================
+   SONG-NODE • LIQUID CHROME EDITORIAL STYLESHEET
+   High-fashion typographic stage with molten mercury reflections.
+   ========================================================================= */
+
+:root {
+  --ink: #050407;
+  --cherry: #160710;
+  --plum: #321027;
+  --chrome: #d9d5df;
+  --chrome-shadow: #39313d;
+  --ruby: #f12d78;
+  --rose: #ff8ab8;
+  --ivory: #f7eef3;
+  --muted: #927f8b;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+body, html {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background-color: var(--ink);
+  font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+  color: var(--ivory);
+  cursor: default;
+}
+
+/* Layer 0: WebGL Liquid Chrome Molten Mercury */
+#liquidCanvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  z-index: 1;
+}
+
+/* Layer 1: High-Performance 2D Canvas Stage (Spline, Words, Reticle, Blooms) */
+#stageCanvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  z-index: 2;
+  pointer-events: none;
+}
+
+/* Soft Vignette Overlay */
+.vignette-veil {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 3;
+  pointer-events: none;
+  background: radial-gradient(ellipse at 50% 50%, transparent 55%, rgba(5, 4, 7, 0.40) 80%, rgba(5, 4, 7, 0.85) 100%);
+}
+
+/* Layer 2: Editorial Minimalist HUD Layer */
+.hud-layer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 4;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 3.5rem 4.5rem;
+  pointer-events: none;
+}
+
+.hud-top-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  width: 100%;
+}
+
+/* Top-Left: Architectural Date & Clock */
+.clock-hud {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  pointer-events: auto;
+  opacity: 0.82;
+  transition: opacity 0.5s ease;
+}
+
+.clock-hud:hover {
+  opacity: 1.0;
+}
+
+.date-label {
+  font-size: 0.70rem;
+  font-weight: 500;
+  letter-spacing: 4px;
+  color: var(--muted);
+  text-transform: uppercase;
+  margin-bottom: 2px;
+}
+
+.time-label {
+  display: flex;
+  align-items: baseline;
+  font-family: 'Cormorant Garamond', 'Playfair Display', serif;
+  font-style: italic;
+  font-size: clamp(2.6rem, 3.8vw, 3.6rem);
+  font-weight: 400;
+  letter-spacing: -1px;
+  line-height: 0.95;
+  color: var(--ivory);
+  text-shadow: 0 0 25px rgba(255, 255, 255, 0.22);
+  font-variant-numeric: tabular-nums;
+}
+
+.colon {
+  display: inline-block;
+  opacity: 0.75;
+  margin: 0 3px;
+  animation: colonPulse 2s ease-in-out infinite;
+}
+
+@keyframes colonPulse {
+  0%, 100% { opacity: 0.35; transform: scale(0.96); }
+  50% { opacity: 0.95; transform: scale(1.04); }
+}
+
+.seconds {
+  font-size: 0.38em;
+  font-family: 'Space Grotesk', sans-serif;
+  font-style: normal;
+  font-weight: 500;
+  letter-spacing: 2px;
+  color: var(--muted);
+  margin-left: 8px;
+  transform: translateY(-2px);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Top-Right: Audio Equalizer & Album/Artist Identity */
+.audio-hud {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+  pointer-events: auto;
+  opacity: 0.85;
+}
+
+.audio-bars-icon {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  height: 20px;
+}
+
+.audio-bar {
+  width: 2px;
+  background-color: var(--rose);
+  border-radius: 1px;
+  height: 8px;
+  transition: height 0.12s ease;
+  box-shadow: 0 0 6px rgba(241, 45, 120, 0.4);
+}
+
+.track-identity-top {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+}
+
+.album-line {
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 3px;
+  color: var(--ivory);
+  text-transform: uppercase;
+}
+
+.artist-line {
+  font-size: 0.62rem;
+  font-weight: 500;
+  letter-spacing: 2.5px;
+  color: var(--muted);
+  text-transform: uppercase;
+}
+
+.transport-glyphs {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--muted);
+  font-size: 0.75rem;
+  opacity: 0.7;
+}
+
+/* Bottom-Left: Track Progress Line & Timeline */
+.timeline-hud {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+  max-width: 480px;
+  pointer-events: auto;
+  opacity: 0.85;
+  transition: opacity 0.4s ease;
+}
+
+.timeline-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.68rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.timeline-track-name {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--ivory);
+  font-weight: 500;
+}
+
+.timeline-track-name .symbol {
+  font-size: 1.0rem;
+  color: var(--rose);
+}
+
+.timeline-time {
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.timeline-bar-bg {
+  position: relative;
+  width: 100%;
+  height: 2px;
+  background: rgba(217, 213, 223, 0.18);
+  border-radius: 1px;
+}
+
+.timeline-bar-fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, rgba(241, 45, 120, 0.4), var(--rose));
+  border-radius: 1px;
+}
+
+.timeline-bar-bead {
+  position: absolute;
+  top: 50%;
+  left: 0%;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #ffffff;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 0 8px var(--rose), 0 0 16px var(--ruby);
+}
+
+/* Developer HUD Panel (Toggled via 'H') */
+.dev-hud-panel {
+  position: fixed;
+  bottom: 24px;
+  right: 28px;
+  width: 320px;
+  background: rgba(10, 6, 12, 0.88);
+  border: 1px solid rgba(255, 138, 184, 0.25);
+  border-radius: 8px;
+  padding: 14px 18px;
+  font-family: 'Space Grotesk', monospace;
+  font-size: 0.72rem;
+  color: #d9d5df;
+  z-index: 9999;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
+  pointer-events: auto;
+}
+
+.hud-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgba(255, 138, 184, 0.18);
+  padding-bottom: 8px;
+  margin-bottom: 10px;
+}
+
+.hud-title {
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  color: #f7eef3;
+}
+
+.hud-pill {
+  padding: 2px 7px;
+  border-radius: 4px;
+  font-size: 0.62rem;
+  font-weight: 600;
+  letter-spacing: 1px;
+}
+
+.pill-word { background: rgba(102, 255, 170, 0.2); color: #66ffaa; border: 1px solid #66ffaa; }
+.pill-line { background: rgba(255, 204, 0, 0.2); color: #ffcc00; border: 1px solid #ffcc00; }
+.pill-demo { background: rgba(255, 138, 184, 0.2); color: #ff8ab8; border: 1px solid #ff8ab8; }
+.pill-idle { background: rgba(146, 127, 139, 0.2); color: #927f8b; border: 1px solid #927f8b; }
+
+.hud-body {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.hud-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.hud-k {
+  color: #927f8b;
+}
+
+.hud-v {
+  color: #f7eef3;
+  font-weight: 500;
+  max-width: 190px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.hud-footer {
+  margin-top: 10px;
+  padding-top: 8px;
+  border-top: 1px solid rgba(255, 138, 184, 0.12);
+  font-size: 0.62rem;
+  color: #927f8b;
+  text-align: center;
+}

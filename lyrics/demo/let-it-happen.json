@@ -1,0 +1,74 @@
+{
+  "version": 1,
+  "type": "lyrics.loaded",
+  "trackKey": "tame impala currents let it happen",
+  "timingPrecision": "word",
+  "title": "Let It Happen",
+  "artist": "Tame Impala",
+  "album": "Currents",
+  "durationMs": 467000,
+  "lines": [
+    {
+      "startMs": 74000,
+      "endMs": 78000,
+      "words": [
+        { "text": "It's", "startMs": 74000, "endMs": 74500 },
+        { "text": "always", "startMs": 74500, "endMs": 75200 },
+        { "text": "around", "startMs": 75200, "endMs": 75900 },
+        { "text": "me,", "startMs": 75900, "endMs": 76500 },
+        { "text": "all", "startMs": 76500, "endMs": 77100 },
+        { "text": "this", "startMs": 77100, "endMs": 77500 },
+        { "text": "noise", "startMs": 77500, "endMs": 78000 }
+      ]
+    },
+    {
+      "startMs": 78200,
+      "endMs": 81000,
+      "words": [
+        { "text": "Nothing", "startMs": 78200, "endMs": 78800 },
+        { "text": "seems", "startMs": 78800, "endMs": 79400 },
+        { "text": "as", "startMs": 79400, "endMs": 79700 },
+        { "text": "big", "startMs": 79700, "endMs": 80200 },
+        { "text": "as", "startMs": 80200, "endMs": 80500 },
+        { "text": "the", "startMs": 80500, "endMs": 80700 },
+        { "text": "'cause", "startMs": 80700, "endMs": 81000 }
+      ]
+    },
+    {
+      "startMs": 81200,
+      "endMs": 85500,
+      "words": [
+        { "text": "Let", "startMs": 81200, "endMs": 81800 },
+        { "text": "it", "startMs": 81800, "endMs": 82200 },
+        { "text": "happen,", "startMs": 82200, "endMs": 83400 },
+        { "text": "babe", "startMs": 83400, "endMs": 84300 },
+        { "text": "see", "startMs": 84300, "endMs": 85500 }
+      ]
+    },
+    {
+      "startMs": 85800,
+      "endMs": 88200,
+      "words": [
+        { "text": "It's", "startMs": 85800, "endMs": 86200 },
+        { "text": "gonna", "startMs": 86200, "endMs": 86700 },
+        { "text": "feel", "startMs": 86700, "endMs": 87300 },
+        { "text": "so", "startMs": 87300, "endMs": 87700 },
+        { "text": "good", "startMs": 87700, "endMs": 88200 }
+      ]
+    },
+    {
+      "startMs": 88500,
+      "endMs": 92000,
+      "words": [
+        { "text": "Just", "startMs": 88500, "endMs": 89000 },
+        { "text": "let", "startMs": 89000, "endMs": 89500 },
+        { "text": "it", "startMs": 89500, "endMs": 89900 },
+        { "text": "happen,", "startMs": 89900, "endMs": 90800 },
+        { "text": "let", "startMs": 90800, "endMs": 91300 },
+        { "text": "it", "startMs": 91300, "endMs": 91600 },
+        { "text": "happen", "startMs": 91600, "endMs": 92000 }
+      ]
+    }
+  ]
+}
+

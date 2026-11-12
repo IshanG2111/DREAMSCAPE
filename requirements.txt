@@ -1,0 +1,4 @@
+# Requirements for Windows SMTC Apple Music & Lyrics Bridge
+winsdk>=1.0.0b10
+websockets>=12.0
+requests>=2.31.0
