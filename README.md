@@ -1,4 +1,4 @@
-# SONG-NODE • Cinematic Liquid-Chrome Lyric Wallpaper
+# DREAMSCAPE • Cinematic Liquid-Chrome Lyric Wallpaper
 
 A cinematic, audio-aware lyric wallpaper for Windows. Built around one visual idea: **every word is a node on a living path, and the camera travels with the currently active word.**
 
