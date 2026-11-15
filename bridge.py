@@ -137,13 +137,26 @@ def parse_enhanced_or_standard_lrc(lrc_text: str):
 
     raw_lines.sort(key=lambda x: x["startMs"])
 
-    # Calculate endMs from next line
-    for i in range(len(raw_lines) - 1):
-        raw_lines[i]["endMs"] = raw_lines[i + 1]["startMs"]
-        # If words in word-mode, ensure last word's endMs <= line endMs
-        if has_any_word_tags and raw_lines[i]["words"]:
-            if "endMs" in raw_lines[i]["words"][-1]:
-                raw_lines[i]["words"][-1]["endMs"] = min(raw_lines[i]["endMs"], raw_lines[i]["words"][-1]["endMs"] + 300)
+    # Calculate endMs from next line and distribute word timestamps
+    for i in range(len(raw_lines)):
+        curr_line = raw_lines[i]
+        if i < len(raw_lines) - 1:
+            curr_line["endMs"] = raw_lines[i + 1]["startMs"]
+        else:
+            curr_line["endMs"] = curr_line["startMs"] + 4500
+
+        words = curr_line.get("words", [])
+        if words:
+            l_start = curr_line["startMs"]
+            l_end = max(l_start + 1000, curr_line["endMs"])
+            w_step = (l_end - l_start) / len(words)
+            for w_idx, w in enumerate(words):
+                if "startMs" not in w:
+                    w["startMs"] = int(round(l_start + w_idx * w_step))
+                    w["endMs"] = int(round(l_start + (w_idx + 1) * w_step))
+
+        if has_any_word_tags and words and "endMs" in words[-1]:
+            words[-1]["endMs"] = min(curr_line["endMs"], words[-1]["endMs"] + 300)
 
     precision = "word" if has_any_word_tags else ("line" if raw_lines else "none")
     return precision, raw_lines
@@ -192,52 +205,76 @@ def load_local_cue_file(title: str, artist: str):
 
 
 def fetch_lrclib_lyrics(title: str, artist: str, duration_sec: float):
-    """Fetches synced lyrics from LRCLIB."""
+    """Fetches synced lyrics from LRCLIB with robust fallback queries and valid browser headers."""
     clean_title = clean_track_title(title)
-    headers = {"User-Agent": "SongNodeWallpaper/2.0 (github.com/Song-node)"}
+    clean_artist = re.sub(r'[\.\,\-]$', '', (artist or '').strip()).strip()
+    headers = {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+        "Accept": "application/json"
+    }
 
-    # Direct match endpoint
-    get_url = f"https://lrclib.net/api/get?artist_name={urllib.parse.quote(artist)}&track_name={urllib.parse.quote(clean_title)}"
-    if duration_sec > 10:
-        get_url += f"&duration={int(duration_sec)}"
-
-    try:
-        r = requests.get(get_url, headers=headers, timeout=4.0)
-        if r.status_code == 200:
-            data = r.json()
-            if data.get("syncedLyrics"):
-                precision, lines = parse_enhanced_or_standard_lrc(data["syncedLyrics"])
-                if lines:
-                    return {
-                        "version": 1,
-                        "type": "lyrics.loaded",
-                        "trackKey": normalise_str(f"{artist} {title}"),
-                        "timingPrecision": precision,
-                        "lines": lines
-                    }
-    except Exception as e:
-        logger.debug(f"Direct LRCLIB query error: {e}")
-
-    # Fallback search endpoint
-    try:
-        search_query = f"{artist} {clean_title}"
-        search_url = f"https://lrclib.net/api/search?q={urllib.parse.quote(search_query)}"
-        r = requests.get(search_url, headers=headers, timeout=4.0)
-        if r.status_code == 200:
-            results = r.json()
-            for item in results:
-                if item.get("syncedLyrics"):
-                    precision, lines = parse_enhanced_or_standard_lrc(item["syncedLyrics"])
+    # 1. Direct match endpoint
+    for art in [clean_artist, artist]:
+        if not art:
+            continue
+        get_url = f"https://lrclib.net/api/get?artist_name={urllib.parse.quote(art)}&track_name={urllib.parse.quote(clean_title)}"
+        if duration_sec > 10:
+            get_url += f"&duration={int(duration_sec)}"
+        try:
+            r = requests.get(get_url, headers=headers, timeout=4.5)
+            if r.status_code == 200:
+                data = r.json()
+                if data.get("syncedLyrics"):
+                    precision, lines = parse_enhanced_or_standard_lrc(data["syncedLyrics"])
                     if lines:
+                        logger.info(f"LRCLIB direct match successful for '{art}' - '{clean_title}' ({len(lines)} lines)")
                         return {
                             "version": 1,
                             "type": "lyrics.loaded",
                             "trackKey": normalise_str(f"{artist} {title}"),
                             "timingPrecision": precision,
+                            "durationMs": int(duration_sec * 1000) if duration_sec else 0,
                             "lines": lines
                         }
-    except Exception as e:
-        logger.debug(f"Search LRCLIB query error: {e}")
+        except Exception as e:
+            logger.debug(f"Direct LRCLIB query error: {e}")
+
+    # 2. Search endpoint with fallback query combinations
+    search_queries = []
+    if clean_artist and clean_title:
+        search_queries.append(f"{clean_artist} {clean_title}")
+    if artist and artist != clean_artist:
+        search_queries.append(f"{artist} {clean_title}")
+    if clean_title:
+        search_queries.append(clean_title)
+
+    for query in search_queries:
+        try:
+            search_url = f"https://lrclib.net/api/search?q={urllib.parse.quote(query)}"
+            r = requests.get(search_url, headers=headers, timeout=5.0)
+            if r.status_code == 200:
+                results = r.json()
+                synced_items = [item for item in results if item.get("syncedLyrics")]
+                if synced_items:
+                    # Pick candidate closest in duration if duration is available
+                    if duration_sec > 10:
+                        best = min(synced_items, key=lambda x: abs((x.get("duration") or 0) - duration_sec))
+                    else:
+                        best = synced_items[0]
+
+                    precision, lines = parse_enhanced_or_standard_lrc(best["syncedLyrics"])
+                    if lines:
+                        logger.info(f"LRCLIB search match successful for query '{query}' -> '{best.get('trackName')}' by '{best.get('artistName')}' ({len(lines)} lines)")
+                        return {
+                            "version": 1,
+                            "type": "lyrics.loaded",
+                            "trackKey": normalise_str(f"{artist} {title}"),
+                            "timingPrecision": precision,
+                            "durationMs": int(duration_sec * 1000) if duration_sec else 0,
+                            "lines": lines
+                        }
+        except Exception as e:
+            logger.debug(f"Search LRCLIB query error for '{query}': {e}")
 
     return None
 
@@ -278,14 +315,23 @@ async def get_lyrics_for_track(title: str, artist: str, duration_sec: float):
 # =============================================================================
 # WINDOWS SMTC SESSION MANAGER
 # =============================================================================
+_smtc_consecutive_failures = 0
+
 async def get_active_media_session():
     """Queries Windows SMTC and prioritizes Apple Music, iTunes, or Spotify."""
+    global _smtc_consecutive_failures
+
     if not HAS_WINSDK:
         return None
 
+    # After 3 consecutive WinRT failures, stop retrying and fall through to demo
+    if _smtc_consecutive_failures >= 3:
+        return None
+
     try:
-        manager = await MediaManager.request_async()
+        manager = await asyncio.wait_for(MediaManager.request_async(), timeout=0.8)
         sessions = manager.get_sessions()
+        _smtc_consecutive_failures = 0  # reset on success
         if not sessions:
             return None
 
@@ -301,9 +347,101 @@ async def get_active_media_session():
             return current
 
         return sessions[0]
-    except Exception as e:
-        logger.debug(f"SMTC Session query error: {e}")
+    except (OSError, asyncio.TimeoutError, Exception) as e:
+        _smtc_consecutive_failures += 1
+        if _smtc_consecutive_failures >= 3:
+            logger.warning(
+                f"WinRT MediaManager failed {_smtc_consecutive_failures} times consecutively "
+                f"({e}). Falling through to demo/showcase mode."
+            )
+        else:
+            logger.debug(f"SMTC Session query error ({_smtc_consecutive_failures}/3): {e}")
         return None
+
+
+async def fetch_artwork_async(artist: str, title: str, album: str = ""):
+    """Queries iTunes Search API asynchronously for official high-resolution album cover and album name."""
+    try:
+        clean_title = clean_track_title(title)
+        query = f"{artist} {clean_title} {album}".strip()
+        url = f"https://itunes.apple.com/search?term={urllib.parse.quote(query)}&entity=song&limit=1"
+        def _get():
+            return requests.get(url, timeout=3.5)
+        resp = await asyncio.to_thread(_get)
+        if resp.status_code == 200:
+            data = resp.json()
+            if data.get("resultCount", 0) > 0:
+                res0 = data["results"][0]
+                artwork_url = res0.get("artworkUrl100", "")
+                if artwork_url:
+                    artwork_url = artwork_url.replace("100x100bb.jpg", "600x600bb.jpg")
+                album_name = res0.get("collectionName", "")
+                return artwork_url, album_name
+    except Exception as e:
+        logger.debug(f"iTunes artwork fetch error: {e}")
+    return "", ""
+
+
+def extract_palette_from_artwork(artwork_data):
+    """Extracts dominant vibrant palette from image base64 or URL using PIL."""
+    if not artwork_data:
+        return None
+    try:
+        from PIL import Image
+        import io
+        import base64
+
+        raw_bytes = None
+        if artwork_data.startswith("data:image"):
+            b64_part = artwork_data.split(",", 1)[1]
+            raw_bytes = base64.b64decode(b64_part)
+        elif artwork_data.startswith("http://") or artwork_data.startswith("https://"):
+            resp = requests.get(artwork_data, timeout=3.0)
+            if resp.status_code == 200:
+                raw_bytes = resp.content
+
+        if not raw_bytes:
+            return None
+
+        img = Image.open(io.BytesIO(raw_bytes)).convert("RGB")
+        img.thumbnail((48, 48))
+        width, height = img.size
+        pixels = [img.getpixel((x, y)) for y in range(height) for x in range(width)]
+
+        candidates = []
+        for r, g, b in pixels:
+            max_c = max(r, g, b)
+            min_c = min(r, g, b)
+            delta = max_c - min_c
+            lum = (max_c + min_c) / 2.0
+            if lum < 22 or lum > 238:
+                continue
+            sat = delta / max_c if max_c > 0 else 0
+            if sat > 0.18:
+                score = (sat ** 1.4) * (1.0 - abs(lum - 128) / 130.0)
+                candidates.append((score, r, g, b))
+
+        if candidates:
+            candidates.sort(key=lambda x: x[0], reverse=True)
+            top = candidates[0]
+            pr, pg, pb = top[1], top[2], top[3]
+
+            sr, sg, sb = int(pr * 0.55), int(pg * 0.55), int(pb * 0.55)
+            for item in candidates[1:]:
+                dist = abs(item[1] - pr) + abs(item[2] - pg) + abs(item[3] - pb)
+                if dist > 70:
+                    sr, sg, sb = item[1], item[2], item[3]
+                    break
+
+            return {
+                "primary": [pr, pg, pb],
+                "secondary": [sr, sg, sb],
+                "primaryHex": f"#{pr:02x}{pg:02x}{pb:02x}",
+                "secondaryHex": f"#{sr:02x}{sg:02x}{sb:02x}"
+            }
+    except Exception as e:
+        logger.debug(f"Color extraction error: {e}")
+    return None
 
 
 async def inspect_smtc():
@@ -313,7 +451,7 @@ async def inspect_smtc():
         return None
 
     try:
-        media_props = await session.try_get_media_properties_async()
+        media_props = await asyncio.wait_for(session.try_get_media_properties_async(), timeout=0.8)
         playback_info = session.get_playback_info()
         timeline = session.get_timeline_properties()
 
@@ -321,6 +459,20 @@ async def inspect_smtc():
         artist = media_props.artist or ""
         album = media_props.album_title or ""
         source_app = session.source_app_user_model_id or "Apple Music"
+
+        artwork_data = ""
+        if media_props.thumbnail:
+            try:
+                stream = await asyncio.wait_for(media_props.thumbnail.open_read_async(), timeout=1.0)
+                from winsdk.windows.storage.streams import DataReader
+                reader = DataReader(stream)
+                await reader.load_async(stream.size)
+                buffer = bytearray(stream.size)
+                reader.read_bytes(buffer)
+                import base64
+                artwork_data = "data:image/jpeg;base64," + base64.b64encode(buffer).decode("ascii")
+            except Exception:
+                artwork_data = ""
 
         status_code = playback_info.playback_status if playback_info else 0
         is_playing = (status_code == 4 or status_code == PlaybackStatus.PLAYING)
@@ -347,6 +499,7 @@ async def inspect_smtc():
             "title": title,
             "artist": artist,
             "album": album,
+            "artwork": artwork_data,
             "sourceApp": source_app,
             "status": "playing" if is_playing else "paused",
             "positionMs": position_ms,
@@ -383,6 +536,8 @@ class BridgeState:
         self.title = ""
         self.artist = ""
         self.album = ""
+        self.artwork = ""
+        self.colors = None
         self.source_app = ""
         self.duration_ms = 0
         self.anchor_position_ms = 0
@@ -410,6 +565,8 @@ class BridgeState:
                 "title": self.title,
                 "artist": self.artist,
                 "album": self.album,
+                "artwork": self.artwork,
+                "colors": self.colors,
                 "durationMs": self.duration_ms,
                 "source": self.source_app
             },
@@ -437,7 +594,8 @@ async def ws_handler(websocket):
         # If lyrics are cached for current track, send lyrics immediately
         if state.title and state.artist:
             lyrics = await get_lyrics_for_track(state.title, state.artist, state.duration_ms / 1000.0)
-            await websocket.send(json.dumps(lyrics))
+            if lyrics:
+                await websocket.send(json.dumps(lyrics))
 
         async for msg in websocket:
             try:
@@ -494,7 +652,18 @@ async def media_sync_loop():
                 state.anchor_position_ms = pos_ms
                 state.anchor_monotonic_ms = int(time.monotonic() * 1000)
 
-                # Clear old lyrics and broadcast snapshot
+                # Resolve high-res album artwork & official album name if missing
+                artwork = media.get("artwork", "")
+                if artist and title:
+                    fetched_art, fetched_album = await fetch_artwork_async(artist, title, album)
+                    if not artwork and fetched_art:
+                        artwork = fetched_art
+                    if not album and fetched_album:
+                        state.album = fetched_album
+                state.artwork = artwork or ""
+                state.colors = extract_palette_from_artwork(state.artwork)
+
+                # Clear old lyrics and broadcast snapshot with artwork & palette
                 await broadcast(state.make_snapshot())
 
                 # Fetch and broadcast new lyrics
@@ -519,47 +688,30 @@ async def media_sync_loop():
                     await broadcast(state.make_snapshot())
 
         else:
-            if HAS_WINSDK:
-                # Active session was closed or stopped
-                if state.status != "stopped":
-                    logger.info("Media playback session closed. Entering idle state.")
-                    state.status = "stopped"
-                    state.title = ""
-                    state.artist = ""
-                    await broadcast(state.make_snapshot())
-                    # Clear lyrics
-                    await broadcast({
-                        "version": 1,
-                        "type": "lyrics.loaded",
-                        "trackKey": "",
-                        "timingPrecision": "none",
-                        "lines": []
-                    })
-            else:
-                # Fallback Simulation when WinSDK is not present
-                if not state.title:
-                    state.title = "New Person, Same Old Mistakes"
-                    state.artist = "Tame Impala"
-                    state.album = "Currents"
-                    state.source_app = "Demo Simulation"
-                    state.duration_ms = 363000
-                    state.status = "playing"
-                    state.anchor_position_ms = 160000
-                    state.anchor_monotonic_ms = int(time.monotonic() * 1000)
+            # When no external Windows media player is active, provide the showcase demo track
+            if not state.title:
+                state.title = "New Person, Same Old Mistakes"
+                state.artist = "Tame Impala"
+                state.album = "Currents"
+                state.source_app = "Showcase Demo"
+                state.duration_ms = 363000
+                state.status = "playing"
+                state.anchor_position_ms = 164200
+                state.anchor_monotonic_ms = int(time.monotonic() * 1000)
 
-                    await broadcast(state.make_snapshot())
-                    lyrics = await get_lyrics_for_track(state.title, state.artist, 363.0)
-                    await broadcast(lyrics)
+                await broadcast(state.make_snapshot())
+                lyrics = await get_lyrics_for_track(state.title, state.artist, 363.0)
+                await broadcast(lyrics)
 
-                curr = state.get_current_position_ms()
-                if curr > 192000:
-                    # Loop the showcase section
-                    state.anchor_position_ms = 160000
-                    state.anchor_monotonic_ms = int(time.monotonic() * 1000)
-                    await broadcast(state.make_snapshot())
-                elif abs(curr - state.last_published_pos_ms) >= 500:
-                    state.last_published_pos_ms = curr
-                    await broadcast(state.make_snapshot())
+            curr = state.get_current_position_ms()
+            if curr > 185000:
+                # Loop the showcase constellation phrase
+                state.anchor_position_ms = 164200
+                state.anchor_monotonic_ms = int(time.monotonic() * 1000)
+                await broadcast(state.make_snapshot())
+            elif abs(curr - state.last_published_pos_ms) >= 500:
+                state.last_published_pos_ms = curr
+                await broadcast(state.make_snapshot())
 
 
 # =============================================================================

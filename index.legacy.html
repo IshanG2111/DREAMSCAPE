@@ -1,0 +1,2200 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DREAMSCAPE — Celestial Constellation & Minimalist Liquid Chrome</title>
+
+  <!-- Google Fonts: Cormorant Garamond (Italic 300/400/500/600) & Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500;1,600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+  <!-- Three.js r128 -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+      -webkit-user-select: none;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    :root {
+      --glow-purple: #e02b6d;
+      --glow-secondary: #76649a;
+      --glow-primary: #e02b6d;
+      --glow-cyan: #8bc3ff;
+      --color-abyss: #010103;
+      --color-primary: #e02b6d;
+      --color-secondary: #24143a;
+    }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background-color: #010103;
+      color: #f3ecff;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    .font-serif-editorial {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+    }
+
+    /* LAYER 01: Minimalist Liquid Chrome Ocean Canvas */
+    #liquid-webgl-canvas {
+      position: fixed;
+      inset: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    /* LAYER 02: High-DPI Astrolabe Constellation & Foreground Canvas */
+    #constellation-canvas {
+      position: fixed;
+      inset: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 2;
+      background: transparent;
+      pointer-events: none;
+    }
+
+    /* LAYER 03: Ultra-Minimal Floating Architectural HUD */
+    #hud-layer {
+      position: fixed;
+      inset: 0;
+      z-index: 10;
+      pointer-events: none;
+    }
+
+    .hud-interactive {
+      pointer-events: auto;
+    }
+
+    /* 1. Top-Left Architectural Clock */
+    .clock-widget {
+      position: fixed;
+      top: 36px;
+      left: 44px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      user-select: none;
+      z-index: 10;
+    }
+    .clock-date {
+      font-size: 10px;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: #928a9e;
+      font-weight: 500;
+      margin-bottom: 4px;
+      font-family: 'Inter', sans-serif;
+    }
+    .clock-time-wrap {
+      display: flex;
+      align-items: baseline;
+      font-family: 'Inter', sans-serif;
+      line-height: 1;
+    }
+    .clock-hm {
+      font-size: 60px;
+      font-weight: 200;
+      letter-spacing: -0.03em;
+      color: #f7f2ff;
+      line-height: 0.9;
+      text-shadow: 0 0 30px rgba(224, 43, 109, 0.15);
+    }
+    .clock-sec {
+      font-size: 18px;
+      font-weight: 300;
+      color: #7b718f;
+      margin-left: 8px;
+      letter-spacing: 0.05em;
+    }
+
+    /* 2. Top-Right Audio Equalizer, Track Meta & Media Controls */
+    .top-right-widget {
+      position: fixed;
+      top: 36px;
+      right: 44px;
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      user-select: none;
+      z-index: 10;
+    }
+
+    /* 14-Bar Audio Equalizer Spectrum Visualizer */
+    .eq-bars {
+      display: flex;
+      align-items: flex-end;
+      gap: 2.5px;
+      height: 24px;
+      padding: 0 4px;
+    }
+    .eq-bar {
+      width: 2.5px;
+      min-height: 3px;
+      border-radius: 2px;
+      background: linear-gradient(to top, rgba(160, 140, 200, 0.25), var(--glow-primary, #e02b6d));
+      box-shadow: 0 0 8px var(--glow-primary, rgba(224, 43, 109, 0.45));
+    }
+
+    /* Square Album Cover Thumbnail */
+    .album-thumb-wrap {
+      width: 40px;
+      height: 40px;
+      border-radius: 7px;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.65), 0 0 16px var(--glow-primary, rgba(224, 43, 109, 0.4));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #090912;
+      flex-shrink: 0;
+      transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.3, 1), box-shadow 0.25s ease;
+    }
+    .album-thumb-wrap:hover {
+      transform: scale(1.08);
+      box-shadow: 0 6px 22px rgba(0, 0, 0, 0.75), 0 0 20px var(--glow-primary, rgba(224, 43, 109, 0.6));
+    }
+    .album-thumb {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .top-track-info {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      max-width: 180px;
+    }
+    .top-album {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: #f7f2ff;
+      line-height: 1.2;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 100%;
+      text-shadow: 0 0 12px rgba(255, 255, 255, 0.2);
+    }
+    .top-artist {
+      font-size: 9.5px;
+      font-weight: 400;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #9287a4;
+      margin-top: 3px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 100%;
+    }
+
+    /* Sleek Media Controls */
+    .media-controls {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-left: 2px;
+    }
+    .btn-ctrl {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 50%;
+      width: 30px;
+      height: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: #9d92af;
+      transition: all 0.2s cubic-bezier(0.2, 0.8, 0.3, 1);
+    }
+    .btn-ctrl:hover {
+      background: rgba(255, 255, 255, 0.14);
+      color: #ffffff;
+      border-color: rgba(255, 255, 255, 0.22);
+      transform: scale(1.08);
+      box-shadow: 0 0 12px var(--glow-primary, rgba(224, 43, 109, 0.4));
+    }
+    .btn-ctrl svg {
+      width: 13px;
+      height: 13px;
+      fill: currentColor;
+    }
+    .pause-bars {
+      display: flex;
+      align-items: center;
+      gap: 3px;
+    }
+    .pause-bar {
+      width: 2px;
+      height: 11px;
+      background: currentColor;
+      border-radius: 1px;
+    }
+
+    /* 3. Right-Margin Vertical Phrase Indicator */
+    .phrase-dots-vertical {
+      position: fixed;
+      right: 32px;
+      top: 50%;
+      transform: translateY(-50%);
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      align-items: center;
+      padding: 14px 6px;
+      background: rgba(14, 11, 22, 0.35);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: 20px;
+      backdrop-filter: blur(12px);
+      z-index: 10;
+    }
+    .vertical-dot {
+      width: 3.5px;
+      height: 3.5px;
+      border-radius: 50%;
+      background: rgba(160, 150, 185, 0.30);
+      cursor: pointer;
+      transition: all 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .vertical-dot:hover {
+      background: rgba(243, 236, 255, 0.95);
+      transform: scale(1.5);
+    }
+    .vertical-dot.active {
+      width: 5.5px;
+      height: 5.5px;
+      background: #ffffff;
+      box-shadow: 0 0 8px 2px var(--glow-primary, #e02b6d), 0 0 16px 4px var(--glow-secondary, #76649a);
+    }
+
+    /* 4. Unified Architectural Bottom Dock */
+    .bottom-dock {
+      position: fixed;
+      bottom: 28px;
+      left: 44px;
+      right: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 28px;
+      padding: 8px 18px;
+      background: rgba(10, 8, 16, 0.40);
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      border-radius: 20px;
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.45);
+      user-select: none;
+      z-index: 20;
+    }
+
+    .bottom-track-info {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-shrink: 0;
+      max-width: 300px;
+    }
+    .infinity-icon {
+      font-size: 16px;
+      color: #9d92b0;
+      line-height: 1;
+      font-family: 'Inter', sans-serif;
+    }
+    .track-title-bottom {
+      font-size: 10.5px;
+      font-weight: 500;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: #d8cfe5;
+      font-family: 'Inter', sans-serif;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* Interactive Timeline Scrubber */
+    .timeline-track-wrap {
+      flex: 1;
+      height: 20px;
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      position: relative;
+      margin: 0 8px;
+    }
+    .timeline-rail {
+      width: 100%;
+      height: 1.5px;
+      background: rgba(140, 125, 175, 0.20);
+      position: relative;
+      border-radius: 1px;
+    }
+    .timeline-fill {
+      height: 100%;
+      background: linear-gradient(90deg, rgba(140, 125, 175, 0.3), var(--glow-primary, #e02b6d));
+      width: 46%;
+      border-radius: 1px;
+    }
+    .timeline-node {
+      position: absolute;
+      top: 50%;
+      left: 46%;
+      transform: translate(-50%, -50%);
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #ffffff;
+      box-shadow: 0 0 8px 2px var(--glow-primary, #e02b6d), 0 0 16px 4px var(--glow-secondary, #76649a);
+      transition: transform 0.2s cubic-bezier(0.2, 0.8, 0.3, 1);
+    }
+    .timeline-track-wrap:hover .timeline-node {
+      transform: translate(-50%, -50%) scale(1.5);
+    }
+
+    .bottom-dock-right {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      flex-shrink: 0;
+    }
+
+    .timeline-time-display {
+      font-size: 10.5px;
+      letter-spacing: 0.16em;
+      color: #8a809b;
+      font-family: 'Inter', monospace;
+      white-space: nowrap;
+      user-select: none;
+    }
+
+    /* Minimalist Architectural Quality Mode Selector */
+    .mode-pill-capsule {
+      display: flex;
+      align-items: center;
+      background: rgba(18, 15, 28, 0.55);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 12px;
+      padding: 2px;
+    }
+    .mode-pill {
+      background: none;
+      border: none;
+      color: #7b7091;
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      padding: 3px 8px;
+      border-radius: 9px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-family: 'Inter', sans-serif;
+    }
+    .mode-pill:hover {
+      color: #ffffff;
+    }
+    .mode-pill.active {
+      background: rgba(255, 255, 255, 0.14);
+      color: #ffffff;
+      box-shadow: 0 0 10px var(--glow-primary, rgba(224, 43, 109, 0.4));
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Font Warmup -->
+  <div aria-hidden="true" style="position:fixed; opacity:0; pointer-events:none; font-family:'Cormorant Garamond'; font-style:italic; font-weight:400;">
+    All it's hard to you Let it happen babe know
+  </div>
+
+  <!-- LAYER 01: MINIMALIST LIQUID CHROME OCEAN SHADER -->
+  <canvas id="liquid-webgl-canvas"></canvas>
+
+  <!-- LAYER 02: HIGH-DPI ASTROLABE CONSTELLATION & DYNAMIC LYRICS -->
+  <canvas id="constellation-canvas"></canvas>
+
+  <!-- LAYER 03: ULTRA-MINIMAL FLOATING ARCHITECTURAL HUD -->
+  <div id="hud-layer">
+
+    <!-- 1. Top-Left Architectural Clock -->
+    <div class="clock-widget">
+      <div id="clock-date" class="clock-date">THU 12 NOV</div>
+      <div class="clock-time-wrap">
+        <span id="clock-hm" class="clock-hm">16:09</span>
+        <span id="clock-sec" class="clock-sec">23</span>
+      </div>
+    </div>
+
+    <!-- 2. Top-Right Audio Equalizer, Album Meta & Media Controls -->
+    <div class="top-right-widget hud-interactive">
+      <div class="eq-bars" id="eq-bars">
+        <span class="eq-bar"></span>
+        <span class="eq-bar"></span>
+        <span class="eq-bar"></span>
+        <span class="eq-bar"></span>
+        <span class="eq-bar"></span>
+        <span class="eq-bar"></span>
+        <span class="eq-bar"></span>
+        <span class="eq-bar"></span>
+        <span class="eq-bar"></span>
+        <span class="eq-bar"></span>
+        <span class="eq-bar"></span>
+        <span class="eq-bar"></span>
+        <span class="eq-bar"></span>
+        <span class="eq-bar"></span>
+      </div>
+
+      <div class="album-thumb-wrap" id="album-thumb-wrap" title="Now Playing Album">
+        <img id="album-thumb" class="album-thumb" src="https://upload.wikimedia.org/wikipedia/en/9/9b/Tame_Impala_-_Currents.png" alt="Album Cover" />
+      </div>
+
+      <div class="top-track-info">
+        <div id="top-album" class="top-album">CURRENTS</div>
+        <div id="top-artist" class="top-artist">TAME IMPALA</div>
+      </div>
+
+      <div class="media-controls">
+        <button id="btn-prev" class="btn-ctrl" title="Previous Phrase (Left Arrow)">
+          <svg viewBox="0 0 24 24"><path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/></svg>
+        </button>
+        <button id="btn-toggle-play" class="btn-ctrl" title="Play / Pause (Space)">
+          <div id="icon-pause-bars" class="pause-bars">
+            <span class="pause-bar"></span>
+            <span class="pause-bar"></span>
+          </div>
+          <svg id="icon-play-tri" style="display:none;" viewBox="0 0 24 24">
+            <path d="M8 5v14l11-7z" />
+          </svg>
+        </button>
+        <button id="btn-next" class="btn-ctrl" title="Next Phrase (Right Arrow)">
+          <svg viewBox="0 0 24 24"><path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- 3. Right-Margin Vertical Phrase Indicator -->
+    <div id="phrase-dots" class="phrase-dots-vertical hud-interactive">
+      <div class="vertical-dot" data-phrase="0"></div>
+      <div class="vertical-dot" data-phrase="1"></div>
+      <div class="vertical-dot" data-phrase="2"></div>
+      <div class="vertical-dot active" data-phrase="3"></div>
+      <div class="vertical-dot" data-phrase="4"></div>
+      <div class="vertical-dot" data-phrase="5"></div>
+    </div>
+
+    <!-- 4. Unified Architectural Bottom Dock (Zero Overlap, Crystal Harmony) -->
+    <div class="bottom-dock hud-interactive">
+      <div class="bottom-track-info">
+        <span class="infinity-icon">∞</span>
+        <span id="track-title-bottom" class="track-title-bottom">NEW PERSON, SAME OLD MISTAKES</span>
+      </div>
+
+      <div id="timeline-track-wrap" class="timeline-track-wrap" title="Seek track position">
+        <div class="timeline-rail">
+          <div id="timeline-fill" class="timeline-fill"></div>
+          <div id="timeline-node" class="timeline-node"></div>
+        </div>
+      </div>
+
+      <div class="bottom-dock-right">
+        <div id="timeline-time-display" class="timeline-time-display">2:47 / 6:03</div>
+        <div class="mode-pill-capsule" id="quality-mode-widget">
+          <button class="mode-pill" id="mode-low" data-mode="low" title="Eco Mode (Press 1)">LOW</button>
+          <button class="mode-pill" id="mode-medium" data-mode="medium" title="Balanced Mode (Press 2)">MED</button>
+          <button class="mode-pill active" id="mode-high" data-mode="high" title="Cinematic Mode (Press 3)">HIGH</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Host Adapters & Lyric Engine Dependencies -->
+  <script src="js/adapters/bridge.adapter.js"></script>
+  <script src="js/adapters/lively.adapter.js"></script>
+  <script src="js/lyrics/lyric.provider.js"></script>
+  <script src="js/lyricSyncEngine.js"></script>
+
+  <script>
+    /***************************************************************************
+     * 0. THREE.JS OFFLINE SHIM FALLBACK
+     ***************************************************************************/
+    (function initThreeFallback() {
+      if (typeof window.THREE !== 'undefined') return;
+      window.THREE = {
+        Vector2: class {
+          constructor(x = 0, y = 0) { this.x = x; this.y = y; }
+          set(x, y) { this.x = x; this.y = y; return this; }
+        },
+        Vector3: class {
+          constructor(x = 0, y = 0, z = 0) { this.x = x; this.y = y; this.z = z; }
+          set(x, y, z) { this.x = x; this.y = y; this.z = z; return this; }
+          clone() { return new window.THREE.Vector3(this.x, this.y, this.z); }
+          lerp(target, alpha) {
+            this.x += (target.x - this.x) * alpha;
+            this.y += (target.y - this.y) * alpha;
+            this.z += (target.z - this.z) * alpha;
+            return this;
+          }
+        },
+        MathUtils: {
+          lerp(x, y, t) { return (1 - t) * x + t * y; },
+          damp(x, y, lambda, dt) { return this.lerp(x, y, 1 - Math.exp(-lambda * dt)); },
+          smoothstep(x, min, max) {
+            if (x <= min) return 0;
+            if (x >= max) return 1;
+            const t = (x - min) / (max - min);
+            return t * t * (3 - 2 * t);
+          }
+        },
+        Clock: class {
+          constructor() { this.oldTime = performance.now(); }
+          getDelta() {
+            const now = performance.now();
+            const diff = (now - this.oldTime) / 1000;
+            this.oldTime = now;
+            return diff;
+          }
+          getElapsedTime() { return performance.now() / 1000; }
+        }
+      };
+    })();
+
+    /***************************************************************************
+     * 1. COLOR PALETTES & DYNAMIC ALBUM ART THEME
+     ***************************************************************************/
+    const palette = {
+      shaderPrimary:   new THREE.Vector3(0.88, 0.16, 0.42), // Rich crimson/rose (like reference image)
+      shaderSecondary: new THREE.Vector3(0.38, 0.08, 0.22), // Deep velvet magenta
+      shaderSpec:      new THREE.Vector3(0.98, 0.92, 0.96), // Titanium starlight highlight
+      shaderAbyss:     new THREE.Vector3(0.012, 0.003, 0.007), // Velvet black crease
+      tintPurple:      [226, 42, 108], // Vibrant rose-crimson
+      tintSecondary:   [148, 48, 86],
+      tintStarlight:   [255, 242, 248]
+    };
+
+    function updateCSSGlowVariables() {
+      const colStr = `rgb(${palette.tintPurple.join(',')})`;
+      const secStr = `rgb(${palette.tintSecondary.join(',')})`;
+      document.documentElement.style.setProperty('--glow-purple', colStr);
+      document.documentElement.style.setProperty('--glow-primary', colStr);
+      document.documentElement.style.setProperty('--glow-secondary', secStr);
+    }
+
+    function extractAlbumPaletteFromImage(img) {
+      try {
+        const c = document.createElement('canvas');
+        c.width = 36; c.height = 36;
+        const cx = c.getContext('2d');
+        cx.drawImage(img, 0, 0, 36, 36);
+        const data = cx.getImageData(0, 0, 36, 36).data;
+
+        const buckets = [];
+        let totalR = 0, totalG = 0, totalB = 0, count = 0;
+
+        for (let i = 0; i < data.length; i += 4) {
+          const r = data[i], g = data[i + 1], b = data[i + 2];
+          totalR += r; totalG += g; totalB += b; count++;
+
+          const max = Math.max(r, g, b) / 255;
+          const min = Math.min(r, g, b) / 255;
+          const delta = max - min;
+          const sat = max === 0 ? 0 : delta / max;
+          const bright = (r * 0.299 + g * 0.587 + b * 0.114) / 255;
+
+          // Collect saturated and expressive tones from the cover
+          if (sat > 0.20 && bright > 0.14 && bright < 0.92) {
+            buckets.push({ r, g, b, sat, bright });
+          }
+        }
+
+        if (buckets.length > 0) {
+          // Rank by saturation and brightness
+          buckets.sort((a, b) => (b.sat * 0.65 + b.bright * 0.35) - (a.sat * 0.65 + a.bright * 0.35));
+          const top = buckets[0];
+          const pr = top.r / 255;
+          const pg = top.g / 255;
+          const pb = top.b / 255;
+
+          palette.shaderPrimary.set(pr * 0.95, pg * 0.95, pb * 0.95);
+          palette.shaderSecondary.set(pr * 0.45, pg * 0.45, pb * 0.45);
+          palette.shaderAbyss.set(pr * 0.08, pg * 0.08, pb * 0.08);
+          palette.shaderSpec.set(
+            Math.min(1.0, pr * 0.25 + 0.82),
+            Math.min(1.0, pg * 0.25 + 0.82),
+            Math.min(1.0, pb * 0.25 + 0.82)
+          );
+
+          palette.tintPurple = [top.r, top.g, top.b];
+          palette.tintSecondary = [Math.round(top.r * 0.6), Math.round(top.g * 0.6), Math.round(top.b * 0.6)];
+          updateCSSGlowVariables();
+        } else if (count > 0) {
+          const pr = (totalR / count) / 255;
+          const pg = (totalG / count) / 255;
+          const pb = (totalB / count) / 255;
+          palette.shaderPrimary.set(pr * 0.85, pg * 0.85, pb * 0.85);
+          palette.shaderSecondary.set(pr * 0.35, pg * 0.35, pb * 0.35);
+          palette.shaderAbyss.set(pr * 0.05, pg * 0.05, pb * 0.05);
+          palette.tintPurple = [Math.round(pr * 255), Math.round(pg * 255), Math.round(pb * 255)];
+          updateCSSGlowVariables();
+        }
+      } catch (e) {
+        console.warn("Palette extraction fallback", e);
+      }
+    }
+
+    /***************************************************************************
+     * 2. LAYER 01: MINIMALIST LIQUID CHROME OCEAN SHADER
+     ***************************************************************************/
+    const liquidCanvas = document.getElementById('liquid-webgl-canvas');
+    let glRenderer = null, glScene = null, glCamera = null, liquidUniforms = null;
+
+    const LIQUID_VERTEX_SHADER = `
+      varying vec2 vUv;
+      void main() {
+        vUv = uv;
+        gl_Position = vec4(position, 1.0);
+      }
+    `;
+
+    const LIQUID_CHROME_FRAGMENT_SHADER = `
+      precision highp float;
+      varying vec2 vUv;
+
+      uniform float uTime;
+      uniform float uMode; // 0.0 = Low (Eco), 1.0 = Medium (Balanced), 2.0 = High (Cinematic Default)
+      uniform vec2 uResolution;
+      uniform vec2 uPointer;
+      uniform float uSubBass;
+      uniform float uBass;
+      uniform float uMidrange;
+      uniform float uTreble;
+      uniform float uBeatImpulse;
+      uniform vec3 uColPrimary;
+      uniform vec3 uColSecondary;
+      uniform vec3 uColSpec;
+      uniform vec3 uColAbyss;
+      uniform vec2 uActiveNode;
+
+      mat2 rot(float a) {
+        float c = cos(a), s = sin(a);
+        return mat2(c, -s, s, c);
+      }
+
+      // Pseudo-random hash for celestial stardust
+      float hash21(vec2 p) {
+        p = fract(p * vec2(234.34, 435.345));
+        p += dot(p, p + 34.23);
+        return fract(p.x * p.y);
+      }
+
+      // Continuous, domain-warped molten chrome heightfield
+      float liquidRibbonHeight(vec2 p, float t, out float crestDetail) {
+        float audioDrift = uBass * 0.32 + uBeatImpulse * 0.22;
+
+        // Base domain rotation and pointer parallax
+        mat2 r1 = rot(-0.40 + uPointer.x * 0.05);
+        vec2 q = r1 * p * 1.12;
+
+        // Layer 1: Broad sweeping molten silk fold
+        float w1 = sin(q.x * 1.55 + sin(q.y * 1.25 + t * 0.36) * 1.10 + t * 0.30);
+
+        if (uMode < 0.5) {
+          // Low Mode (Eco): Fast smooth 2-wave blend
+          float w2 = cos(dot(q, vec2(1.7, 1.2)) - t * 0.40) * 0.45;
+          crestDetail = abs(w1);
+          return (w1 * 0.62 + w2 * 0.38) * (0.88 + audioDrift);
+        }
+
+        // Layer 2: Secondary undulating ribbon curl with domain displacement
+        mat2 r2 = rot(0.68 + uPointer.y * 0.05);
+        vec2 q2 = r2 * (q + vec2(w1 * 0.44, -w1 * 0.34) + vec2(t * 0.08, -t * 0.06));
+        float w2 = cos(q2.x * 2.15 + sin(q2.y * 1.65 - t * 0.32) * 1.20 - t * 0.24);
+
+        float h = w1 * 0.54 + w2 * 0.46;
+        crestDetail = abs(w2);
+
+        if (uMode >= 1.5) {
+          // High Mode (Cinematic Default): Deep 3rd-order satin ribbon fold & acoustic ripples
+          mat2 r3 = rot(-0.52);
+          vec2 q3 = r3 * (q2 + vec2(w2 * 0.28, w1 * 0.24));
+          float w3 = sin(q3.x * 3.30 + sin(q3.y * 2.05 + t * 0.42) * 0.88 + t * 0.38);
+          h = h * 0.78 + w3 * 0.22;
+          crestDetail = max(crestDetail, abs(w3));
+
+          // Acoustic concentric resonance from singing vocal node
+          vec2 aspect = uResolution / min(uResolution.x, uResolution.y);
+          vec2 activeP = (uActiveNode - 0.5) * aspect;
+          float distToActive = length(p - activeP);
+          float wordRipple = sin(distToActive * 18.0 - t * 4.6) * exp(-distToActive * 2.5) * (uBass * 0.12 + uBeatImpulse * 0.24);
+          h += wordRipple;
+        }
+
+        return h * (0.88 + audioDrift);
+      }
+
+      void main() {
+        vec2 uv = gl_FragCoord.xy / uResolution.xy;
+        vec2 p = (gl_FragCoord.xy - 0.5 * uResolution.xy) / min(uResolution.x, uResolution.y);
+        p += uPointer * 0.040;
+
+        float t = uTime * 0.40;
+
+        // Soft center contrast control: keeps specular reflections refined in the text zone
+        // while allowing the molten metallic waves to flow seamlessly across the ENTIRE viewport
+        vec2 centerOffset = (uv - vec2(0.5, 0.5)) * vec2(1.10, 1.40);
+        float centerDist = length(centerOffset);
+        float centerSanctuary = smoothstep(0.12, 0.72, centerDist);
+
+        // Finite difference surface normals
+        float eps = (uMode < 0.5) ? 0.010 : 0.005;
+        float crestDetail = 0.0;
+        float h0 = liquidRibbonHeight(p, t, crestDetail);
+        float hx = liquidRibbonHeight(p + vec2(eps, 0.0), t, crestDetail);
+        float hy = liquidRibbonHeight(p + vec2(0.0, eps), t, crestDetail);
+
+        vec3 normal = normalize(vec3(-(hx - h0) / eps, -(hy - h0) / eps, 1.0));
+        vec3 viewDir = normalize(vec3(-p * 0.28, 1.0));
+
+        // Precision Studio Lighting with moving key light
+        vec3 keyLight = normalize(vec3(-0.62 + sin(t * 0.22) * 0.20, 0.78, 0.62));
+        vec3 rimLight = normalize(vec3(0.72, -0.62, 0.48));
+
+        vec3 halfKey = normalize(keyLight + viewDir);
+        vec3 halfRim = normalize(rimLight + viewDir);
+
+        float ndotKey = max(dot(normal, keyLight), 0.0);
+        float ndotRim = max(dot(normal, rimLight), 0.0);
+        float fresnel = pow(1.0 - max(dot(viewDir, normal), 0.0), 3.2);
+
+        // Curvature factor for concentrated gleam on peaks
+        float curvature = length(vec2(hx - h0, hy - h0)) / eps;
+        float ridgeGlow = smoothstep(0.35, 2.0, curvature);
+
+        // Deep obsidian velvet abyss with dynamic album tone
+        vec3 deepAbyss = mix(vec3(0.005, 0.003, 0.007), uColAbyss * 0.85, 0.65);
+        vec3 col = deepAbyss;
+
+        // Molten silk body color: rich chromatic velvet gradients
+        vec3 bodyColor = mix(uColAbyss * 0.5, uColSecondary * 0.95, ndotKey * 0.50 + fresnel * 0.55);
+        vec3 crestColor = mix(uColPrimary * 1.35, uColSpec, pow(fresnel, 2.0) * 0.65);
+        vec3 fluidShading = mix(bodyColor, crestColor, clamp(ndotKey * 0.68 + fresnel * 0.62 + ridgeGlow * 0.28, 0.0, 1.0));
+
+        // Prismatic Spectral Dispersion on specular crests (iridescent thin-film fringe)
+        vec3 halfKeyR = normalize(keyLight + viewDir + vec3(0.012, -0.008, 0.0));
+        vec3 halfKeyG = normalize(keyLight + viewDir);
+        vec3 halfKeyB = normalize(keyLight + viewDir - vec3(0.012, -0.008, 0.0));
+
+        float specR = pow(max(dot(normal, halfKeyR), 0.0), 100.0);
+        float specG = pow(max(dot(normal, halfKeyG), 0.0), 88.0);
+        float specB = pow(max(dot(normal, halfKeyB), 0.0), 76.0);
+        vec3 specPrism = vec3(specR, specG, specB) * uColSpec * 1.35;
+
+        float specBroad = pow(max(dot(normal, halfKey), 0.0), 24.0);
+        float specSharp = pow(max(dot(normal, halfKey), 0.0), 80.0);
+        float specGlint = pow(max(dot(normal, halfKey), 0.0), 240.0);
+        float specRim   = pow(max(dot(normal, halfRim), 0.0), 30.0);
+
+        vec3 specular = (specPrism + uColSpec * (specSharp * 0.55 + specGlint * 1.65)) * (1.0 + uTreble * 0.45);
+        specular += uColPrimary * specBroad * 0.38;
+        specular += uColSecondary * specRim * 0.32;
+
+        // Refined center text area: softens intense glare so lyrics pop, while keeping metallic ripples alive
+        specular *= mix(0.42, 1.0, centerSanctuary);
+
+        vec3 liquidFolds = (fluidShading + specular) * (0.92 + uBass * 0.32 + uBeatImpulse * 0.38);
+
+        // Entire canvas enjoys the flowing liquid chrome surface
+        col = mix(col, liquidFolds, 0.88 + 0.12 * centerSanctuary);
+
+        // Subtle celestial ambient breathing
+        float ambientBreathing = (1.0 - smoothstep(0.0, 0.65, centerDist)) * (0.04 + uBass * 0.035);
+        col += uColSecondary * ambientBreathing;
+
+        // Procedural celestial micro-stardust in deep velvet shadows
+        vec2 starUv = uv * 32.0;
+        float starHash = hash21(floor(starUv));
+        float starTwinkle = sin(t * 3.5 + starHash * 62.8) * 0.5 + 0.5;
+        float starIntensity = smoothstep(0.982, 1.0, starHash) * starTwinkle * (1.0 + uTreble * 0.6) * (1.0 - centerSanctuary * 0.4);
+        col += uColSpec * starIntensity * 0.70;
+
+        gl_FragColor = vec4(clamp(col, 0.0, 1.0), 1.0);
+      }
+    `;
+
+    function initLiquidShader() {
+      if (typeof THREE.WebGLRenderer === 'undefined') {
+        initFallbackShader();
+        return;
+      }
+
+      glRenderer = new THREE.WebGLRenderer({
+        canvas: liquidCanvas,
+        antialias: false,
+        powerPreference: 'high-performance',
+        alpha: false
+      });
+      glRenderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+      glRenderer.setSize(window.innerWidth, window.innerHeight);
+
+      glScene = new THREE.Scene();
+      glCamera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
+
+      liquidUniforms = {
+        uTime:         { value: 0 },
+        uMode:         { value: 2.0 }, // 2.0 = High Cinematic (Default)
+        uResolution:   { value: new THREE.Vector2(window.innerWidth, window.innerHeight) },
+        uPointer:      { value: new THREE.Vector2(0, 0) },
+        uSubBass:      { value: 0.30 },
+        uBass:         { value: 0.35 },
+        uMidrange:     { value: 0.40 },
+        uTreble:       { value: 0.28 },
+        uBeatImpulse:  { value: 0.0 },
+        uColPrimary:   { value: palette.shaderPrimary.clone() },
+        uColSecondary: { value: palette.shaderSecondary.clone() },
+        uColSpec:      { value: palette.shaderSpec.clone() },
+        uColAbyss:     { value: palette.shaderAbyss.clone() },
+        uActiveNode:   { value: new THREE.Vector2(0.5, 0.5) }
+      };
+
+      const liquidQuad = new THREE.Mesh(
+        new THREE.PlaneGeometry(2, 2),
+        new THREE.ShaderMaterial({
+          vertexShader: LIQUID_VERTEX_SHADER,
+          fragmentShader: LIQUID_CHROME_FRAGMENT_SHADER,
+          uniforms: liquidUniforms,
+          depthTest: false,
+          depthWrite: false
+        })
+      );
+      glScene.add(liquidQuad);
+    }
+
+    let fallbackGL = null, fallbackProg = null, fallbackUniforms = {};
+    function initFallbackShader() {
+      try {
+        const gl = liquidCanvas.getContext('webgl') || liquidCanvas.getContext('experimental-webgl');
+        if (!gl) return;
+        fallbackGL = gl;
+
+        const vs = gl.createShader(gl.VERTEX_SHADER);
+        gl.shaderSource(vs, `attribute vec2 p; void main() { gl_Position = vec4(p, 0.0, 1.0); }`);
+        gl.compileShader(vs);
+
+        const fs = gl.createShader(gl.FRAGMENT_SHADER);
+        gl.shaderSource(fs, LIQUID_CHROME_FRAGMENT_SHADER);
+        gl.compileShader(fs);
+
+        const prog = gl.createProgram();
+        gl.attachShader(prog, vs);
+        gl.attachShader(prog, fs);
+        gl.linkProgram(prog);
+        fallbackProg = prog;
+
+        const buf = gl.createBuffer();
+        gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+        gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 1, -1, -1, 1, -1, 1, 1, -1, 1, 1]), gl.STATIC_DRAW);
+
+        const pLoc = gl.getAttribLocation(prog, 'p');
+        gl.enableVertexAttribArray(pLoc);
+        gl.vertexAttribPointer(pLoc, 2, gl.FLOAT, false, 0, 0);
+
+        const uNames = ['uTime', 'uMode', 'uResolution', 'uPointer', 'uSubBass', 'uBass', 'uMidrange', 'uTreble', 'uBeatImpulse', 'uColPrimary', 'uColSecondary', 'uColSpec', 'uColAbyss', 'uActiveNode'];
+        uNames.forEach(n => { fallbackUniforms[n] = gl.getUniformLocation(prog, n); });
+      } catch (err) {
+        console.warn("Fallback WebGL init error:", err);
+      }
+    }
+
+    /***************************************************************************
+     * 3. MUSIC REACTIVE ENGINE & AUDIO SYNTH
+     ***************************************************************************/
+    const audioEngine = {
+      isMuted: false,
+      ctx: null,
+      osc1: null,
+      osc2: null,
+      filter: null,
+      gain: null,
+      isInitialized: false,
+
+      ensureAudio() {
+        if (this.isInitialized || this.isMuted) return;
+        try {
+          const AudioContext = window.AudioContext || window.webkitAudioContext;
+          if (!AudioContext) return;
+          this.ctx = new AudioContext();
+
+          this.filter = this.ctx.createBiquadFilter();
+          this.filter.type = 'lowpass';
+          this.filter.frequency.setValueAtTime(380, this.ctx.currentTime);
+          this.filter.Q.setValueAtTime(3.5, this.ctx.currentTime);
+
+          this.gain = this.ctx.createGain();
+          this.gain.gain.setValueAtTime(0.065, this.ctx.currentTime);
+
+          this.osc1 = this.ctx.createOscillator();
+          this.osc1.type = 'sawtooth';
+          this.osc1.frequency.setValueAtTime(116.54, this.ctx.currentTime); // Bb2
+
+          this.osc2 = this.ctx.createOscillator();
+          this.osc2.type = 'sine';
+          this.osc2.frequency.setValueAtTime(174.61, this.ctx.currentTime); // F3
+
+          this.osc1.connect(this.filter);
+          this.osc2.connect(this.filter);
+          this.filter.connect(this.gain);
+          this.gain.connect(this.ctx.destination);
+
+          this.osc1.start();
+          this.osc2.start();
+          this.isInitialized = true;
+        } catch (e) {
+          console.warn("AudioContext init info:", e);
+        }
+      },
+
+      setMute(mute) {
+        this.isMuted = mute;
+        if (this.gain && this.ctx) {
+          this.gain.gain.setValueAtTime(mute ? 0 : 0.065, this.ctx.currentTime);
+        }
+      },
+
+      update(elapsed, delta) {
+        const beatCycle = (elapsed * 1.7) % 1.0;
+        const kick = Math.pow(Math.max(0, 1.0 - beatCycle * 3.5), 2.2);
+
+        state.audio.subBass = 0.28 + kick * 0.45;
+        state.audio.bass = 0.32 + kick * 0.50;
+        state.audio.mid = 0.35 + Math.sin(elapsed * 2.8) * 0.18;
+        state.audio.treble = 0.25 + Math.cos(elapsed * 4.2) * 0.15;
+        state.audio.beatPulse = kick;
+        state.audio.pulseTravel = (elapsed * 0.32) % 1.0;
+
+        if (this.isInitialized && this.ctx && !this.isMuted) {
+          const targetCutoff = 320 + kick * 450 + Math.sin(elapsed * 1.5) * 120;
+          this.filter.frequency.setTargetAtTime(targetCutoff, this.ctx.currentTime, 0.04);
+        }
+      }
+    };
+
+    /***************************************************************************
+     * 4. CONSTELLATION ENGINE & STATE
+     ***************************************************************************/
+    const lyricProvider = new window.SongNode.LyricProvider();
+    const lyricSync = new window.SongNode.LyricSyncEngine();
+
+    const state = {
+      isPlaying: true,
+      isExternalPlaying: false,
+      isVocal: false,
+      songTimeMs: 0,
+      activeWordIndex: 0,
+      activeLineIndex: 0,
+      lineWords: [],
+      lineOpacity: 0.0,
+      wordOpacities: [],
+      progressRatio: 0.46,
+      pointer: { x: 0, y: 0, smoothX: 0, smoothY: 0 },
+      camera: { x: 0, y: 0, targetX: 0, targetY: 0, zoom: 1.0, targetZoom: 1.0 },
+      currentPhraseLayout: null,
+      departingPhrase: null,
+      activeNodeScreen: { x: 0.5, y: 0.5 },
+      qualityMode: 'high',
+      audio: { subBass: 0.3, bass: 0.35, mid: 0.4, treble: 0.28, beatPulse: 0.0, pulseTravel: 0.0 }
+    };
+
+    /***************************************************************************
+     * QUALITY MODES (LOW, MED, HIGH - CINEMATIC DEFAULT)
+     ***************************************************************************/
+    const QUALITY_MODES = {
+      low:    { value: 0.0, dprMax: 1.0, name: 'LOW' },
+      medium: { value: 1.0, dprMax: 1.25, name: 'MED' },
+      high:   { value: 2.0, dprMax: 2.0, name: 'HIGH' }
+    };
+
+    function setQualityMode(modeKey) {
+      if (!QUALITY_MODES[modeKey]) modeKey = 'high';
+      state.qualityMode = modeKey;
+      const modeCfg = QUALITY_MODES[modeKey];
+
+      if (liquidUniforms && liquidUniforms.uMode) {
+        liquidUniforms.uMode.value = modeCfg.value;
+      }
+
+      document.querySelectorAll('.mode-pill').forEach(pill => {
+        pill.classList.toggle('active', pill.getAttribute('data-mode') === modeKey);
+      });
+
+      resizeCanvas();
+
+      try {
+        localStorage.setItem('dreamscape_quality_mode', modeKey);
+      } catch (e) {}
+    }
+
+    // Word spring animations for lively word physics
+    const wordSprings = [];
+    function setupWordSprings(words) {
+      wordSprings.length = 0;
+      for (let i = 0; i < words.length; i++) {
+        wordSprings.push({
+          activation: i === 0 ? 1.0 : 0.0,
+          velActivation: 0,
+          liftY: 0,
+          velLiftY: 0,
+          ringExpand: 0,
+          velRingExpand: 0,
+          sparkPhase: Math.random() * Math.PI * 2
+        });
+      }
+    }
+
+    // Procedural Harmonic Constellation Path Generator:
+    // Creates a graceful, flowing celestial ribbon that preserves editorial typographic rhythm
+    let phraseLayoutCounter = 0;
+
+    function generateRandomConstellationPath(words, lineIndex) {
+      phraseLayoutCounter++;
+      const n = words.length;
+
+      // Harmonic wave parameters
+      const wavePhase = (lineIndex * 1.618 + phraseLayoutCounter * 0.45) % (Math.PI * 2);
+      const startX = n > 5 ? 0.15 : (n > 3 ? 0.22 : 0.30);
+      const endX = n > 5 ? 0.85 : (n > 3 ? 0.78 : 0.70);
+      const spanX = endX - startX;
+      const midY = 0.485;
+
+      const nodes = [];
+      for (let i = 0; i < n; i++) {
+        const t = n > 1 ? (i / (n - 1)) : 0.5;
+
+        // Elegant celestial flow: gentle continuous wave with subtle harmonic undulation
+        const nx = startX + t * spanX;
+        const waveY = Math.sin(t * Math.PI * 1.25 + wavePhase) * 0.075 + Math.cos(t * Math.PI * 2.5 + wavePhase * 0.5) * 0.025;
+        const ny = midY + waveY;
+
+        // Poetic tilt: subtle organic cant for editorial Didone italic aesthetic
+        const rot = Math.sin(t * Math.PI * 1.5 + wavePhase) * 0.035;
+
+        // Alternating vertical label offsets relative to anchor star
+        const oy = (i % 2 === 0) ? -24 : 26;
+        const ox = 0;
+
+        const wObj = words[i];
+        const wText = typeof wObj === 'string' ? wObj : (wObj.text || '');
+
+        nodes.push({
+          text: wText,
+          nx: Math.max(0.12, Math.min(0.88, nx)),
+          ny: Math.max(0.28, Math.min(0.68, ny)),
+          ox,
+          oy,
+          rot,
+          hasRing: (i === 0 || i === n - 1),
+          startMs: wObj.startMs || 0,
+          endMs: wObj.endMs || 0
+        });
+      }
+
+      return {
+        nodes,
+        timestamp: performance.now()
+      };
+    }
+
+    lyricSync.onSyncUpdate = ({ lineWords, activeWordIndex, wordOpacities, lineOpacity, isVocal, lineIndex, currentMs, durationMs, songTimeMs }) => {
+      state.lineOpacity = lineOpacity !== undefined ? lineOpacity : 0.0;
+      state.wordOpacities = wordOpacities || [];
+      state.isVocal = isVocal;
+      state.songTimeMs = songTimeMs !== undefined ? songTimeMs : currentMs;
+
+      if (lineWords && lineWords.length > 0) {
+        if (state.lineWords !== lineWords) {
+          // Archive old phrase layout for buttery smooth cross-dissolve & float away
+          if (state.currentPhraseLayout && state.lineWords && state.lineWords.length > 0) {
+            state.departingPhrase = {
+              layout: state.currentPhraseLayout,
+              words: [...state.lineWords],
+              startTime: performance.now(),
+              duration: 720
+            };
+          }
+          state.lineWords = lineWords;
+          state.currentPhraseLayout = generateRandomConstellationPath(lineWords, lineIndex >= 0 ? lineIndex : state.activeLineIndex);
+          setupWordSprings(lineWords);
+        }
+        state.activeWordIndex = activeWordIndex >= 0 ? activeWordIndex : 0;
+      }
+
+      if (durationMs > 0) {
+        state.progressRatio = Math.max(0, Math.min(1, currentMs / durationMs));
+        updateTimeline(currentMs, durationMs);
+      }
+
+      // Update vertical phrase dots
+      const lineIdx = lineIndex >= 0 ? lineIndex : (lyricSync.activeLineIndex >= 0 ? lyricSync.activeLineIndex : 0);
+      state.activeLineIndex = lineIdx;
+      const dots = document.querySelectorAll('.vertical-dot');
+      dots.forEach((dot, idx) => {
+        dot.classList.toggle('active', (lineIdx % 6) === idx);
+      });
+    };
+
+    function updateTimeline(currentMs, durationMs) {
+      const pct = (state.progressRatio * 100).toFixed(2);
+      const fill = document.getElementById('timeline-fill');
+      const node = document.getElementById('timeline-node');
+      const timeDisplay = document.getElementById('timeline-time-display');
+
+      if (fill) fill.style.width = `${pct}%`;
+      if (node) node.style.left = `${pct}%`;
+
+      if (timeDisplay) {
+        const curMin = Math.floor(currentMs / 60000);
+        const curSec = Math.floor((currentMs % 60000) / 1000);
+        const durMin = Math.floor(durationMs / 60000);
+        const durSec = Math.floor((durationMs % 60000) / 1000);
+        timeDisplay.textContent = `${curMin}:${String(curSec).padStart(2, '0')} / ${durMin}:${String(durSec).padStart(2, '0')}`;
+      }
+    }
+
+    async function initShowcaseTrack() {
+      document.getElementById('top-album').textContent = "CURRENTS";
+      document.getElementById('top-artist').textContent = "TAME IMPALA";
+      document.getElementById('track-title-bottom').textContent = "NEW PERSON, SAME OLD MISTAKES";
+      updateCSSGlowVariables();
+
+      const { lyrics } = await lyricProvider.loadDemo(0); // "New Person, Same Old Mistakes"
+      lyricSync.setLyrics(lyrics);
+      lyricSync.durationMs = 363000;
+      lyricSync.seek(163800); // 400ms lead-in right as "All it's hard to you" phrase fades in and begins
+      lyricSync.play();
+
+      state.isPlaying = true;
+      state.isExternalPlaying = false;
+      audioEngine.setMute(false);
+    }
+
+    /***************************************************************************
+     * 5. HIGH-DPI ASTROLABE CONSTELLATION RENDERER (LAYER 02)
+     ***************************************************************************/
+    const canvas = document.getElementById('constellation-canvas');
+    const ctx = canvas.getContext('2d');
+
+    function resizeCanvas() {
+      const modeCfg = QUALITY_MODES[state.qualityMode] || QUALITY_MODES.high;
+      const dpr = Math.min(window.devicePixelRatio || 1, modeCfg.dprMax);
+      const w = window.innerWidth;
+      const h = window.innerHeight;
+
+      canvas.width = w * dpr;
+      canvas.height = h * dpr;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+      if (glRenderer) {
+        glRenderer.setSize(w, h);
+        glRenderer.setPixelRatio(dpr);
+      }
+      if (liquidUniforms && liquidUniforms.uResolution) {
+        liquidUniforms.uResolution.value.set(w, h);
+      }
+      if (fallbackGL) {
+        liquidCanvas.width = w * dpr;
+        liquidCanvas.height = h * dpr;
+        fallbackGL.viewport(0, 0, liquidCanvas.width, liquidCanvas.height);
+      }
+    }
+    window.addEventListener('resize', resizeCanvas);
+
+    // Mouse parallax tracking
+    window.addEventListener('mousemove', (e) => {
+      state.pointer.x = (e.clientX / window.innerWidth) * 2 - 1;
+      state.pointer.y = (e.clientY / window.innerHeight) * 2 - 1;
+    });
+
+    // 4-Point Starlight Flare
+    function drawStarlightFlare(ctx, x, y, intensity, tintRGB, spikeScale = 1.0, angle = -0.12) {
+      if (intensity <= 0.01) return;
+      ctx.save();
+      ctx.globalCompositeOperation = 'lighter';
+
+      const [r, g, b] = tintRGB;
+      const pulse = 1.0 + state.audio.bass * 0.25 + state.audio.beatPulse * 0.35;
+
+      const outerR = (16 + intensity * 46) * pulse * spikeScale;
+      const grad = ctx.createRadialGradient(x, y, 0, x, y, outerR);
+      grad.addColorStop(0.0, `rgba(255, 255, 255, ${Math.min(1, intensity * 0.95)})`);
+      grad.addColorStop(0.20, `rgba(240, 225, 255, ${intensity * 0.72})`);
+      grad.addColorStop(0.50, `rgba(${r}, ${g}, ${b}, ${intensity * 0.36})`);
+      grad.addColorStop(1.0, 'rgba(0, 0, 0, 0)');
+      ctx.fillStyle = grad;
+      ctx.beginPath();
+      ctx.arc(x, y, outerR, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.translate(x, y);
+      ctx.rotate(angle);
+
+      const lenMajor = (14 + intensity * 40) * pulse * spikeScale;
+      const lenMinor = (9 + intensity * 26) * pulse * spikeScale;
+
+      const drawSpike = (len, width, alpha) => {
+        const sg = ctx.createLinearGradient(-len, 0, len, 0);
+        sg.addColorStop(0.0, 'rgba(255, 255, 255, 0)');
+        sg.addColorStop(0.35, `rgba(${r}, ${g}, ${b}, ${alpha * 0.55})`);
+        sg.addColorStop(0.5, `rgba(255, 250, 255, ${alpha})`);
+        sg.addColorStop(0.65, `rgba(${r}, ${g}, ${b}, ${alpha * 0.55})`);
+        sg.addColorStop(1.0, 'rgba(255, 255, 255, 0)');
+        ctx.strokeStyle = sg;
+        ctx.lineWidth = width;
+        ctx.beginPath();
+        ctx.moveTo(-len, 0);
+        ctx.lineTo(len, 0);
+        ctx.stroke();
+      };
+
+      drawSpike(lenMajor, 1.2, intensity * 0.88);
+      ctx.rotate(Math.PI * 0.5);
+      drawSpike(lenMinor, 1.0, intensity * 0.70);
+
+      ctx.fillStyle = '#ffffff';
+      ctx.beginPath();
+      ctx.arc(0, 0, 1.8 + intensity * 2.4, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.restore();
+    }
+
+    // 3D Astrolabe Gimbal Ring with Circumference Sparks & Traveling Orbital Pearls
+    function drawAstrolabeWordRing(ctx, cx, cy, rx, ry, tilt, heroWeight, alpha, sparkPhase, elapsed) {
+      if (alpha <= 0.01) return;
+      ctx.save();
+      ctx.translate(cx, cy);
+
+      const [pr, pg, pb] = palette.tintPurple;
+      const [sr, sg, sb] = palette.tintSecondary;
+
+      ctx.globalCompositeOperation = 'lighter';
+
+      // 1. Soft interior celestial light pool
+      if (heroWeight > 0.05) {
+        ctx.save();
+        ctx.rotate(tilt);
+        ctx.scale(1.0, ry / rx);
+        const poolGrad = ctx.createRadialGradient(0, 0, 0, 0, 0, rx * 1.15);
+        const poolAlpha = heroWeight * alpha * (0.18 + state.audio.mid * 0.08 + state.audio.beatPulse * 0.06);
+        poolGrad.addColorStop(0.0, `rgba(255, 240, 255, ${poolAlpha * 1.2})`);
+        poolGrad.addColorStop(0.45, `rgba(${pr}, ${pg}, ${pb}, ${poolAlpha * 0.65})`);
+        poolGrad.addColorStop(1.0, 'rgba(0, 0, 0, 0)');
+        ctx.fillStyle = poolGrad;
+        ctx.beginPath();
+        ctx.arc(0, 0, rx * 1.15, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.restore();
+      }
+
+      // 2. Primary 3D Gimbal Ring (smooth continuous orbital rotation)
+      ctx.save();
+      const orbitRot = tilt + elapsed * 0.22;
+      ctx.rotate(orbitRot);
+
+      const ringGrad = ctx.createLinearGradient(-rx, -ry, rx, ry);
+      const baseRingAlpha = (0.35 + heroWeight * 0.50) * alpha;
+      ringGrad.addColorStop(0.0, `rgba(${sr}, ${sg}, ${sb}, ${baseRingAlpha * 0.45})`);
+      ringGrad.addColorStop(0.35, `rgba(255, 248, 255, ${baseRingAlpha * 0.95})`);
+      ringGrad.addColorStop(0.70, `rgba(${pr}, ${pg}, ${pb}, ${baseRingAlpha * 1.15})`);
+      ringGrad.addColorStop(1.0, `rgba(${pr}, ${pg}, ${pb}, ${baseRingAlpha * 0.35})`);
+
+      ctx.strokeStyle = ringGrad;
+      ctx.lineWidth = 1.0 + heroWeight * 0.50;
+      ctx.beginPath();
+      ctx.ellipse(0, 0, rx, ry, 0, 0, Math.PI * 2);
+      ctx.stroke();
+
+      // Traveling starlight beads along perimeter
+      const beadCount = heroWeight > 0.3 ? 3 : 2;
+      for (let b = 0; b < beadCount; b++) {
+        const beadAngle = elapsed * (0.7 + b * 0.25) + (b * Math.PI * 2 / beadCount);
+        const bx = Math.cos(beadAngle) * rx;
+        const by = Math.sin(beadAngle) * ry;
+        const beadR = (1.5 + heroWeight * 1.2) * (1.0 + state.audio.treble * 0.3);
+
+        const bg = ctx.createRadialGradient(bx, by, 0, bx, by, beadR * 4.0);
+        bg.addColorStop(0.0, `rgba(255, 255, 255, ${alpha})`);
+        bg.addColorStop(0.4, `rgba(${pr}, ${pg}, ${pb}, ${alpha * 0.65})`);
+        bg.addColorStop(1.0, 'rgba(0, 0, 0, 0)');
+        ctx.fillStyle = bg;
+        ctx.beginPath();
+        ctx.arc(bx, by, beadR * 4.0, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      ctx.restore();
+
+      // 3. Counter-rotating inner harmonic ring
+      if (heroWeight > 0.12) {
+        ctx.save();
+        ctx.rotate(-tilt * 0.8 - elapsed * 0.16);
+        const innerRx = rx * 0.68;
+        const innerRy = ry * 0.62;
+        ctx.strokeStyle = `rgba(${pr}, ${pg}, ${pb}, ${heroWeight * alpha * 0.35})`;
+        ctx.lineWidth = 0.85;
+        ctx.beginPath();
+        ctx.ellipse(0, 0, innerRx, innerRy, 0, 0, Math.PI * 2);
+        ctx.stroke();
+        ctx.restore();
+      }
+
+      ctx.restore();
+    }
+
+    // Macro Astronomical Background Arcs & Cosmic Trails
+    function drawMacroCelestialArcs(ctx, w, h, elapsed) {
+      const px = state.pointer.smoothX * 14;
+      const py = state.pointer.smoothY * 10;
+      const bass = state.audio.bass;
+
+      ctx.save();
+      ctx.globalCompositeOperation = 'lighter';
+
+      ctx.save();
+      ctx.translate(w * 0.25 + px * 0.6, h * 0.28 + py * 0.6);
+      ctx.rotate(-0.48);
+      const loopRx = w * 0.34;
+      const loopRy = h * 0.19;
+      const loopGrad = ctx.createLinearGradient(-loopRx, 0, loopRx, 0);
+      loopGrad.addColorStop(0.0, 'rgba(180, 175, 225, 0.08)');
+      loopGrad.addColorStop(0.55, 'rgba(235, 228, 255, 0.26)');
+      loopGrad.addColorStop(0.88, `rgba(255, 235, 255, ${0.36 + bass * 0.18})`);
+      loopGrad.addColorStop(1.0, 'rgba(180, 175, 225, 0.06)');
+      ctx.strokeStyle = loopGrad;
+      ctx.lineWidth = 0.85;
+      ctx.beginPath();
+      ctx.ellipse(0, 0, loopRx, loopRy, 0, -Math.PI * 0.85, Math.PI * 0.65);
+      ctx.stroke();
+
+      const beadAngle = -0.35 + Math.sin(elapsed * 0.25) * 0.15;
+      const bx = Math.cos(beadAngle) * loopRx;
+      const by = Math.sin(beadAngle) * loopRy;
+      drawStarlightFlare(ctx, bx, by, 0.24 + state.audio.treble * 0.18, [220, 210, 255], 0.50, 0.48);
+      ctx.restore();
+
+      // Atmospheric cosmic filament
+      const drawTrajectoryLine = (x0, y0, cx1, cy1, x2, y2, alpha, width) => {
+        const lg = ctx.createLinearGradient(x0, y0, x2, y2);
+        lg.addColorStop(0.0, 'rgba(255, 255, 255, 0)');
+        lg.addColorStop(0.3, `rgba(185, 170, 230, ${alpha * 0.60})`);
+        lg.addColorStop(0.6, `rgba(235, 215, 255, ${alpha})`);
+        lg.addColorStop(1.0, 'rgba(255, 255, 255, 0)');
+        ctx.strokeStyle = lg;
+        ctx.lineWidth = width;
+        ctx.beginPath();
+        ctx.moveTo(x0, y0);
+        ctx.quadraticCurveTo(cx1, cy1, x2, y2);
+        ctx.stroke();
+      };
+
+      drawTrajectoryLine(
+        w * 0.96 + px, h * 0.10 + py,
+        w * 0.46 + px * 0.5, h * 0.42 + py * 0.5,
+        w * 0.04 + px, h * 0.78 + py,
+        0.24 + bass * 0.10, 0.85
+      );
+
+      ctx.restore();
+    }
+
+    // Physical Spring Integrator for Words
+    function updateSprings(delta, elapsed) {
+      const stiffness = 120;
+      const damping = 15;
+
+      for (let i = 0; i < wordSprings.length; i++) {
+        const sp = wordSprings[i];
+        const rel = i - state.activeWordIndex;
+
+        const targetAct = Math.exp(-(rel * rel) / 0.24);
+        const forceAct = (targetAct - sp.activation) * stiffness;
+        sp.velActivation = (sp.velActivation + forceAct * delta) * Math.exp(-damping * delta);
+        sp.activation = Math.max(0, Math.min(1.12, sp.activation + sp.velActivation * delta));
+
+        const vocalBreath = Math.sin(elapsed * 3.2 + i) * (2.0 + state.audio.mid * 4.5) * sp.activation;
+        const targetLift = -sp.activation * 12.0 + vocalBreath;
+        const forceLift = (targetLift - sp.liftY) * 95;
+        sp.velLiftY = (sp.velLiftY + forceLift * delta) * Math.exp(-14 * delta);
+        sp.liftY += sp.velLiftY * delta;
+
+        const targetRing = sp.activation * (1.0 + state.audio.mid * 0.08 + state.audio.beatPulse * 0.06);
+        const forceRing = (targetRing - sp.ringExpand) * 110;
+        sp.velRingExpand = (sp.velRingExpand + forceRing * delta) * Math.exp(-15 * delta);
+        sp.ringExpand = Math.max(0, sp.ringExpand + sp.velRingExpand * delta);
+      }
+    }
+
+    // Floating Zero-G Starlight Embers (Volumetric Depth Particles)
+    const starlightParticles = [];
+    const MAX_STARLIGHT_PARTICLES = 70;
+    for (let i = 0; i < MAX_STARLIGHT_PARTICLES; i++) {
+      const layer = (i % 3); // 0 = background stardust, 1 = midground embers, 2 = foreground motes
+      starlightParticles.push({
+        x: Math.random(),
+        y: Math.random(),
+        layer: layer,
+        vx: (Math.random() - 0.5) * (layer === 2 ? 0.0006 : 0.0003),
+        vy: (layer === 2 ? -0.0006 : (layer === 1 ? -0.0004 : -0.0002)) - Math.random() * 0.0005,
+        size: layer === 2 ? (2.0 + Math.random() * 2.0) : (layer === 1 ? (1.2 + Math.random() * 1.2) : (0.6 + Math.random() * 0.8)),
+        alpha: layer === 2 ? (0.35 + Math.random() * 0.45) : (layer === 1 ? (0.25 + Math.random() * 0.35) : (0.15 + Math.random() * 0.25)),
+        twinklePhase: Math.random() * Math.PI * 2,
+        twinkleSpeed: 1.8 + Math.random() * 3.5
+      });
+    }
+
+    function renderStarlightEmbers(ctx, w, h, elapsed, delta) {
+      ctx.save();
+      ctx.globalCompositeOperation = 'lighter';
+      const [pr, pg, pb] = palette.tintPurple;
+      const bass = state.audio.bass;
+      const beat = state.audio.beatPulse;
+
+      for (let i = 0; i < starlightParticles.length; i++) {
+        const pt = starlightParticles[i];
+        const speedMult = 1.0 + bass * 0.8 + beat * 1.2;
+        pt.x += pt.vx + Math.sin(elapsed * 1.2 + i * 0.7) * 0.0002;
+        pt.y += pt.vy * speedMult;
+
+        if (pt.y < 0.05) {
+          pt.y = 0.95;
+          pt.x = 0.10 + Math.random() * 0.80;
+        }
+        if (pt.x < 0.04) pt.x = 0.96;
+        if (pt.x > 0.96) pt.x = 0.04;
+
+        const twinkle = 0.45 + 0.55 * Math.sin(elapsed * pt.twinkleSpeed + pt.twinklePhase);
+        const curAlpha = pt.alpha * twinkle * (0.75 + bass * 0.35);
+
+        if (curAlpha > 0.02) {
+          const parallaxX = state.pointer.smoothX * (pt.layer === 2 ? 22 : (pt.layer === 1 ? 12 : 5));
+          const parallaxY = state.pointer.smoothY * (pt.layer === 2 ? 16 : (pt.layer === 1 ? 8 : 4));
+          const sx = pt.x * w + parallaxX;
+          const sy = pt.y * h + parallaxY;
+          const r = pt.size * (1.0 + beat * 0.25);
+
+          const glowRad = r * (pt.layer === 2 ? 4.5 : 3.2);
+          const grad = ctx.createRadialGradient(sx, sy, 0, sx, sy, glowRad);
+          grad.addColorStop(0.0, `rgba(255, 255, 255, ${curAlpha})`);
+          grad.addColorStop(0.35, `rgba(${pr}, ${pg}, ${pb}, ${curAlpha * 0.60})`);
+          grad.addColorStop(1.0, 'rgba(0, 0, 0, 0)');
+
+          ctx.fillStyle = grad;
+          ctx.beginPath();
+          ctx.arc(sx, sy, glowRad, 0, Math.PI * 2);
+          ctx.fill();
+
+          if (twinkle > 0.80 && pt.layer >= 1) {
+            ctx.fillStyle = `rgba(255, 255, 255, ${curAlpha * 0.9})`;
+            ctx.fillRect(sx - 0.5, sy - 0.5, 1.0, 1.0);
+          }
+        }
+      }
+      ctx.restore();
+    }
+
+    // Master Constellation Scene Renderer
+    function renderConstellationScene(elapsed, delta) {
+      const w = window.innerWidth;
+      const h = window.innerHeight;
+      const scaleFactor = Math.min(w / 1280, h / 720);
+
+      ctx.clearRect(0, 0, w, h);
+      updateSprings(delta, elapsed);
+      drawMacroCelestialArcs(ctx, w, h, elapsed);
+      renderStarlightEmbers(ctx, w, h, elapsed, delta);
+
+      const [pr, pg, pb] = palette.tintPurple;
+      const [sr, sg, sb] = palette.tintSecondary;
+      const bass = state.audio.bass;
+      const beat = state.audio.beatPulse;
+
+      // Extract words
+      const rawWords = state.lineWords.length > 0
+        ? state.lineWords
+        : [{ text: "All" }, { text: "it's" }, { text: "hard" }, { text: "to" }, { text: "you" }];
+      const totalWords = rawWords.length;
+
+      // Ensure harmonic constellation path is generated for current phrase
+      if (!state.currentPhraseLayout || state.currentPhraseLayout.nodes.length !== totalWords) {
+        state.currentPhraseLayout = generateRandomConstellationPath(rawWords, state.activeLineIndex || 0);
+      }
+
+      const activeIdx = Math.max(0, Math.min(totalWords - 1, state.activeWordIndex));
+      const activeRaw = state.currentPhraseLayout.nodes[activeIdx] || state.currentPhraseLayout.nodes[0];
+
+      // Song-responsive Camera Glide & Vocal Tracking
+      let focusNx = activeRaw.nx;
+      let focusNy = activeRaw.ny;
+      const curWord = rawWords[activeIdx];
+      let vocalProg = 0.0;
+      if (curWord && curWord.endMs > curWord.startMs) {
+        vocalProg = Math.max(0, Math.min(1.0, (state.songTimeMs - curWord.startMs) / (curWord.endMs - curWord.startMs)));
+      }
+      if (activeIdx < totalWords - 1 && state.currentPhraseLayout.nodes[activeIdx + 1]) {
+        const nextRaw = state.currentPhraseLayout.nodes[activeIdx + 1];
+        focusNx = THREE.MathUtils.lerp(activeRaw.nx, nextRaw.nx, vocalProg * 0.40);
+        focusNy = THREE.MathUtils.lerp(activeRaw.ny, nextRaw.ny, vocalProg * 0.40);
+      }
+
+      const targetCamX = -(focusNx - 0.50) * w * 0.28;
+      const targetCamY = -(focusNy - 0.50) * h * 0.22;
+      const targetZoom = 1.0 + (state.isVocal ? 0.04 + bass * 0.06 : 0.0);
+
+      state.camera.x = THREE.MathUtils.damp(state.camera.x, targetCamX, 2.8, delta);
+      state.camera.y = THREE.MathUtils.damp(state.camera.y, targetCamY, 2.8, delta);
+      state.camera.zoom = THREE.MathUtils.damp(state.camera.zoom, targetZoom, 3.2, delta);
+
+      // Total camera offset with zero-g cosmic drift & mouse parallax
+      const camDriftX = Math.sin(elapsed * 0.45) * 8.0 * scaleFactor + state.pointer.smoothX * 16.0;
+      const camDriftY = Math.cos(elapsed * 0.35) * 6.0 * scaleFactor + state.pointer.smoothY * 10.0;
+      const px = state.camera.x + camDriftX;
+      const py = state.camera.y + camDriftY;
+
+      // Generate Node Coordinates for Current Phrase
+      const nodes = [];
+      for (let i = 0; i < totalWords; i++) {
+        const cfg = state.currentPhraseLayout.nodes[i];
+        const wordText = rawWords[i].text || rawWords[i];
+        nodes.push({
+          text: wordText,
+          x: cfg.nx * w + px,
+          y: cfg.ny * h + py,
+          ox: cfg.ox * scaleFactor,
+          oy: cfg.oy * scaleFactor,
+          rot: cfg.rot,
+          hasRing: cfg.hasRing
+        });
+      }
+
+      // Record active word screen space for shader ripples
+      if (nodes[activeIdx]) {
+        state.activeNodeScreen.x = Math.max(0.05, Math.min(0.95, nodes[activeIdx].x / w));
+        state.activeNodeScreen.y = Math.max(0.05, Math.min(0.95, 1.0 - (nodes[activeIdx].y / h)));
+      }
+
+      // RENDER DEPARTING PHRASE (DISSOLVE INTO STARDUST WITH SMOOTH DRIFT)
+      if (state.departingPhrase) {
+        const departAge = performance.now() - state.departingPhrase.startTime;
+        if (departAge < state.departingPhrase.duration) {
+          const t = departAge / state.departingPhrase.duration;
+          const departAlpha = Math.max(0, (1.0 - t * t) * 0.70);
+          const departFloatY = -t * 24.0 * scaleFactor;
+          const depNodes = state.departingPhrase.layout.nodes;
+          const depWords = state.departingPhrase.words;
+
+          if (depNodes && depNodes.length > 0 && departAlpha > 0.01) {
+            ctx.save();
+            ctx.globalCompositeOperation = 'lighter';
+
+            // Departing constellation spline
+            if (depNodes.length > 1) {
+              ctx.beginPath();
+              ctx.moveTo(depNodes[0].nx * w + px, depNodes[0].ny * h + py + departFloatY);
+              for (let i = 0; i < depNodes.length - 1; i++) {
+                const p0x = depNodes[i].nx * w + px;
+                const p0y = depNodes[i].ny * h + py + departFloatY;
+                const p1x = depNodes[i + 1].nx * w + px;
+                const p1y = depNodes[i + 1].ny * h + py + departFloatY;
+                const mx = (p0x + p1x) * 0.5;
+                const my = (p0y + p1y) * 0.5;
+                ctx.quadraticCurveTo(p0x, p0y, mx, my);
+              }
+              const lastDep = depNodes[depNodes.length - 1];
+              ctx.lineTo(lastDep.nx * w + px, lastDep.ny * h + py + departFloatY);
+              ctx.strokeStyle = `rgba(${pr}, ${pg}, ${pb}, ${departAlpha * 0.30})`;
+              ctx.lineWidth = 1.4 * scaleFactor;
+              ctx.stroke();
+            }
+
+            // Departing words & star flares
+            let depBasePx = 48;
+            if (depNodes.length >= 8) depBasePx = 34;
+            else if (depNodes.length >= 5) depBasePx = 40;
+
+            for (let i = 0; i < depNodes.length; i++) {
+              const dNode = depNodes[i];
+              const dWordText = depWords[i] ? (depWords[i].text || depWords[i]) : dNode.text;
+              const dX = dNode.nx * w + px;
+              const dY = dNode.ny * h + py + departFloatY;
+              const dFontPx = depBasePx * Math.max(0.85, scaleFactor);
+
+              drawStarlightFlare(ctx, dX, dY, departAlpha * 0.35, [195, 185, 230], 0.60);
+
+              ctx.save();
+              ctx.translate(dX + dNode.ox * scaleFactor, dY + dNode.oy * scaleFactor);
+              if (dNode.rot !== 0) ctx.rotate(dNode.rot);
+              ctx.font = `italic 400 ${dFontPx.toFixed(1)}px "Cormorant Garamond", Georgia, serif`;
+              ctx.textAlign = (dNode.ox > 0) ? 'left' : (dNode.ox < 0 ? 'right' : 'center');
+              ctx.textBaseline = 'alphabetic';
+              ctx.fillStyle = `rgba(205, 195, 230, ${departAlpha * 0.70})`;
+              ctx.fillText(dWordText, 0, 0);
+              ctx.restore();
+            }
+
+            ctx.restore();
+          }
+        } else {
+          state.departingPhrase = null;
+        }
+      }
+
+      // Smooth fade-in ease for incoming phrase
+      const incomingAge = performance.now() - (state.currentPhraseLayout.timestamp || performance.now());
+      const incomingProg = Math.min(1.0, incomingAge / 480.0);
+      const incomingEase = incomingProg * (2.0 - incomingProg);
+      const lineAlpha = Math.max(0.40, state.lineOpacity) * incomingEase;
+
+      if (lineAlpha > 0.005 && nodes.length > 0) {
+        // Continuous Catmull-Rom Ribbon Spline Points Generation
+        const splinePoints = [];
+        const numSubSteps = 24;
+
+        if (nodes.length === 1) {
+          splinePoints.push({ x: nodes[0].x, y: nodes[0].y, s: 0, segIdx: 0, localU: 0 });
+        } else {
+          const getPt = (idx) => nodes[Math.max(0, Math.min(nodes.length - 1, idx))];
+
+          for (let i = 0; i < nodes.length - 1; i++) {
+            const p0 = getPt(i - 1);
+            const p1 = getPt(i);
+            const p2 = getPt(i + 1);
+            const p3 = getPt(i + 2);
+
+            for (let step = 0; step < numSubSteps; step++) {
+              const u = step / numSubSteps;
+              const u2 = u * u;
+              const u3 = u2 * u;
+
+              const x = 0.5 * (
+                (2 * p1.x) +
+                (-p0.x + p2.x) * u +
+                (2 * p0.x - 5 * p1.x + 4 * p2.x - p3.x) * u2 +
+                (-p0.x + 3 * p1.x - 3 * p2.x + p3.x) * u3
+              );
+
+              const y = 0.5 * (
+                (2 * p1.y) +
+                (-p0.y + p2.y) * u +
+                (2 * p0.y - 5 * p1.y + 4 * p2.y - p3.y) * u2 +
+                (-p0.y + 3 * p1.y - 3 * p2.y + p3.y) * u3
+              );
+
+              // Organic silky harmonic wave dynamics
+              const sGlobal = (i + u) / (nodes.length - 1);
+              const harmonicWave = Math.sin(elapsed * 2.2 + sGlobal * 4.2) * (4.5 * scaleFactor) * (0.8 + bass * 0.8);
+              const acousticPulse = beat > 0.08 ? Math.exp(-Math.pow(sGlobal - ((elapsed * 1.5) % 1.0), 2.0) * 45.0) * (beat * 10.0 * scaleFactor) : 0;
+
+              splinePoints.push({ x, y: y + harmonicWave + acousticPulse, s: sGlobal, segIdx: i, localU: u });
+            }
+          }
+          const lastNode = nodes[nodes.length - 1];
+          splinePoints.push({ x: lastNode.x, y: lastNode.y, s: 1.0, segIdx: nodes.length - 2, localU: 1.0 });
+        }
+
+        // Draw Multi-Pass Luminous Constellation Spline Ribbon
+        if (splinePoints.length > 1) {
+          ctx.save();
+          ctx.lineCap = 'round';
+          ctx.lineJoin = 'round';
+          ctx.globalCompositeOperation = 'lighter';
+
+          const pathPasses = [
+            { width: 14.0 * scaleFactor, alpha: (0.18 + beat * 0.12) * lineAlpha, stroke: `rgba(${sr}, ${sg}, ${sb}, ` },
+            { width: 4.0 * scaleFactor,  alpha: (0.65 + bass * 0.30) * lineAlpha, stroke: `rgba(${pr}, ${pg}, ${pb}, ` },
+            { width: 1.2 * scaleFactor,  alpha: (0.96 * lineAlpha),                 stroke: `rgba(255, 255, 255, ` }
+          ];
+
+          for (const pass of pathPasses) {
+            ctx.strokeStyle = `${pass.stroke}${pass.alpha})`;
+            ctx.lineWidth = pass.width;
+            ctx.beginPath();
+            ctx.moveTo(splinePoints[0].x, splinePoints[0].y);
+            for (let p = 1; p < splinePoints.length; p++) {
+              ctx.lineTo(splinePoints[p].x, splinePoints[p].y);
+            }
+            ctx.stroke();
+          }
+          ctx.restore();
+        }
+
+        // Traveling Light Comet Pulse along Active Constellation Curve
+        if (activeIdx < totalWords - 1 && lineAlpha > 0.08 && splinePoints.length > 1) {
+          const pulseRatio = (curWord && curWord.endMs > curWord.startMs)
+            ? vocalProg
+            : ((elapsed * 1.6) % 1.0);
+
+          const targetIndex = Math.min(splinePoints.length - 1, Math.floor((activeIdx + pulseRatio) * numSubSteps));
+          const cometPt = splinePoints[targetIndex] || splinePoints[0];
+
+          drawStarlightFlare(ctx, cometPt.x, cometPt.y, (1.05 + beat * 0.50) * lineAlpha, palette.tintPurple, 1.20);
+
+          // Trailing starlight comet tail following the spline
+          for (let trail = 1; trail <= 6; trail++) {
+            const trIdx = Math.max(0, targetIndex - trail * 3);
+            const trPt = splinePoints[trIdx];
+            if (trPt) {
+              const trAlpha = (0.55 / trail) * lineAlpha;
+              drawStarlightFlare(ctx, trPt.x, trPt.y, trAlpha, [245, 235, 255], 0.38);
+            }
+          }
+        }
+
+        // Responsive Font Sizing based on word count
+        let basePx = 52;
+        let heroPx = 76;
+        if (totalWords >= 8) {
+          basePx = 36;
+          heroPx = 54;
+        } else if (totalWords >= 5) {
+          basePx = 44;
+          heroPx = 66;
+        }
+
+        // Render Each Word & Anchor Node in the Constellation
+        for (let i = 0; i < totalWords; i++) {
+          const node = nodes[i];
+          const sp = wordSprings[i] || { activation: (i === activeIdx ? 1 : 0), liftY: 0, ringExpand: 0, sparkPhase: 0 };
+          const heroWeight = sp.activation;
+          const isActive = (i === activeIdx);
+          const isPast = (i < activeIdx);
+
+          // Continuous precise opacity from lyric sync engine
+          const rawAlpha = (state.wordOpacities && state.wordOpacities[i] !== undefined)
+            ? state.wordOpacities[i]
+            : (isActive ? 1.0 : (isPast ? 0.70 : 0.45)) * lineAlpha;
+          const wordAlpha = Math.max(0.35, Math.min(1.0, isNaN(rawAlpha) ? 0.8 : rawAlpha));
+
+          if (wordAlpha <= 0.01) continue;
+
+          // Word anchor position with vocal breathing
+          const vocalBreath = isActive ? Math.sin(elapsed * 3.8) * (2.0 + state.audio.mid * 3.8) : 0;
+          const wordX = node.x + node.ox;
+          const wordY = node.y + node.oy + (sp.liftY + vocalBreath) * scaleFactor;
+
+          const fontPx = THREE.MathUtils.lerp(basePx, heroPx * (1.0 + state.audio.mid * 0.03 * heroWeight), heroWeight) * Math.max(0.85, scaleFactor);
+
+          ctx.save();
+          ctx.font = `italic 400 ${fontPx.toFixed(1)}px "Cormorant Garamond", Georgia, serif`;
+          const textMetrics = ctx.measureText(node.text);
+          const textWidth = textMetrics.width;
+          ctx.restore();
+
+          // 3D Astrolabe Gimbal Ring (around active hero word or anchor ring words)
+          if (node.hasRing || isActive || heroWeight > 0.25) {
+            const ringCx = wordX + (node.ox === 0 ? 0 : (node.ox > 0 ? textWidth * 0.45 : -textWidth * 0.45));
+            const ringCy = wordY - fontPx * 0.28;
+            const ringRx = Math.max(textWidth * 0.74, 58 * scaleFactor) * THREE.MathUtils.lerp(1.05, 1.18, sp.ringExpand);
+            const ringRy = ringRx * THREE.MathUtils.lerp(0.46, 0.38, heroWeight);
+            const ringTilt = (i === 0 ? -0.16 : 0.12);
+
+            drawAstrolabeWordRing(
+              ctx, ringCx, ringCy, ringRx, ringRy,
+              ringTilt, heroWeight, (isActive ? 1.0 : 0.55) * wordAlpha, sp.sparkPhase, elapsed
+            );
+          }
+
+          // Anchor Star Flare on the Node (expands with music beat impact)
+          const flareIntensity = (isActive ? (1.0 + beat * 0.50) : (isPast ? 0.52 : 0.38)) * wordAlpha;
+          drawStarlightFlare(
+            ctx, node.x, node.y, flareIntensity,
+            isActive ? palette.tintPurple : [195, 185, 230],
+            isActive ? (1.20 + beat * 0.25) : 0.80
+          );
+
+          // Render Didone Typography
+          ctx.save();
+          ctx.translate(wordX, wordY);
+          if (node.rot !== 0) ctx.rotate(node.rot);
+          ctx.font = `italic 400 ${fontPx.toFixed(1)}px "Cormorant Garamond", Georgia, serif`;
+          ctx.textAlign = (node.ox > 0) ? 'left' : (node.ox < 0 ? 'right' : 'center');
+          ctx.textBaseline = 'alphabetic';
+
+          if (isActive || heroWeight > 0.05) {
+            // Ethereal Multi-Pass Gaussian Halation Bloom for Active Word
+            ctx.save();
+            ctx.globalCompositeOperation = 'lighter';
+            const halationAlpha = heroWeight * wordAlpha * (0.80 + state.audio.mid * 0.25 + beat * 0.20);
+
+            // Wide chromatic nebula aura
+            ctx.save();
+            ctx.shadowColor = `rgba(${pr}, ${pg}, ${pb}, ${halationAlpha * 0.85})`;
+            ctx.shadowBlur = 28 * scaleFactor;
+            ctx.fillStyle = `rgba(255, 255, 255, ${wordAlpha})`;
+            ctx.fillText(node.text, 0, 0);
+            ctx.restore();
+
+            // Intense rose-white core starlight halation
+            ctx.save();
+            ctx.shadowColor = `rgba(255, 242, 250, ${halationAlpha * 0.95})`;
+            ctx.shadowBlur = 10 * scaleFactor;
+            ctx.fillStyle = `rgba(255, 255, 255, ${wordAlpha})`;
+            ctx.fillText(node.text, 0, 0);
+            ctx.restore();
+            ctx.restore();
+
+            // Radiant Pure Core Text
+            ctx.fillStyle = `rgba(255, 255, 255, ${wordAlpha})`;
+            ctx.fillText(node.text, 0, 0);
+
+            // Traveling starlight specular sheen across letters during vocal delivery
+            if (isActive && vocalProg > 0.02 && vocalProg < 0.98) {
+              ctx.save();
+              const gleamSpan = textWidth * 0.5;
+              const gleamCenter = (vocalProg - 0.5) * textWidth * 1.4;
+              const gleamGrad = ctx.createLinearGradient(gleamCenter - gleamSpan, 0, gleamCenter + gleamSpan, 0);
+              gleamGrad.addColorStop(0.0, 'rgba(255, 255, 255, 0)');
+              gleamGrad.addColorStop(0.5, `rgba(255, 255, 255, ${0.95 * wordAlpha})`);
+              gleamGrad.addColorStop(1.0, 'rgba(255, 255, 255, 0)');
+              ctx.fillStyle = gleamGrad;
+              ctx.fillText(node.text, 0, 0);
+              ctx.restore();
+            }
+          } else if (isPast) {
+            // Completed Word in Soft Celestial Pearl-Lilac
+            ctx.fillStyle = `rgba(220, 212, 238, ${wordAlpha * 0.88})`;
+            ctx.fillText(node.text, 0, 0);
+          } else {
+            // Upcoming Word in Clear Celestial Starlight
+            ctx.fillStyle = `rgba(182, 172, 208, ${wordAlpha * 0.70})`;
+            ctx.fillText(node.text, 0, 0);
+          }
+
+          ctx.restore();
+        }
+
+        ctx.restore();
+      }
+
+      ctx.restore();
+    }
+
+    /***************************************************************************
+     * 6. INTERACTIVE HUD, CONTROLS & TIMELINE
+     ***************************************************************************/
+    const btnTogglePlay = document.getElementById('btn-toggle-play');
+    const iconPauseBars = document.getElementById('icon-pause-bars');
+    const iconPlayTri = document.getElementById('icon-play-tri');
+    const btnPrev = document.getElementById('btn-prev');
+    const btnNext = document.getElementById('btn-next');
+    const timelineWrap = document.getElementById('timeline-track-wrap');
+
+    function togglePlayback() {
+      audioEngine.ensureAudio();
+      state.isPlaying = lyricSync.togglePlay();
+      if (state.isPlaying) {
+        iconPauseBars.style.display = 'flex';
+        iconPlayTri.style.display = 'none';
+      } else {
+        iconPauseBars.style.display = 'none';
+        iconPlayTri.style.display = 'block';
+      }
+    }
+
+    btnTogglePlay.addEventListener('click', togglePlayback);
+
+    window.addEventListener('keydown', (e) => {
+      if (e.code === 'Space') {
+        e.preventDefault();
+        togglePlayback();
+      } else if (e.code === 'ArrowLeft') {
+        e.preventDefault();
+        seekRelative(-8000);
+      } else if (e.code === 'ArrowRight') {
+        e.preventDefault();
+        seekRelative(8000);
+      } else if (e.key === '1') {
+        setQualityMode('low');
+      } else if (e.key === '2') {
+        setQualityMode('medium');
+      } else if (e.key === '3') {
+        setQualityMode('high');
+      }
+    });
+
+    // Quality Mode Pill Buttons Click Handler
+    document.querySelectorAll('.mode-pill').forEach(pill => {
+      pill.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const mode = pill.getAttribute('data-mode');
+        if (mode) setQualityMode(mode);
+      });
+    });
+
+    function seekRelative(deltaMs) {
+      audioEngine.ensureAudio();
+      lyricSync.seek(lyricSync.currentMs + deltaMs);
+    }
+
+    btnPrev.addEventListener('click', () => seekRelative(-8000));
+    btnNext.addEventListener('click', () => seekRelative(8000));
+
+    // Interactive Timeline Scrubber
+    let isScrubbing = false;
+    function scrubTimeline(clientX) {
+      audioEngine.ensureAudio();
+      const rect = timelineWrap.getBoundingClientRect();
+      const ratio = Math.max(0, Math.min(1, (clientX - rect.left) / rect.width));
+      lyricSync.seek(ratio * lyricSync.durationMs);
+    }
+
+    timelineWrap.addEventListener('mousedown', (e) => {
+      isScrubbing = true;
+      scrubTimeline(e.clientX);
+    });
+
+    window.addEventListener('mousemove', (e) => {
+      if (isScrubbing) scrubTimeline(e.clientX);
+    });
+
+    window.addEventListener('mouseup', () => {
+      isScrubbing = false;
+    });
+
+    // Vertical Phrase Dots Click to Jump
+    document.querySelectorAll('.vertical-dot').forEach((dot) => {
+      dot.addEventListener('click', () => {
+        const pIdx = parseInt(dot.getAttribute('data-phrase'), 10);
+        if (lyricSync.lines && lyricSync.lines[pIdx]) {
+          lyricSync.seek(lyricSync.lines[pIdx].startMs);
+        }
+      });
+    });
+
+    // Live Clock
+    const days = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
+    const months = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
+    function updateLiveClock() {
+      const now = new Date();
+      const dLabel = document.getElementById('clock-date');
+      if (dLabel) dLabel.textContent = `${days[now.getDay()]} ${String(now.getDate()).padStart(2, '0')} ${months[now.getMonth()]}`;
+      const hm = document.getElementById('clock-hm');
+      const sc = document.getElementById('clock-sec');
+      if (hm) hm.textContent = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
+      if (sc) sc.textContent = String(now.getSeconds()).padStart(2, '0');
+    }
+    setInterval(updateLiveClock, 1000);
+    updateLiveClock();
+
+    // Dynamic Audio Equalizer Bars Animation with Organic Fluid Physics
+    const eqBars = document.querySelectorAll('.eq-bar');
+    const eqBarHeights = new Float32Array(16);
+
+    function updateEqBars(elapsed, delta) {
+      if (!eqBars || eqBars.length === 0) return;
+      const bass = state.audio.bass;
+      const mid = state.audio.mid;
+      const treble = state.audio.treble;
+      const beat = state.audio.beatPulse;
+
+      for (let i = 0; i < eqBars.length; i++) {
+        const normIdx = i / (eqBars.length - 1);
+        let targetEnergy = 0.15;
+        if (normIdx < 0.30) {
+          targetEnergy = bass * 1.6 + beat * 1.35;
+        } else if (normIdx < 0.65) {
+          targetEnergy = mid * 1.35 + Math.sin(elapsed * 5.2 + i * 0.85) * 0.35 + beat * 0.35;
+        } else {
+          targetEnergy = treble * 1.30 + Math.sin(elapsed * 8.5 + i * 1.25) * 0.35;
+        }
+
+        const targetH = (state.isPlaying || state.isExternalPlaying)
+          ? 3.5 + targetEnergy * 17.5
+          : 3.0;
+
+        eqBarHeights[i] = THREE.MathUtils.damp(eqBarHeights[i] || 3.0, targetH, 16.0, delta || 0.016);
+        eqBars[i].style.height = `${Math.max(3, Math.min(23, eqBarHeights[i])).toFixed(1)}px`;
+      }
+    }
+
+    /***************************************************************************
+     * 7. WINDOWS SMTC & LIVELY WALLPAPER INTEGRATION
+     ***************************************************************************/
+    try {
+      const bridgeAdapter = new window.SongNode.BridgeAdapter();
+      bridgeAdapter.onMediaSnapshot = (snapshot) => {
+        if (!snapshot || !snapshot.track) return;
+        const track = snapshot.track;
+        const playback = snapshot.playback;
+
+        if (track.title) {
+          document.getElementById('track-title-bottom').textContent = track.title.toUpperCase();
+        }
+        if (track.artist) {
+          document.getElementById('top-artist').textContent = track.artist.toUpperCase();
+        }
+        const albumText = track.album || track.title || "NOW PLAYING";
+        document.getElementById('top-album').textContent = albumText.toUpperCase();
+
+        const dur = Number(track.durationMs) || Number(playback && playback.durationMs);
+        if (dur && dur > 0) {
+          lyricSync.durationMs = dur;
+        }
+
+        state.isExternalPlaying = (playback && playback.status === 'playing');
+        audioEngine.setMute(state.isExternalPlaying);
+
+        if (playback && playback.positionMs !== undefined) {
+          lyricSync.seek(playback.positionMs);
+          if (playback.status === 'playing') {
+            lyricSync.play();
+            iconPauseBars.style.display = 'flex';
+            iconPlayTri.style.display = 'none';
+          } else {
+            lyricSync.pause();
+            iconPauseBars.style.display = 'none';
+            iconPlayTri.style.display = 'block';
+          }
+        }
+
+        if (track.artwork && track.artwork.length > 50) {
+          const img = new Image();
+          img.crossOrigin = 'Anonymous';
+          img.onload = () => extractAlbumPaletteFromImage(img);
+          img.src = track.artwork;
+          const thumbEl = document.getElementById('album-thumb');
+          if (thumbEl) thumbEl.src = track.artwork;
+        }
+      };
+
+      bridgeAdapter.onLyricsLoaded = (lyricsPayload) => {
+        if (lyricsPayload && lyricsPayload.lines) {
+          lyricSync.setLyrics(lyricsPayload);
+        }
+      };
+
+      const livelyAdapter = new window.SongNode.LivelyAdapter();
+      livelyAdapter.onTrackChange = (norm) => {
+        if (!norm || !norm.track) return;
+        if (norm.track.title) document.getElementById('track-title-bottom').textContent = norm.track.title.toUpperCase();
+        if (norm.track.artist) document.getElementById('top-artist').textContent = norm.track.artist.toUpperCase();
+        if (norm.track.artwork) {
+          const img = new Image();
+          img.crossOrigin = 'Anonymous';
+          img.onload = () => extractAlbumPaletteFromImage(img);
+          img.src = norm.track.artwork;
+          const thumbEl = document.getElementById('album-thumb');
+          if (thumbEl) thumbEl.src = norm.track.artwork;
+        }
+      };
+
+      livelyAdapter.onAudioData = (audioArray) => {
+        if (Array.isArray(audioArray) && audioArray.length > 0) {
+          let b = 0, m = 0, tr = 0;
+          for (let i = 0; i < 15; i++) b += audioArray[i] || 0;
+          for (let i = 15; i < 50; i++) m += audioArray[i] || 0;
+          for (let i = 50; i < 120; i++) tr += audioArray[i] || 0;
+          state.audio.bass = Math.min(1.0, (b / 15) * 2.2);
+          state.audio.mid = Math.min(1.0, (m / 35) * 2.0);
+          state.audio.treble = Math.min(1.0, (tr / 70) * 1.8);
+          if (state.audio.bass > 0.65) state.audio.beatPulse = 0.9;
+        }
+      };
+    } catch (e) {
+      console.warn("Adapter status:", e);
+    }
+
+    /***************************************************************************
+     * 8. MASTER ANIMATION LOOP
+     ***************************************************************************/
+    const clock = new THREE.Clock();
+
+    function animate() {
+      requestAnimationFrame(animate);
+
+      const delta = Math.min(clock.getDelta(), 0.1);
+      const elapsed = clock.getElapsedTime();
+
+      audioEngine.update(elapsed, delta);
+      lyricSync.update(performance.now());
+      updateEqBars(elapsed, delta);
+
+      state.pointer.smoothX = THREE.MathUtils.damp(state.pointer.smoothX, state.pointer.x, 4.2, delta);
+      state.pointer.smoothY = THREE.MathUtils.damp(state.pointer.smoothY, state.pointer.y, 4.2, delta);
+
+      // Layer 01 Liquid Ocean Shader
+      if (glRenderer && liquidUniforms) {
+        liquidUniforms.uTime.value = elapsed;
+        liquidUniforms.uPointer.value.set(state.pointer.smoothX, state.pointer.smoothY);
+        liquidUniforms.uSubBass.value = state.audio.subBass;
+        liquidUniforms.uBass.value = state.audio.bass;
+        liquidUniforms.uMidrange.value = state.audio.mid;
+        liquidUniforms.uTreble.value = state.audio.treble;
+        liquidUniforms.uBeatImpulse.value = state.audio.beatPulse;
+        liquidUniforms.uActiveNode.value.set(state.activeNodeScreen.x, state.activeNodeScreen.y);
+
+        const lerpFactor = 1.0 - Math.exp(-4.5 * delta);
+        liquidUniforms.uColPrimary.value.lerp(palette.shaderPrimary, lerpFactor);
+        liquidUniforms.uColSecondary.value.lerp(palette.shaderSecondary, lerpFactor);
+        liquidUniforms.uColSpec.value.lerp(palette.shaderSpec, lerpFactor);
+        liquidUniforms.uColAbyss.value.lerp(palette.shaderAbyss, lerpFactor);
+
+        glRenderer.render(glScene, glCamera);
+      } else if (fallbackGL && fallbackProg) {
+        const gl = fallbackGL;
+        gl.useProgram(fallbackProg);
+        gl.uniform1f(fallbackUniforms.uTime, elapsed);
+        const curModeVal = QUALITY_MODES[state.qualityMode] ? QUALITY_MODES[state.qualityMode].value : 2.0;
+        gl.uniform1f(fallbackUniforms.uMode, curModeVal);
+        gl.uniform2f(fallbackUniforms.uResolution, liquidCanvas.width, liquidCanvas.height);
+        gl.uniform2f(fallbackUniforms.uPointer, state.pointer.smoothX, state.pointer.smoothY);
+        gl.uniform1f(fallbackUniforms.uSubBass, state.audio.subBass);
+        gl.uniform1f(fallbackUniforms.uBass, state.audio.bass);
+        gl.uniform1f(fallbackUniforms.uMidrange, state.audio.mid);
+        gl.uniform1f(fallbackUniforms.uTreble, state.audio.treble);
+        gl.uniform1f(fallbackUniforms.uBeatImpulse, state.audio.beatPulse);
+        gl.uniform2f(fallbackUniforms.uActiveNode, state.activeNodeScreen.x, state.activeNodeScreen.y);
+        gl.uniform3f(fallbackUniforms.uColPrimary, palette.shaderPrimary.x, palette.shaderPrimary.y, palette.shaderPrimary.z);
+        gl.uniform3f(fallbackUniforms.uColSecondary, palette.shaderSecondary.x, palette.shaderSecondary.y, palette.shaderSecondary.z);
+        gl.uniform3f(fallbackUniforms.uColSpec, palette.shaderSpec.x, palette.shaderSpec.y, palette.shaderSpec.z);
+        gl.uniform3f(fallbackUniforms.uColAbyss, palette.shaderAbyss.x, palette.shaderAbyss.y, palette.shaderAbyss.z);
+        gl.drawArrays(gl.TRIANGLES, 0, 6);
+      }
+
+      // Layer 02 Astrolabe Constellation Scene
+      renderConstellationScene(elapsed, delta);
+    }
+
+    window.addEventListener('load', () => {
+      initLiquidShader();
+      resizeCanvas();
+      const savedMode = localStorage.getItem('dreamscape_quality_mode') || 'high';
+      setQualityMode(savedMode);
+      initShowcaseTrack();
+
+      if (document.fonts && document.fonts.ready) {
+        document.fonts.ready.then(() => animate());
+      } else {
+        animate();
+      }
+    });
+  </script>
+</body>
+</html>

@@ -38,6 +38,7 @@ window.SongNode = window.SongNode || {};
           <div class="hud-row"><span class="hud-k">Position:</span> <span class="hud-v" id="hudPosition">00:00 / 00:00</span></div>
           <div class="hud-row"><span class="hud-k">Precision:</span> <span class="hud-v" id="hudPrecision">idle</span></div>
           <div class="hud-row"><span class="hud-k">Active Cue:</span> <span class="hud-v" id="hudCue">—</span></div>
+          <div class="hud-row"><span class="hud-k">Sync Offset:</span> <span class="hud-v" id="hudSyncOffset">0 ms</span></div>
           <div class="hud-row"><span class="hud-k">Clock Drift:</span> <span class="hud-v" id="hudDrift">0 ms</span></div>
           <div class="hud-row"><span class="hud-k">Bridge WS:</span> <span class="hud-v" id="hudBridge">Disconnected</span></div>
           <div class="hud-row"><span class="hud-k">Snapshot Age:</span> <span class="hud-v" id="hudAge">—</span></div>
@@ -45,7 +46,7 @@ window.SongNode = window.SongNode || {};
           <div class="hud-row"><span class="hud-k">Motion Mode:</span> <span class="hud-v" id="hudMotion">Normal</span></div>
         </div>
         <div class="hud-footer">
-          <span>[Space] Demo | [←/→] Cues | [H] HUD | [R] Bridge | [F] Motion</span>
+          <span>[Space] Play/Pause | [←/→] Track | [ [ / ] ] Sync Delay | [0] Reset | [H] HUD</span>
         </div>
       `;
 
@@ -59,6 +60,7 @@ window.SongNode = window.SongNode || {};
       this.posEl = document.getElementById('hudPosition');
       this.precisionEl = document.getElementById('hudPrecision');
       this.cueEl = document.getElementById('hudCue');
+      this.syncOffsetEl = document.getElementById('hudSyncOffset');
       this.driftEl = document.getElementById('hudDrift');
       this.bridgeEl = document.getElementById('hudBridge');
       this.ageEl = document.getElementById('hudAge');
@@ -115,6 +117,11 @@ window.SongNode = window.SongNode || {};
         this.cueEl.textContent = `"${data.activeWord.text}" (${formatTime(data.activeWord.startMs)} - ${formatTime(data.activeWord.endMs)})`;
       } else if (data.activeWord === null && this.cueEl) {
         this.cueEl.textContent = "—";
+      }
+
+      if (data.syncOffsetMs !== undefined && this.syncOffsetEl) {
+        this.syncOffsetEl.textContent = `${data.syncOffsetMs >= 0 ? '+' : ''}${data.syncOffsetMs} ms`;
+        this.syncOffsetEl.style.color = data.syncOffsetMs === 0 ? '#66ffaa' : '#8d65ff';
       }
 
       if (data.driftMs !== undefined && this.driftEl) {

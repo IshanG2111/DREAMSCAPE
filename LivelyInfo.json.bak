@@ -1,0 +1,14 @@
+{
+  "AppVersion": "1.0.0.0",
+  "Title": "Song-Node",
+  "Thumbnail": null,
+  "Preview": null,
+  "Desc": "A cinematic, audio-aware liquid chrome lyric wallpaper for Windows.",
+  "Author": "Song-Node Team",
+  "License": "MIT",
+  "Contact": "https://github.com/Song-node",
+  "Type": 1,
+  "FileName": "index.html",
+  "Arguments": "--system-nowplaying --audio"
+}
+

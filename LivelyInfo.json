@@ -1,9 +1,9 @@
 {
-  "AppVersion": "1.0.0.0",
-  "Title": "Song-Node",
+  "AppVersion": "2.0.0.0",
+  "Title": "Dreamscape • The Living Album",
   "Thumbnail": null,
   "Preview": null,
-  "Desc": "A cinematic, audio-aware liquid chrome lyric wallpaper for Windows.",
+  "Desc": "Cinematic Album Player × Generative ASCII Typography × Audio-Reactive Lyric Wallpaper for Windows.",
   "Author": "Song-Node Team",
   "License": "MIT",
   "Contact": "https://github.com/Song-node",
@@ -11,4 +11,3 @@
   "FileName": "index.html",
   "Arguments": "--system-nowplaying --audio"
 }
-

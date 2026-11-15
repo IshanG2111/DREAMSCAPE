@@ -9,6 +9,30 @@
   "durationMs": 363000,
   "lines": [
     {
+      "startMs": 14000,
+      "endMs": 28000,
+      "words": [
+        { "text": "I", "startMs": 14000, "endMs": 15500 },
+        { "text": "can", "startMs": 15500, "endMs": 17000 },
+        { "text": "just", "startMs": 17000, "endMs": 18500 },
+        { "text": "hear", "startMs": 18500, "endMs": 20000 },
+        { "text": "them", "startMs": 20000, "endMs": 22000 },
+        { "text": "now", "startMs": 22000, "endMs": 28000 }
+      ]
+    },
+    {
+      "startMs": 29000,
+      "endMs": 42000,
+      "words": [
+        { "text": "How", "startMs": 29000, "endMs": 31000 },
+        { "text": "could", "startMs": 31000, "endMs": 33000 },
+        { "text": "you", "startMs": 33000, "endMs": 35000 },
+        { "text": "let", "startMs": 35000, "endMs": 37000 },
+        { "text": "us", "startMs": 37000, "endMs": 39000 },
+        { "text": "down", "startMs": 39000, "endMs": 42000 }
+      ]
+    },
+    {
       "startMs": 160000,
       "endMs": 164000,
       "words": [
@@ -24,12 +48,11 @@
       "startMs": 164200,
       "endMs": 172000,
       "words": [
-        { "text": "I", "startMs": 164200, "endMs": 165400 },
-        { "text": "know", "startMs": 165400, "endMs": 166700 },
-        { "text": "that", "startMs": 166700, "endMs": 168300 },
-        { "text": "you", "startMs": 168300, "endMs": 169600 },
-        { "text": "want", "startMs": 169600, "endMs": 170900 },
-        { "text": "it", "startMs": 170900, "endMs": 172000 }
+        { "text": "All", "startMs": 164200, "endMs": 165600 },
+        { "text": "it's", "startMs": 165600, "endMs": 167000 },
+        { "text": "hard", "startMs": 167000, "endMs": 168400 },
+        { "text": "to", "startMs": 168400, "endMs": 169600 },
+        { "text": "you", "startMs": 169600, "endMs": 172000 }
       ]
     },
     {
@@ -64,7 +87,27 @@
         { "text": "old", "startMs": 189000, "endMs": 189800 },
         { "text": "mistakes", "startMs": 189800, "endMs": 191000 }
       ]
+    },
+    {
+      "startMs": 192000,
+      "endMs": 204000,
+      "words": [
+        { "text": "I", "startMs": 192000, "endMs": 194000 },
+        { "text": "can", "startMs": 194000, "endMs": 196000 },
+        { "text": "feel", "startMs": 196000, "endMs": 198000 },
+        { "text": "it", "startMs": 198000, "endMs": 200000 },
+        { "text": "coming", "startMs": 200000, "endMs": 204000 }
+      ]
+    },
+    {
+      "startMs": 205000,
+      "endMs": 220000,
+      "words": [
+        { "text": "Going", "startMs": 205000, "endMs": 208000 },
+        { "text": "round", "startMs": 208000, "endMs": 211000 },
+        { "text": "in", "startMs": 211000, "endMs": 214000 },
+        { "text": "circles", "startMs": 214000, "endMs": 220000 }
+      ]
     }
   ]
 }
-

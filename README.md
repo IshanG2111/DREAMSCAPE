@@ -1,186 +1,114 @@
-# DREAMSCAPE • Cinematic Liquid-Chrome Lyric Wallpaper
+# DREAMSCAPE — THE LIVING ALBUM
+## Cinematic Album Player × Generative ASCII Typography × Audio-Reactive Lyric Wallpaper
 
-A cinematic, audio-aware lyric wallpaper for Windows. Built around one visual idea: **every word is a node on a living path, and the camera travels with the currently active word.**
+> A production-quality, minimal editorial audiovisual artwork for Windows.
 
-Designed for **Lively Wallpaper** and **Wallpaper Engine**, featuring a host adapter boundary so different hosts consume the same normalized visual renderer.
-
-![Liquid Chrome Visual Direction](https://user-images.githubusercontent.com/placeholder/song-node-concept.png)
-
-> **Design Direction:** Liquid-chrome editorial. A dark reflective mercury surface frames a quiet lyric stage; one rose-lit spline connects individual word nodes; one active word dominates; the camera follows it with intent. No space-visualizer clutter or fake player controls.
+DREAMSCAPE unites physical optical media, generative ASCII art, kinetic editorial typography, and synchronized music playback into one cohesive 16:9 widescreen composition.
 
 ---
 
-## 1. Product Goals & Non-Goals
+## 1. Composition Architecture
 
-### Core Goals
-1. **Real-time Track & Lyrics Display**: Syncs real-time song lyrics from Apple Music for Windows, Spotify, iTunes, or any Windows SMTC media session.
-2. **Organic Node Spline**: Each word is a distinct node on one continuous Catmull–Rom curve.
-3. **Typographic Hierarchy**: The active word is optically dominant in ivory Didone italic with restrained ruby bloom, while past and upcoming words recede into depth.
-4. **Spring-Damped Camera**: Follows the active node with critically damped spring physics and anticipation look-ahead toward the next node.
-5. **Restrained Quiet Stage**: Molten mercury background frames the scene while keeping the central stage dark and clear for high editorial contrast.
-6. **Honest Synchronization**: Strictly distinguishes between word-level sync (`word`) and line-level sync (`line`). Never fabricates pseudo-word timing from character counts.
-
-### Non-Goals
-- Full music player or media playback UI.
-- Competing spline systems, large orbital rings, or constant particle storms.
-- Fake "precise" word timestamps inferred from character count.
-- Cluttered HUD panels over the artwork.
-
----
-
-## 2. Visual Architecture — Liquid Chrome Edition
-
-### Palette
-
-| Color | CSS Variable | Hex Code | Role |
-|---|---|---|---|
-| Ink | `--ink` | `#050407` | Canvas base & deep obsidian shadows |
-| Cherry | `--cherry` | `#160710` | Crevices and dark liquid metal reflections |
-| Plum | `--plum` | `#321027` | Secondary specular bounce & midtones |
-| Chrome | `--chrome` | `#d9d5df` | Pearl-silver specular fold crests |
-| Chrome Shadow | `--chrome-shadow` | `#39313d` | Metallic fold depth |
-| Ruby | `--ruby` | `#f12d78` | Active node radiant bloom & filament halo |
-| Rose | `--rose` | `#ff8ab8` | Filament mid-glow & lens flare glints |
-| Ivory | `--ivory` | `#f7eef3` | Active word Didone typography & core light |
-| Muted | `--muted` | `#927f8b` | Supporting text, clock seconds & metadata |
-
-### Composition & Typography
-- **Background Layer (WebGL GLSL Shader)**: Domain-warped procedural liquid metal with finite-difference surface normals, softbox specular highlights, and a dark center stage mask.
-- **Foreground Stage (Canvas 2D)**: Subpixel-rendered Catmull–Rom spline, radiant ruby blooms, Didone typography (`Cormorant Garamond`, `Playfair Display`), and subtle reticle crosshairs.
-- **Clock**: Architectural Didone italic clock in the top-left with tabular seconds and wide-tracked date.
-- **Track Identity & Timeline**: Top-right audio equalizer with artist/album, and bottom-left progress bar with elapsed/total duration.
-
----
-
-## 3. Synchronisation & Runtime Architecture
-
-```text
-┌──────────────────────────────┐
-│       Media Applications     │
-│ Apple Music / Spotify / etc. │
-└──────────────┬───────────────┘
-               │ Windows Media Session (WinRT GSMTC)
-               ▼
-┌──────────────────────────────┐
-│       Media Bridge           │
-│ Python / winsdk / Monotonic  │
-│ track + state + position     │
-└──────────────┬───────────────┘
-               │ WebSocket IPC (ws://127.0.0.1:8765)
-               ▼
-┌──────────────────────────────┐       ┌──────────────────────────┐
-│       Media Adapter          │◄──────│       Lyric Provider     │
-│ Normalize & Validate         │       │ Enhanced LRC / Cue Sheet │
-└──────────────┬───────────────┘       └──────────────────────────┘
-               │
-               ▼
-┌──────────────────────────────┐
-│     Lyric Time Controller    │
-│  active line / active word   │
-│  seek + pause + drift repair │
-└──────────────┬───────────────┘
-               │ render state
-               ▼
-┌──────────────────────────────┐
-│      Scene / Camera Engine   │
-│  word nodes + spline + spring│
-└──────────────┬───────────────┘
-               ▼
-┌──────────────────────────────┐
-│        Canvas / WebGL        │
-│ liquid chrome + type + bloom │
-└──────────────────────────────┘
+```
++---------------------------------------------------------------------------------------------------+
+|  [SUN 15 NOV]                                                                         [WAVY]     |
+|  05:09 25                                                         KARAN AUJLA · JAY TRAK  • [01] |
+|                                                                                             [02] |
+|                                             ...:irsXA253hMHGS#9B&@                          [03] |
+|      +-------------------------+          .::;;;irsXA253hMHGS#9B&@                          [04]▶|
+|      |  [PHYSICAL 3D CD]       |         :::;;;irsXA253hMHGS#9B&@                           [05] |
+|      |   TRANSPARENT CASING    |        :::;;irsXA253hMHGS#9B&@                             [06] |
+|      |   CORNER STANDOFFS      |                                                                 |
+|      |   INTERNAL LASER SLED   |        and it's                                                 |
+|      |   ROTATING OPTICAL DISC |                coming on                                        |
+|      |   ALBUM ART IMPRINTED   |                   ───────                                       |
+|      +-------------------------+                                                                 |
+|                                                                                                  |
+|  [■] LET IT HAPPEN         ||||l|!|||      ~~~~~~~~~~~~(Fluid Audio-Reactive Ribbons)~~~~~~~~~~~ |
+|      TAME IMPALA                                                                                 |
+|  3:02  ──────────●────────────  7:47                                             ALBUM / CURRENTS |
+|                                                                                       YEAR / 2015 |
+|                                                                          GENRE / PSYCHEDELIC ROCK |
++---------------------------------------------------------------------------------------------------+
 ```
 
-### Precision Modes
+- **LEFT REGION (~40%) — THE ALBUM OBJECT**:
+  - Transparent square acrylic casing with realistic thickness, refraction, bevel edge reflections, and corner standoffs.
+  - Visible internal mechanical details: laser guide rods, optical pickup carriage with miniature red laser diode emitter, and edge lighting.
+  - Centrally mounted optical CD disc with album artwork imprinted circular on the disc surface, inner clamp hub, center spindle aperture, and screen-printed surface typography.
+  - Smooth continuous rotation during playback with physical inertia deceleration on pause, rotating anisotropic rainbow reflection sheen, and interactive 3D mouse parallax tilt.
 
-| Mode | Available Data | Visual Behavior |
-|---|---|---|
-| `word` | Word-level timestamps (Enhanced LRC or JSON cue sheet) | Active word advances at its explicit cue time |
-| `line` | Line-level timestamps (Standard LRC) | Whole line advances together; word nodes remain connected without fake timestamps |
-| `demo` | Scripted showcase timeline | Fully animated reference phrases ("New Person, Same Old Mistakes", "Let It Happen") |
-| `idle` | No active playback / no lyrics | Ambient liquid chrome background with metadata; no stale lyrics |
+- **RIGHT REGION (~60%) — GENERATIVE ASCII ARTWORK & KINETIC TYPOGRAPHY**:
+  - High-performance luminance-mapped ASCII engine utilizing character ramp: ` .,:;irsXA253hMHGS#9B&@`.
+  - Organic profile silhouette and fluid contours evolving continuously with audio bass and frequency flux.
+  - Audio-reactive undulating particle wave ribbons at the base of the silhouette.
+  - Floating photographic negative strip accent and orbital elliptical graphic curve.
+  - High-contrast display serif typography (*Cormorant Garamond* / *Playfair Display*):
+    - **Active Word**: Massive typographic scale, luminous halation glow, and smooth vocal progress light sweep.
+    - **Previous Words**: Smaller scale, reduced opacity context.
+    - **Upcoming Words**: Delicate trailing line / underline rule.
+
+- **EDITORIAL INTERFACE**:
+  - Top-Left: Architectural date and high-contrast display serif clock with seconds superscript.
+  - Top-Right: Track title, artist attribution, pulsating crimson playing dot, and interactive tracklist indices (`[ 01 ]` to `[ 06 ]`).
+  - Bottom-Left: Mini square album thumbnail, title, artist, real-time mini equalizer spectrum bars, and a scrubbable hairline progress rail with glowing circular handle bead.
+  - Bottom-Right: Stacked metadata (`ALBUM / ...`, `YEAR / ...`, `GENRE / ...`) and precision registration crosshairs (`+`).
 
 ---
 
-## 4. Keyboard Controls
+## 2. Keyboard Controls & Shortcuts
 
 | Key | Action |
 |---|---|
-| `Space` | Toggle Demo Mode (Showcase reference phrase) |
-| `ArrowRight` / `ArrowLeft` | Cycle through demo track presets |
-| `H` | Toggle Developer Telemetry HUD (hidden by default) |
-| `R` | Reconnect to local Media Bridge WebSocket |
-| `F` | Toggle Reduced Motion Mode (locks camera & suppresses intense blooms) |
-
-### Developer HUD Telemetry
-Press **`H`** at any time to inspect:
-- Active media source and session state
-- Current track title, artist, and album
-- Extrapolated timeline position vs. duration
-- Timing precision mode (`word`, `line`, `demo`, `idle`)
-- Active word cue timestamp & bounds
-- Real-time clock drift (ms)
-- Bridge connection status, heartbeat latency, and snapshot age
-- Render FPS and frame delta time
+| **Space** | Play / Pause (disc smoothly starts / decelerates with physical inertia) |
+| **Arrow Left** | Seek backward 5 seconds |
+| **Arrow Right** | Seek forward 5 seconds |
+| **1 – 5** | Instantly switch between the 5 curated showcase demo tracks |
+| **D** | Cycle to next demo track |
+| **H** | Toggle Developer HUD (FPS, bridge status, audio spectrum bars, active word diagnostics) |
+| **M** | Toggle Reduced Motion / Low Power Mode |
 
 ---
 
-## 5. Quick Start & Setup
+## 3. Offline Showcase Demo Tracks
 
-### Running in Lively Wallpaper
-1. Open **Lively Wallpaper**.
-2. Drag and drop the `Song-node` folder into Lively Wallpaper (or choose "Add Wallpaper" and select `index.html`).
-3. Set as active wallpaper. The wallpaper starts in offline showcase mode immediately.
-
-### Connecting Live Apple Music / Spotify
-1. Double-click `run_bridge.bat` (or run `python bridge.py`).
-2. Play any track in Apple Music or Spotify on Windows.
-3. The wallpaper automatically connects via WebSocket (`ws://127.0.0.1:8765`), synchronizes track progress, loads lyrics, and follows the singer in real-time.
+Immediately available out of the box with zero setup required:
+1. **[ 01 ] Tame Impala — Let It Happen** (*Currents*, 2015, Psychedelic Rock) — Matches reference composition with crimson fluid artwork, profile silhouette, and the hero lyric *"and it's coming on"*.
+2. **[ 02 ] Karan Aujla · Jay Trak — Wavy** (*Four You*, 2023, Contemporary Hip-Hop) — Sleek dark metallic chrome with punchy transient beat response.
+3. **[ 03 ] Beach House — Space Song** (*Depression Cherry*, 2015, Dream Pop) — Deep velvet crimson, soft focus, and ethereal float.
+4. **[ 04 ] Daft Punk — Veridis Quo** (*Discovery*, 2001, Electronic) — Prismatic iridescent sheen and harmonic resonance.
+5. **[ 05 ] Radiohead — Weird Fishes / Arpeggi** (*In Rainbows*, 2007, Art Rock) — Multi-chromatic organic strands and spectral bloom.
 
 ---
 
-## 6. Directory Structure
+## 4. Live Windows Media & Host Integration
 
-```text
-song-node/
-├─ index.html                     # Entry point (Lively / Web)
-├─ LivelyInfo.json                # Lively Wallpaper manifest
-├─ bridge.py                      # Windows SMTC & LRCLIB companion bridge
-├─ run_bridge.bat                 # One-click bridge launcher
-├─ requirements.txt               # Bridge dependencies (winsdk, websockets, requests)
-├─ css/
-│  └─ style.css                   # Liquid chrome editorial stylesheet
-├─ js/
-│  ├─ app.js                      # Application orchestrator
-│  ├─ audioReact.js               # Audio reactivity & transient analyzer
-│  ├─ adapters/
-│  │  ├─ bridge.adapter.js        # WebSocket client for bridge
-│  │  └─ lively.adapter.js        # Lively hooks (livelyCurrentTrack, livelyAudioListener)
-│  ├─ media/
-│  │  ├─ track.matcher.js         # String normalization & track key generator
-│  │  └─ media.normalizer.js      # Normalized event contract v1 parser
-│  ├─ lyrics/
-│  │  ├─ lyric.parser.js          # Enhanced LRC & cue sheet parser
-│  │  ├─ lyric.clock.js           # Sub-millisecond extrapolator & drift compensator
-│  │  └─ lyric.provider.js        # Demo & LRCLIB lyric provider
-│  ├─ scene/
-│  │  ├─ liquid-chrome.shader.js  # GPU WebGL liquid mercury background
-│  │  ├─ spline-path.js           # Single Catmull–Rom rose filament
-│  │  ├─ camera-rig.js            # Spring-damped camera with look-ahead
-│  │  ├─ word-graph.js            # Word nodes & phrase layout
-│  │  └─ scene-renderer.js        # Canvas 2D editorial renderer
-│  └─ hud/
-│     └─ dev-hud.js               # Telemetry diagnostic overlay
-└─ lyrics/
-   ├─ demo/                       # Offline showcase cue sheets
-   │  ├─ new-person-same-old-mistakes.json
-   │  └─ let-it-happen.json
-   └─ custom/                     # User custom cue sheets & LRC files
+### Windows SMTC Bridge (Apple Music, Spotify, Chrome, etc.)
+Connects to active Windows media sessions via WinRT and streams synced lyrics from LRCLIB over WebSocket:
+```bash
+# Run the Python bridge
+python bridge.py
+# Or double-click
+run_bridge.bat
 ```
+When playing, DREAMSCAPE automatically transitions to the live song, maps its album artwork onto the rotating optical disc, and synchronizes real-time lyrics down to the active word.
+
+### Lively Wallpaper & Wallpaper Engine
+- **Lively Wallpaper**: Import `Dreamscape.lively` or load `dist/index.html`. DREAMSCAPE natively listens to `window.livelyCurrentTrack` and `window.livelyAudioListener` for direct host media and audio reactivity.
+- **Standalone Browser**: Run `pnpm run dev` or open `dist/index.html`.
 
 ---
 
-## 7. Design Philosophy
+## 5. Development & Build
 
-> **"The word is the event. The node is the anchor. The path is the memory. The camera is the point of view. Everything else should stay quiet."**
+```bash
+# Install dependencies
+pnpm install
+
+# Start development server
+pnpm run dev
+
+# Build self-contained singlefile production bundle
+pnpm run build
+```
+The production bundle is compiled into `dist/index.html` with zero external runtime dependencies.

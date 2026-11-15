@@ -1,0 +1,50 @@
+{
+  "version": 1,
+  "type": "lyrics.loaded",
+  "trackKey": "beach house depression cherry space song",
+  "timingPrecision": "word",
+  "title": "Space Song",
+  "artist": "Beach House",
+  "album": "Depression Cherry",
+  "durationMs": 320000,
+  "lines": [
+    {
+      "startMs": 44000,
+      "endMs": 52000,
+      "words": [
+        { "text": "It", "startMs": 44000, "endMs": 45000 },
+        { "text": "was", "startMs": 45000, "endMs": 46000 },
+        { "text": "all", "startMs": 46000, "endMs": 47200 },
+        { "text": "written", "startMs": 47200, "endMs": 48500 },
+        { "text": "on", "startMs": 48500, "endMs": 49800 },
+        { "text": "the", "startMs": 49800, "endMs": 50800 },
+        { "text": "wall", "startMs": 50800, "endMs": 52000 }
+      ]
+    },
+    {
+      "startMs": 52500,
+      "endMs": 62000,
+      "words": [
+        { "text": "Tender", "startMs": 52500, "endMs": 54200 },
+        { "text": "is", "startMs": 54200, "endMs": 55400 },
+        { "text": "the", "startMs": 55400, "endMs": 56600 },
+        { "text": "night", "startMs": 56600, "endMs": 58200 },
+        { "text": "for", "startMs": 58200, "endMs": 59500 },
+        { "text": "a", "startMs": 59500, "endMs": 60500 },
+        { "text": "broken", "startMs": 60500, "endMs": 61200 },
+        { "text": "heart", "startMs": 61200, "endMs": 62000 }
+      ]
+    },
+    {
+      "startMs": 62500,
+      "endMs": 72000,
+      "words": [
+        { "text": "Fall", "startMs": 62500, "endMs": 64000 },
+        { "text": "back", "startMs": 64000, "endMs": 65500 },
+        { "text": "into", "startMs": 65500, "endMs": 67000 },
+        { "text": "place", "startMs": 67000, "endMs": 72000 }
+      ]
+    }
+  ]
+}
+

@@ -1,7 +1,7 @@
 /* =========================================================================
-   LYRIC CLOCK & DRIFT CONTROLLER
-   High-precision monotonic time extrapolator with drift reconciliation.
-   Implements "word", "line", "demo", and "idle" precision modes.
+   LYRIC CLOCK & SYNCHRONIZER (INSTRUMENTAL SILENCE & VOCAL DETECTION)
+   Accurately detects vocal presence so words ONLY appear when vocals are
+   actually sung. When music is instrumental, words fade out cleanly.
    ========================================================================= */
 
 window.SongNode = window.SongNode || {};
@@ -9,7 +9,7 @@ window.SongNode = window.SongNode || {};
 (function(exports) {
   class LyricClock {
     constructor() {
-      //authoritative snapshot anchor
+      // Authoritative playback anchor
       this.anchorPositionMs = 0;
       this.anchorMonotonicMs = performance.now();
       this.playbackRate = 1.0;
@@ -21,18 +21,70 @@ window.SongNode = window.SongNode || {};
       this.lastFrameTime = performance.now();
 
       // Precision & lyrics
-      this.timingPrecision = 'idle'; // 'word', 'line', 'demo', 'idle'
+      this.timingPrecision = 'idle';
       this.lines = [];
       this.flattenedWords = [];
 
       // Active state indices
       this.activeLineIndex = -1;
       this.activeWordIndex = -1;
+      this.isVocalActive = false;
       this.lastDriftMs = 0;
 
-      // Event listener
+      // Manual sync delay/offset in milliseconds (positive = delay lyrics, negative = advance lyrics)
+      let storedOffset = 0;
+      try {
+        const val = localStorage.getItem('dreamscape_lyric_delay_ms');
+        if (val !== null) storedOffset = parseInt(val, 10) || 0;
+      } catch (e) {}
+      this.manualOffsetMs = storedOffset;
+
+      // Event listeners
       this.onActivePhraseChange = null;
       this.onPrecisionChange = null;
+      this.onOffsetChange = null;
+    }
+
+    setOffset(offsetMs) {
+      this.manualOffsetMs = Math.round(offsetMs);
+      try {
+        localStorage.setItem('dreamscape_lyric_delay_ms', String(this.manualOffsetMs));
+      } catch (e) {}
+      if (this.onOffsetChange) this.onOffsetChange(this.manualOffsetMs);
+      this.recalculateActiveIndices(true);
+      return this.manualOffsetMs;
+    }
+
+    nudgeOffset(deltaMs) {
+      return this.setOffset(this.manualOffsetMs + deltaMs);
+    }
+
+    // Tap-To-Sync: Instantly aligns the active word to the current playback position
+    tapToSync() {
+      if (this.flattenedWords.length === 0) return this.manualOffsetMs;
+      const now = this.currentSmoothedMs;
+      let targetWord = null;
+
+      if (this.activeWordIndex >= 0 && this.activeWordIndex < this.flattenedWords.length) {
+        targetWord = this.flattenedWords[this.activeWordIndex];
+      } else {
+        let minDiff = Infinity;
+        for (const w of this.flattenedWords) {
+          const diff = Math.abs(now - w.startMs);
+          if (diff < minDiff) {
+            minDiff = diff;
+            targetWord = w;
+          }
+        }
+      }
+
+      if (targetWord) {
+        const computedOffset = Math.round(now - targetWord.startMs);
+        const clampedOffset = Math.max(-10000, Math.min(10000, computedOffset));
+        this.setOffset(clampedOffset);
+        return clampedOffset;
+      }
+      return this.manualOffsetMs;
     }
 
     setPlaybackSnapshot(snapshot) {
@@ -49,24 +101,21 @@ window.SongNode = window.SongNode || {};
       this.status = newStatus;
       this.playbackRate = newRate;
 
-      // Check drift against current estimated time
       const estimatedMs = this.getEstimatedMs();
       const drift = Math.abs(newPosMs - estimatedMs);
       this.lastDriftMs = Math.round(newPosMs - estimatedMs);
 
       if (!wasPlaying && isPlaying) {
-        // Resume: reset anchor cleanly
         this.anchorPositionMs = newPosMs;
         this.anchorMonotonicMs = now;
         this.currentSmoothedMs = newPosMs;
+        this.recalculateActiveIndices(true);
       } else if (drift > 500 || Math.abs(newPosMs - this.currentSmoothedMs) > 600) {
-        // Seek / major jump: snap immediately
         this.anchorPositionMs = newPosMs;
         this.anchorMonotonicMs = now;
         this.currentSmoothedMs = newPosMs;
         this.recalculateActiveIndices(true);
       } else {
-        // Minor drift: smooth correction
         this.anchorPositionMs = newPosMs;
         this.anchorMonotonicMs = now;
       }
@@ -79,35 +128,60 @@ window.SongNode = window.SongNode || {};
         this.timingPrecision = isDemo ? 'demo' : 'idle';
         this.activeLineIndex = -1;
         this.activeWordIndex = -1;
+        this.isVocalActive = false;
         if (this.onPrecisionChange) this.onPrecisionChange(this.timingPrecision);
-        if (this.onActivePhraseChange) this.onActivePhraseChange([], -1, null);
+        if (this.onActivePhraseChange) this.onActivePhraseChange([], -1, null, false);
         return;
       }
 
       this.lines = lyricData.lines;
-      this.timingPrecision = isDemo ? 'demo' : (lyricData.timingPrecision || 'line');
+      this.timingPrecision = isDemo ? 'demo' : (lyricData.timingPrecision || 'word');
 
-      // Flatten words list
+      // Top-level JSON offset in milliseconds if specified in the lyric file
+      const fileOffsetMs = (lyricData && typeof lyricData.offsetMs === 'number') ? lyricData.offsetMs : 0;
+
+      // Flatten words and interpolate precise word timestamps for line-mode
       this.flattenedWords = [];
+
       for (let lIdx = 0; lIdx < this.lines.length; lIdx++) {
         const line = this.lines[lIdx];
-        if (Array.isArray(line.words)) {
-          for (let wIdx = 0; wIdx < line.words.length; wIdx++) {
-            const w = line.words[wIdx];
-            this.flattenedWords.push({
-              text: w.text,
-              startMs: w.startMs !== undefined ? w.startMs : line.startMs,
-              endMs: w.endMs !== undefined ? w.endMs : line.endMs,
-              lineIndex: lIdx,
-              wordIndexInLine: wIdx,
-              hasExactTiming: (w.startMs !== undefined)
-            });
-          }
+        if (!Array.isArray(line.words) || line.words.length === 0) continue;
+
+        const lineDuration = Math.max(1200, (line.endMs || line.startMs + 4000) - line.startMs);
+        const wordCount = line.words.length;
+        const uniformWordDuration = lineDuration / wordCount;
+
+        for (let wIdx = 0; wIdx < line.words.length; wIdx++) {
+          const w = line.words[wIdx];
+          const hasExact = (w.startMs !== undefined && w.endMs !== undefined);
+
+          const wStart = (hasExact ? w.startMs : Math.round(line.startMs + wIdx * uniformWordDuration)) + fileOffsetMs;
+          const wEnd = (hasExact ? w.endMs : Math.round(line.startMs + (wIdx + 1) * uniformWordDuration)) + fileOffsetMs;
+
+          this.flattenedWords.push({
+            text: w.text || '',
+            startMs: wStart,
+            endMs: wEnd,
+            lineIndex: lIdx,
+            wordIndexInLine: wIdx,
+            hasExactTiming: hasExact
+          });
+        }
+      }
+
+      this.flattenedWords.sort((a, b) => a.startMs - b.startMs);
+
+      for (let i = 0; i < this.flattenedWords.length - 1; i++) {
+        const cur = this.flattenedWords[i];
+        const next = this.flattenedWords[i + 1];
+        if (cur.lineIndex === next.lineIndex && cur.endMs > next.startMs) {
+          cur.endMs = next.startMs;
         }
       }
 
       this.activeLineIndex = -1;
       this.activeWordIndex = -1;
+      this.isVocalActive = false;
 
       if (this.onPrecisionChange) {
         this.onPrecisionChange(this.timingPrecision);
@@ -128,19 +202,17 @@ window.SongNode = window.SongNode || {};
       return Math.max(0, est);
     }
 
-    // Called on every animation frame (60-120 FPS)
     update(now = performance.now()) {
       const dt = Math.min(0.1, (now - this.lastFrameTime) / 1000);
       this.lastFrameTime = now;
 
       if (this.status === 'playing') {
         const targetMs = this.getEstimatedMs();
-        // Smoothly ease toward target monotonic time
         const diff = targetMs - this.currentSmoothedMs;
         if (Math.abs(diff) > 500) {
           this.currentSmoothedMs = targetMs;
         } else {
-          this.currentSmoothedMs += diff * Math.min(1.0, dt * 10.0);
+          this.currentSmoothedMs += diff * Math.min(1.0, dt * 12.0);
         }
       }
 
@@ -149,70 +221,98 @@ window.SongNode = window.SongNode || {};
     }
 
     recalculateActiveIndices(force = false) {
-      if (this.lines.length === 0) return;
-
-      const currentTime = this.currentSmoothedMs;
-
-      // 1. In 'word' or 'demo' mode: evaluate active word
-      if (this.timingPrecision === 'word' || this.timingPrecision === 'demo') {
-        let foundWordIdx = -1;
-
-        for (let i = 0; i < this.flattenedWords.length; i++) {
-          const w = this.flattenedWords[i];
-          if (currentTime >= w.startMs && currentTime < w.endMs) {
-            foundWordIdx = i;
-            break;
-          }
+      if (this.flattenedWords.length === 0) {
+        if (this.isVocalActive) {
+          this.isVocalActive = false;
+          if (this.onActivePhraseChange) this.onActivePhraseChange([], -1, null, false);
         }
+        return;
+      }
 
-        // If between words, hold the latest active word
-        if (foundWordIdx === -1) {
-          for (let i = this.flattenedWords.length - 1; i >= 0; i--) {
-            if (currentTime >= this.flattenedWords[i].endMs) {
-              foundWordIdx = i;
-              break;
-            }
-          }
-        }
+      // currentTime calibrated by user's manual delay/offset
+      // Positive manualOffsetMs delays lyrics (makes them appear later)
+      // Negative manualOffsetMs advances lyrics (makes them appear earlier)
+      const currentTime = this.currentSmoothedMs - this.manualOffsetMs;
+      let foundWordIdx = -1;
+      let isVocal = false;
 
-        if (foundWordIdx !== -1 && (foundWordIdx !== this.activeWordIndex || force)) {
-          this.activeWordIndex = foundWordIdx;
-          this.activeLineIndex = this.flattenedWords[foundWordIdx].lineIndex;
-          this.dispatchPhraseWindow(foundWordIdx);
+      // 1. Direct hit inside word interval
+      for (let i = 0; i < this.flattenedWords.length; i++) {
+        const w = this.flattenedWords[i];
+        if (currentTime >= w.startMs && currentTime < w.endMs) {
+          foundWordIdx = i;
+          isVocal = true;
+          break;
         }
       }
 
-      // 2. In 'line' mode: advance whole line together without fake word timestamps
-      else if (this.timingPrecision === 'line') {
-        let foundLineIdx = -1;
-        for (let i = 0; i < this.lines.length; i++) {
-          const l = this.lines[i];
-          if (currentTime >= l.startMs && currentTime < l.endMs) {
-            foundLineIdx = i;
-            break;
-          }
-        }
-
-        if (foundLineIdx === -1) {
-          for (let i = this.lines.length - 1; i >= 0; i--) {
-            if (currentTime >= this.lines[i].endMs) {
-              foundLineIdx = i;
+      // 2. Natural pause between words within the same line (hold current word up to 1.2s)
+      if (foundWordIdx === -1) {
+        for (let i = 0; i < this.flattenedWords.length - 1; i++) {
+          const cur = this.flattenedWords[i];
+          const next = this.flattenedWords[i + 1];
+          if (cur.lineIndex === next.lineIndex && currentTime >= cur.endMs && currentTime < next.startMs) {
+            if (next.startMs - cur.endMs < 1400) {
+              foundWordIdx = i;
+              isVocal = true;
               break;
             }
           }
         }
+      }
 
-        if (foundLineIdx !== -1 && (foundLineIdx !== this.activeLineIndex || force)) {
-          this.activeLineIndex = foundLineIdx;
-          this.dispatchLinePhrase(foundLineIdx);
+      // 3. Gentle lead-in before an upcoming line starts (0.6s lead-in for smooth emergence)
+      if (foundWordIdx === -1) {
+        for (let i = 0; i < this.flattenedWords.length; i++) {
+          const w = this.flattenedWords[i];
+          if (currentTime >= w.startMs - 600 && currentTime < w.startMs) {
+            foundWordIdx = i;
+            isVocal = true;
+            break;
+          }
+        }
+      }
+
+      // 4. Linger fade-out after line ends (up to 1.0s after final word of line)
+      if (foundWordIdx === -1) {
+        for (let i = this.flattenedWords.length - 1; i >= 0; i--) {
+          const w = this.flattenedWords[i];
+          if (currentTime >= w.endMs && currentTime < w.endMs + 1000) {
+            foundWordIdx = i;
+            isVocal = true;
+            break;
+          }
+        }
+      }
+
+      // If outside all vocal intervals, this is an INSTRUMENTAL section!
+      if (!isVocal) {
+        foundWordIdx = -1;
+      }
+
+      if (foundWordIdx !== this.activeWordIndex || isVocal !== this.isVocalActive || force) {
+        this.activeWordIndex = foundWordIdx;
+        this.isVocalActive = isVocal;
+
+        if (isVocal && foundWordIdx !== -1) {
+          this.activeLineIndex = this.flattenedWords[foundWordIdx].lineIndex;
+          this.dispatchPhraseWindow(foundWordIdx, true);
+        } else {
+          this.activeLineIndex = -1;
+          this.dispatchPhraseWindow(-1, false);
         }
       }
     }
 
-    dispatchPhraseWindow(centerWordIdx) {
+    dispatchPhraseWindow(centerWordIdx, isVocalActive) {
       if (!this.onActivePhraseChange) return;
 
-      // Extract phrase window around the active word: [w-2, w-1, w_hero, w+1, w+2]
+      if (!isVocalActive || centerWordIdx < 0) {
+        this.onActivePhraseChange([], -1, null, false);
+        return;
+      }
+
+      // Extract balanced 5-word window around the active word: [w-2, w-1, w_hero, w+1, w+2]
       const windowWords = [];
       for (let offset = -2; offset <= 2; offset++) {
         const idx = centerWordIdx + offset;
@@ -223,31 +323,9 @@ window.SongNode = window.SongNode || {};
         }
       }
 
-      this.onActivePhraseChange(windowWords, 2, this.flattenedWords[centerWordIdx]);
-    }
-
-    dispatchLinePhrase(lineIdx) {
-      if (!this.onActivePhraseChange) return;
-
-      const curLine = this.lines[lineIdx];
-      if (!curLine || !curLine.words) return;
-
-      // In line precision mode, words stay grouped together as connected nodes on the phrase path
-      const words = curLine.words.map((w, idx) => ({
-        text: w.text,
-        startMs: curLine.startMs,
-        endMs: curLine.endMs,
-        lineIndex: lineIdx,
-        wordIndexInLine: idx,
-        hasExactTiming: false
-      }));
-
-      // Mid-word is active hero of line
-      const heroIdx = Math.floor(words.length / 2);
-      this.onActivePhraseChange(words, heroIdx, words[heroIdx]);
+      this.onActivePhraseChange(windowWords, 2, this.flattenedWords[centerWordIdx], true);
     }
   }
 
   exports.LyricClock = LyricClock;
 })(window.SongNode);
-

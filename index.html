@@ -1,92 +1,3407 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Song-Node • Cinematic Liquid Chrome Lyric Wallpaper</title>
-
-  <!-- High-Fashion Editorial Typography: Cormorant Garamond, Playfair Display & Space Grotesk -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
+  <title>DREAMSCAPE — THE LIVING ALBUM</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts: Cormorant Garamond, Noto Serif Devanagari, Martel, Playfair Display, Inter, JetBrains Mono, Space Grotesk -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,400;1,600&family=Playfair+Display:ital,wght@1,400;1,600&family=Space+Grotesk:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500;1,600&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;1,400&family=Martel:wght@300;400;600;700;800&family=Noto+Serif+Devanagari:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400;1,500&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="css/style.css">
+  <style>
+    :root {
+      --bg-primary: #050506;
+      --bg-secondary: #0B0A0C;
+      --text-primary: #F2F0ED;
+      --text-secondary: #89858A;
+      --text-muted: #4E4A50;
+      --glass-highlight: #D8D8DC;
+      --optical-reflection: #F1E7E8;
+      --accent-primary: #C51E43;
+      --accent-secondary: #7E122D;
+      --accent-rgb: 197, 30, 67;
+    }
+
+    * {
+      box-sizing: border-box;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+      background-color: var(--bg-primary);
+      color: var(--text-primary);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    /* Editorial Typography Utilities */
+    .font-serif-editorial {
+      font-family: 'Cormorant Garamond', 'Noto Serif Devanagari', 'Martel', 'Playfair Display', Georgia, serif;
+    }
+    .font-mono-code {
+      font-family: 'JetBrains Mono', 'Space Grotesk', monospace;
+    }
+    .font-grotesque {
+      font-family: 'Space Grotesk', 'Inter', sans-serif;
+    }
+
+    /* Subtle Film Grain & Atmospheric Vignette */
+    .film-grain {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 50;
+      opacity: 0.045;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+    }
+
+    .vignette-layer {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 40;
+      background:
+        radial-gradient(circle at 22% 48%, rgba(var(--accent-rgb), 0.08) 0%, transparent 48%),
+        radial-gradient(circle at 72% 52%, rgba(255, 255, 255, 0.02) 0%, transparent 55%),
+        radial-gradient(ellipse at 50% 50%, transparent 52%, rgba(2, 2, 3, 0.88) 100%);
+      transition: background 1.2s ease;
+    }
+
+    /* Acrylic Optical Casing Styling - Rock solid physical object with NO hover expansion */
+    .acrylic-casing-wrapper {
+      position: relative;
+      width: min(440px, 34vw, 58vh);
+      aspect-ratio: 1 / 1;
+      transform: none !important;
+      transition: none !important;
+      will-change: auto;
+    }
+
+    .acrylic-casing-wrapper:hover,
+    .acrylic-outer-shell:hover,
+    #acrylic-player:hover,
+    #disc-canvas:hover {
+      transform: none !important;
+      scale: 1 !important;
+    }
+
+    .acrylic-outer-shell {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      border-radius: 20px;
+      background:
+        linear-gradient(135deg, rgba(255,255,255,0.11) 0%, rgba(255,255,255,0.02) 32%, rgba(10,10,14,0.50) 65%, rgba(255,255,255,0.08) 100%);
+      box-shadow:
+        0 35px 80px -15px rgba(0, 0, 0, 0.96),
+        0 0 55px -10px rgba(var(--accent-rgb), 0.28),
+        inset 0 1px 2px rgba(255, 255, 255, 0.65),
+        inset 0 -1px 2px rgba(var(--accent-rgb), 0.55),
+        inset 1px 0 2px rgba(255, 255, 255, 0.35),
+        inset -1px 0 2px rgba(255, 255, 255, 0.25);
+      border: 1px solid rgba(225, 225, 235, 0.28);
+      overflow: hidden;
+    }
+
+    /* Inner Molded Acrylic Bezel */
+    .acrylic-inner-bevel {
+      position: absolute;
+      inset: 9px;
+      border-radius: 13px;
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      box-shadow:
+        inset 0 0 22px rgba(0, 0, 0, 0.88),
+        0 0 14px rgba(255, 255, 255, 0.06);
+      pointer-events: none;
+      z-index: 12;
+    }
+
+    /* Crimson Edge Refraction Glows matching Reference Image */
+    .crimson-refraction-bl {
+      position: absolute;
+      bottom: -10px;
+      left: -8px;
+      width: 48%;
+      height: 30%;
+      background: radial-gradient(ellipse at 25% 85%, rgba(var(--accent-rgb), 0.85) 0%, rgba(var(--accent-rgb), 0.28) 45%, transparent 75%);
+      filter: blur(8px);
+      pointer-events: none;
+      z-index: 14;
+      mix-blend-mode: screen;
+    }
+
+    .crimson-refraction-br {
+      position: absolute;
+      bottom: -8px;
+      right: 5%;
+      width: 46%;
+      height: 20%;
+      background: radial-gradient(ellipse at 60% 90%, rgba(var(--accent-rgb), 0.88) 0%, rgba(255, 190, 205, 0.3) 35%, transparent 75%);
+      filter: blur(6px);
+      pointer-events: none;
+      z-index: 14;
+      mix-blend-mode: screen;
+    }
+
+    .crimson-refraction-tr {
+      position: absolute;
+      top: -6px;
+      right: 10%;
+      width: 36%;
+      height: 12%;
+      background: radial-gradient(ellipse at 50% 10%, rgba(var(--accent-rgb), 0.7) 0%, transparent 70%);
+      filter: blur(5px);
+      pointer-events: none;
+      z-index: 14;
+      mix-blend-mode: screen;
+    }
+
+    /* Specular Surface Grazing Reflection */
+    .acrylic-glass-sheen {
+      position: absolute;
+      inset: 0;
+      border-radius: 20px;
+      background:
+        linear-gradient(116deg,
+          rgba(255,255,255,0.18) 0%,
+          rgba(255,255,255,0.04) 22%,
+          transparent 42%,
+          transparent 68%,
+          rgba(255,255,255,0.05) 84%,
+          rgba(255,255,255,0.20) 100%);
+      pointer-events: none;
+      z-index: 20;
+    }
+
+    /* Track Change Optical Sweep */
+    .optical-sweep {
+      position: absolute;
+      inset: -20%;
+      background: linear-gradient(105deg, transparent 35%, rgba(255,255,255,0.28) 48%, rgba(var(--accent-rgb), 0.35) 52%, transparent 65%);
+      transform: translateX(-120%) rotate(8deg);
+      pointer-events: none;
+      z-index: 25;
+      transition: transform 0s;
+    }
+    .optical-sweep.sweeping {
+      transform: translateX(120%) rotate(8deg);
+      transition: transform 1.15s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    /* Active Word Scanline / ASCII Engraved Typography Effect */
+    .active-lyric-word {
+      position: relative;
+      display: inline-block;
+      font-family: 'Cormorant Garamond', 'Playfair Display', Georgia, serif;
+      font-style: italic;
+      font-weight: 400;
+      color: var(--text-primary);
+      line-height: 0.92;
+      letter-spacing: -0.018em;
+      text-shadow:
+        0 0 32px rgba(242, 240, 237, 0.38),
+        0 0 70px rgba(var(--accent-rgb), 0.22),
+        0 2px 14px rgba(0, 0, 0, 0.9);
+      /* Subtle horizontal scanline modulation matching "coming" in the reference */
+      background-image: repeating-linear-gradient(
+        0deg,
+        #FFFFFF 0px,
+        #FFFFFF 2px,
+        rgba(215, 212, 218, 0.72) 2px,
+        rgba(215, 212, 218, 0.72) 4px
+      );
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      will-change: transform, opacity, filter;
+    }
+
+    /* Vocal Sheen Glow Sweep */
+    .vocal-progress-sheen {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      mix-blend-mode: overlay;
+      opacity: 0.85;
+      background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.95) 50%, transparent 100%);
+      transform: translateX(-100%);
+      transition: transform 0.1s linear;
+    }
+
+    /* Progress Bar Interaction - No hover expansion */
+    .progress-scrubber-area {
+      position: relative;
+      padding: 8px 0;
+      cursor: pointer;
+    }
+    .progress-scrubber-area:hover .progress-playhead {
+      transform: translate(-50%, -50%);
+      box-shadow: 0 0 16px 3px rgba(255, 255, 255, 0.95);
+    }
+
+    /* Custom Scrollbar for HUD */
+    ::-webkit-scrollbar {
+      width: 4px;
+      height: 4px;
+    }
+    ::-webkit-scrollbar-track {
+      background: rgba(11, 10, 12, 0.8);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: rgba(137, 133, 138, 0.4);
+      border-radius: 2px;
+    }
+  </style>
 </head>
-<body>
+<body class="relative w-screen h-screen overflow-hidden select-none bg-[#050506]">
 
-  <!-- Layer 0: Hardware WebGL Liquid Chrome Background (Molten Mercury GLSL Shader) -->
-  <canvas id="liquidCanvas"></canvas>
+  <!-- Analog Film Grain & Vignette Overlays -->
+  <div class="film-grain"></div>
+  <div id="vignette-layer" class="vignette-layer"></div>
 
-  <!-- Layer 1: Foreground 2D Canvas Stage (Rose Spline Filament, Word Nodes, Camera Rig, Optical Blooms) -->
-  <canvas id="stageCanvas"></canvas>
+  <!-- Full-Screen Background & Right-Stage Generative ASCII Canvas -->
+  <canvas id="ascii-stage-canvas" class="fixed inset-0 w-full h-full pointer-events-none z-10"></canvas>
 
-  <!-- Layer 2: Soft Vignette Edge Falloff -->
-  <div class="vignette-veil"></div>
+  <!-- Architectural Editorial Grid Lines & Registration Crosshairs (+) -->
+  <div class="fixed inset-0 pointer-events-none z-20">
+    <!-- Far-left subtle crimson audio ruler ticks -->
+    <div id="left-edge-ruler" class="absolute left-[14px] top-[18%] bottom-[12%] w-[6px] opacity-55 flex flex-col justify-between"></div>
 
-  <!-- Layer 3: Minimalist Editorial HUD Layer -->
-  <div class="hud-layer">
-    <!-- Top Bar: Clock (Left) and Audio Status (Right) -->
-    <div class="hud-top-bar">
-      <!-- Top-Left: Editorial Date & Clock -->
-      <div class="clock-hud" id="clockHud">
-        <div class="date-label" id="dateLabel">THU 12 NOV</div>
-        <div class="time-label" id="timeLabel">
-          <span id="clockHours">03</span><span class="colon">:</span><span id="clockMinutes">19</span><span class="seconds" id="clockSeconds">57</span>
-        </div>
+    <!-- Vertical dividing hairline at 44.5% viewport width (matching reference image) -->
+    <div class="absolute left-[44.5%] top-0 bottom-0 w-[1px] bg-gradient-to-b from-white/[0.04] via-white/[0.10] to-white/[0.04]">
+      <!-- Top Crosshair -->
+      <div class="absolute top-[8.2%] -left-[7px] w-[15px] h-[15px] flex items-center justify-center">
+        <div class="w-full h-[1px] bg-white/40"></div>
+        <div class="absolute h-full w-[1px] bg-white/40"></div>
       </div>
-
-      <!-- Top-Right: Subtle Spectrum Bars & Track Identity -->
-      <div class="audio-hud" id="audioHud">
-        <div class="audio-bars-icon" id="audioBars">
-          <div class="audio-bar" style="height: 12px;"></div>
-          <div class="audio-bar" style="height: 18px;"></div>
-          <div class="audio-bar" style="height: 9px;"></div>
-          <div class="audio-bar" style="height: 15px;"></div>
-          <div class="audio-bar" style="height: 7px;"></div>
-        </div>
-        <div class="track-identity-top">
-          <span class="album-line" id="hudAlbum">CURRENTS</span>
-          <span class="artist-line" id="hudArtist">TAME IMPALA</span>
-        </div>
-        <div class="transport-glyphs">
-          <span>&#9668;&#9668;</span>
-          <span>&#9646;&#9646;</span>
-          <span>&#9658;&#9658;</span>
-        </div>
+      <!-- Center Reference Crosshair -->
+      <div class="absolute top-[49.5%] -left-[7px] w-[15px] h-[15px] flex items-center justify-center opacity-60">
+        <div class="w-full h-[1px] bg-white/35"></div>
+        <div class="absolute h-full w-[1px] bg-white/35"></div>
+      </div>
+      <!-- Bottom Crosshair -->
+      <div class="absolute bottom-[10.5%] -left-[7px] w-[15px] h-[15px] flex items-center justify-center">
+        <div class="w-full h-[1px] bg-white/40"></div>
+        <div class="absolute h-full w-[1px] bg-white/40"></div>
       </div>
     </div>
 
-    <!-- Bottom-Left: Track Progress Line & Timeline -->
-    <div class="timeline-hud" id="timelineHud">
-      <div class="timeline-info">
-        <div class="timeline-track-name">
-          <span class="symbol">&#8734;</span>
-          <span id="hudTrackTitle">NEW PERSON, SAME OLD MISTAKES</span>
-        </div>
-        <div class="timeline-time" id="hudTrackTime">2:47 / 6:03</div>
-      </div>
-      <div class="timeline-bar-bg">
-        <div class="timeline-bar-fill" id="timelineFill" style="width: 46%;"></div>
-        <div class="timeline-bar-bead" id="timelineBead" style="left: 46%;"></div>
-      </div>
+    <!-- Bottom-Right Architectural Crosshair near ASCII base -->
+    <div class="absolute left-[86%] bottom-[19.5%] w-[13px] h-[13px] flex items-center justify-center opacity-55">
+      <div class="w-full h-[1px] bg-white/40"></div>
+      <div class="absolute h-full w-[1px] bg-white/40"></div>
     </div>
   </div>
 
-  <!-- Modular High-Performance Architecture -->
-  <script src="js/audioReact.js"></script>
-  <script src="js/media/track.matcher.js"></script>
-  <script src="js/media/media.normalizer.js"></script>
-  <script src="js/lyrics/lyric.parser.js"></script>
-  <script src="js/lyrics/lyric.clock.js"></script>
-  <script src="js/lyrics/lyric.provider.js"></script>
-  <script src="js/adapters/bridge.adapter.js"></script>
-  <script src="js/adapters/lively.adapter.js"></script>
-  <script src="js/scene/liquid-chrome.shader.js"></script>
-  <script src="js/scene/spline-path.js"></script>
-  <script src="js/scene/camera-rig.js"></script>
-  <script src="js/scene/word-graph.js"></script>
-  <script src="js/scene/scene-renderer.js"></script>
-  <script src="js/hud/dev-hud.js"></script>
-  <script src="js/app.js"></script>
+  <!-- ===================================================================== -->
+  <!-- MAIN WIDESCREEN 16:9 EDITORIAL COMPOSITION                            -->
+  <!-- ===================================================================== -->
+  <main class="relative z-30 w-full h-full grid grid-cols-12 px-6 sm:px-10 lg:px-14 py-6 sm:py-8">
+
+    <!-- =================================================================== -->
+    <!-- LEFT REGION (44.5% / 5 COLS): CLOCK, OPTICAL DISC PLAYER, PROGRESS  -->
+    <!-- =================================================================== -->
+    <section class="col-span-12 lg:col-span-5 flex flex-col justify-between h-full pr-0 lg:pr-6">
+
+      <!-- TOP LEFT: ARCHITECTURAL DATE & SERIF DIGITAL CLOCK -->
+      <header class="pt-0.5 pl-1">
+        <div id="clock-date" class="text-[10px] sm:text-[11px] tracking-[0.28em] uppercase text-[#B8B4BA] font-normal mb-0.5 font-grotesque">
+          SUN 15 NOV
+        </div>
+        <div class="flex items-baseline gap-2 font-serif-editorial text-[#F2F0ED] leading-none">
+          <span id="clock-hm" class="text-3xl sm:text-[44px] font-light tracking-tight italic">05:09</span>
+          <span id="clock-sec" class="text-lg sm:text-[24px] italic font-light text-[#B8B4BA] ml-1">25</span>
+        </div>
+      </header>
+
+      <!-- CENTER LEFT: TRANSPARENT ACRYLIC 3D OPTICAL DISC PLAYER -->
+      <div class="flex flex-col items-center lg:items-start justify-center my-auto py-1">
+        <div id="acrylic-player" class="acrylic-casing-wrapper group cursor-pointer" title="Click Disc to Play / Pause • Drag Audio or Image File Here">
+
+          <!-- Outer Translucent Polycarbonate Casing -->
+          <div class="acrylic-outer-shell">
+
+            <!-- Crimson Optical Edge Refractions -->
+            <div class="crimson-refraction-bl"></div>
+            <div class="crimson-refraction-br"></div>
+            <div class="crimson-refraction-tr"></div>
+
+            <!-- Internal Mechanical Acrylic Ribs, Corner Fasteners & Left Latch Spine (SVG Overlay) -->
+            <svg class="absolute inset-0 w-full h-full pointer-events-none z-15" viewBox="0 0 500 500" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <!-- Outer precision mechanical frame lines -->
+              <rect x="6" y="6" width="488" height="488" rx="16" stroke="rgba(255,255,255,0.24)" stroke-width="1.2"/>
+              <rect x="15" y="15" width="470" height="470" rx="10" stroke="rgba(255,255,255,0.14)" stroke-width="1"/>
+              <rect x="26" y="26" width="448" height="448" rx="6" stroke="rgba(255,255,255,0.08)" stroke-width="0.8"/>
+
+              <!-- Top & Bottom Acrylic Molded Structural Channels -->
+              <line x1="52" y1="15" x2="52" y2="34" stroke="rgba(255,255,255,0.22)" stroke-width="1"/>
+              <line x1="448" y1="15" x2="448" y2="34" stroke="rgba(255,255,255,0.22)" stroke-width="1"/>
+              <line x1="52" y1="466" x2="52" y2="485" stroke="rgba(255,255,255,0.22)" stroke-width="1"/>
+              <line x1="448" y1="466" x2="448" y2="485" stroke="rgba(255,255,255,0.22)" stroke-width="1"/>
+
+              <!-- Left Mechanical Hinge & Optical Latch Assembly (Matching Reference Image) -->
+              <g opacity="0.92">
+                <!-- Vertical spine channel -->
+                <rect x="14" y="95" width="32" height="310" rx="4" fill="rgba(255,255,255,0.035)" stroke="rgba(255,255,255,0.24)" stroke-width="1"/>
+                <rect x="20" y="150" width="22" height="150" rx="3" fill="rgba(255,255,255,0.07)" stroke="rgba(255,255,255,0.36)" stroke-width="1.2"/>
+                <!-- Curved optical D-latch cutout on left center -->
+                <path d="M 15 152 C 58 156, 68 185, 68 225 C 68 265, 58 294, 15 298" stroke="rgba(255,255,255,0.42)" stroke-width="1.5" fill="rgba(255,255,255,0.02)"/>
+                <path d="M 22 164 C 50 168, 58 190, 58 225 C 58 260, 50 282, 22 286" stroke="rgba(255,255,255,0.22)" stroke-width="1" fill="none"/>
+                <!-- Internal metallic pins -->
+                <line x1="26" y1="108" x2="26" y2="144" stroke="rgba(255,255,255,0.5)" stroke-width="1.5"/>
+                <line x1="26" y1="306" x2="26" y2="388" stroke="rgba(255,255,255,0.38)" stroke-width="1.5"/>
+              </g>
+
+              <!-- 4 Corner Precision Acrylic Bosses & Metallic Micro-Screws -->
+              <!-- Top-Left Boss -->
+              <g>
+                <circle cx="32" cy="32" r="12" fill="rgba(18,18,22,0.65)" stroke="rgba(255,255,255,0.38)" stroke-width="1.2"/>
+                <circle cx="32" cy="32" r="6" fill="rgba(216,216,220,0.24)" stroke="rgba(255,255,255,0.55)" stroke-width="1"/>
+                <line x1="29" y1="32" x2="35" y2="32" stroke="rgba(255,255,255,0.7)" stroke-width="1"/>
+                <line x1="32" y1="29" x2="32" y2="35" stroke="rgba(255,255,255,0.7)" stroke-width="1"/>
+              </g>
+              <!-- Top-Right Boss -->
+              <g>
+                <circle cx="468" cy="32" r="12" fill="rgba(18,18,22,0.65)" stroke="rgba(255,255,255,0.38)" stroke-width="1.2"/>
+                <circle cx="468" cy="32" r="6" fill="rgba(216,216,220,0.24)" stroke="rgba(255,255,255,0.55)" stroke-width="1"/>
+                <line x1="465" y1="32" x2="471" y2="32" stroke="rgba(255,255,255,0.7)" stroke-width="1"/>
+                <line x1="468" y1="29" x2="468" y2="35" stroke="rgba(255,255,255,0.7)" stroke-width="1"/>
+              </g>
+              <!-- Bottom-Left Boss -->
+              <g>
+                <circle cx="32" cy="468" r="12" fill="rgba(18,18,22,0.65)" stroke="rgba(255,255,255,0.38)" stroke-width="1.2"/>
+                <circle cx="32" cy="468" r="6" fill="rgba(216,216,220,0.24)" stroke="rgba(255,255,255,0.55)" stroke-width="1"/>
+                <line x1="29" y1="468" x2="35" y2="468" stroke="rgba(255,255,255,0.7)" stroke-width="1"/>
+                <line x1="32" y1="465" x2="32" y2="471" stroke="rgba(255,255,255,0.7)" stroke-width="1"/>
+              </g>
+              <!-- Bottom-Right Boss -->
+              <g>
+                <circle cx="468" cy="468" r="12" fill="rgba(18,18,22,0.65)" stroke="rgba(255,255,255,0.38)" stroke-width="1.2"/>
+                <circle cx="468" cy="468" r="6" fill="rgba(216,216,220,0.24)" stroke="rgba(255,255,255,0.55)" stroke-width="1"/>
+                <line x1="465" y1="468" x2="471" y2="468" stroke="rgba(255,255,255,0.7)" stroke-width="1"/>
+                <line x1="468" y1="465" x2="468" y2="471" stroke="rgba(255,255,255,0.7)" stroke-width="1"/>
+              </g>
+
+              <!-- Right-side subtle optical guide brackets -->
+              <rect x="462" y="195" width="14" height="110" rx="2" stroke="rgba(255,255,255,0.18)" stroke-width="1" fill="rgba(255,255,255,0.02)"/>
+            </svg>
+
+            <!-- High-DPI Canvas for Rotating Optical Disc, Circular Artwork, Spindle & Reflections -->
+            <canvas id="disc-canvas" class="relative z-10 w-full h-full block"></canvas>
+
+            <!-- Inner Molded Acrylic Bezel & Glass Sheen -->
+            <div class="acrylic-inner-bevel"></div>
+            <div class="acrylic-glass-sheen"></div>
+            <div id="optical-sweep" class="optical-sweep"></div>
+          </div>
+        </div>
+
+        <!-- Architectural Status Coordinate & Luxurious Negative Space (Left disc has pure room to breathe) -->
+        <div class="w-[min(440px,34vw,58vh)] mt-6 flex items-center justify-between text-[10px] font-mono-code tracking-[0.2em] text-[#6E6A70]">
+          <span class="flex items-center gap-2">
+            <span class="inline-block w-1.5 h-1.5 rounded-full bg-white/40"></span>
+            <span>OPTICAL DISC MEDIA • 44.1kHz</span>
+          </span>
+          <span class="text-[9px] tracking-[0.24em] text-white/30 font-grotesque">16:9 CINEMATIC</span>
+        </div>
+      </div>
+
+      <!-- Bottom spacer for balanced vertical symmetry -->
+      <div class="h-1"></div>
+    </section>
+
+    <!-- =================================================================== -->
+    <!-- RIGHT REGION (55.5% / 7 COLS): ELEVATED TRANSPORT, LYRICS & ASCII   -->
+    <!-- =================================================================== -->
+    <section class="col-span-12 lg:col-span-7 relative flex flex-col justify-between h-full pl-0 lg:pl-4">
+
+      <!-- TOP RIGHT: ELEVATED AUDIO TRANSPORT & METADATA SHOWCASE (Has True Character!) -->
+      <div class="flex flex-col items-end pt-1 pr-1 w-full max-w-[460px] ml-auto pointer-events-auto">
+        <!-- Row 1: Active Track Showcase with Live Dancing Micro-Equalizer -->
+        <div class="flex items-center justify-between w-full gap-4 pb-2 border-b border-white/10">
+          <div class="min-w-0 text-left">
+            <div class="flex items-center gap-2">
+              <span id="status-dot" class="w-2 h-2 rounded-full bg-[#C51E43] shadow-[0_0_10px_#C51E43] animate-pulse shrink-0"></span>
+              <span id="top-track-title" class="text-[13px] sm:text-[14px] font-bold tracking-[0.24em] uppercase text-[#F2F0ED] truncate font-grotesque">
+                LET IT HAPPEN
+              </span>
+            </div>
+            <div id="top-track-artist" class="text-[10px] sm:text-[10.5px] font-medium tracking-[0.22em] uppercase text-[#89858A] truncate mt-0.5 pl-4 font-grotesque">
+              TAME IMPALA
+            </div>
+          </div>
+
+          <!-- Live 20-Bar Dancing Micro-Equalizer -->
+          <div id="micro-eq-container" class="flex items-end gap-[2px] h-5 shrink-0 opacity-90 cursor-pointer" title="Real-time frequency visualizer • Click to toggle built-in synth">
+            <!-- Populated dynamically with 20 bars -->
+          </div>
+        </div>
+
+        <!-- Row 2: Precision Timeline Scrubber & Monospace Timestamps -->
+        <div class="w-full mt-2.5">
+          <div id="progress-scrubber" class="progress-scrubber-area w-full">
+            <div class="relative w-full h-[1.5px] bg-white/20 rounded-full overflow-hidden">
+              <div id="progress-fill" class="absolute left-0 top-0 bottom-0 bg-gradient-to-r from-white/60 to-white/95" style="width: 39.0%;"></div>
+            </div>
+            <!-- Luminous Playhead Bead -->
+            <div id="progress-playhead" class="progress-playhead absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-[7px] h-[7px] rounded-full bg-[#FFFFFF] shadow-[0_0_12px_2px_rgba(255,255,255,0.95)]" style="left: 39.0%;"></div>
+          </div>
+
+          <div class="flex items-center justify-between text-[10px] font-mono-code tracking-[0.16em] text-[#89858A] mt-1">
+            <span id="time-current">3:02</span>
+            <span id="audio-format-badge" class="text-[9px] tracking-[0.2em] uppercase text-[#6E6A70]">DSD • 24-BIT</span>
+            <span id="time-total">7:47</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- CENTER RIGHT: CONTINUOUS CONNECTED KINETIC SERIF LYRIC STAGE -->
+      <div class="relative my-auto w-full h-[320px] sm:h-[380px] flex items-center justify-center pointer-events-none select-none">
+
+        <!-- Stage Container for Previous, Active, and Upcoming Lyric Words -->
+        <div id="lyric-stage" class="relative w-full h-full flex items-center">
+
+          <!-- 1. PREVIOUS WORDS with trailing connected hairline -->
+          <div id="lyric-prev-group" class="absolute left-[2%] sm:left-[4%] top-[24%] flex items-center gap-3 transition-all duration-400 ease-out z-20">
+            <span id="lyric-prev-text" class="font-serif-editorial italic text-2xl sm:text-[34px] text-[#A6A2A8] font-light tracking-wide whitespace-nowrap opacity-70">
+              and it’s
+            </span>
+            <span id="lyric-prev-line" class="w-10 sm:w-16 h-[1px] bg-gradient-to-r from-white/35 to-transparent inline-block"></span>
+          </div>
+
+          <!-- 2. ACTIVE WORD: Center Hero with Scanline/ASCII Serif Glow & Connecting Hairlines -->
+          <div id="lyric-active-group" class="absolute left-[18%] sm:left-[22%] top-[34%] flex items-center z-30 transition-all duration-300 ease-out">
+            <div id="lyric-active-leadline" class="w-12 sm:w-20 h-[1px] bg-gradient-to-r from-transparent via-white/30 to-white/60 mr-3 -mt-1"></div>
+            <h1 id="lyric-active-text" class="active-lyric-word text-6xl sm:text-7xl xl:text-[96px] px-2 select-none tracking-tight">
+              coming
+            </h1>
+            <div id="lyric-active-trailline" class="w-12 sm:w-20 h-[1px] bg-gradient-to-r from-white/60 via-white/30 to-transparent ml-3 -mt-1"></div>
+          </div>
+
+          <!-- 3. UPCOMING WORD with leading connected hairline -->
+          <div id="lyric-next-group" class="absolute left-[70%] sm:left-[73%] top-[54%] flex items-center gap-3 transition-all duration-400 ease-out z-20">
+            <span id="lyric-next-line" class="w-10 sm:w-16 h-[1px] bg-gradient-to-r from-transparent to-white/35 inline-block"></span>
+            <span id="lyric-next-text" class="font-serif-editorial italic text-2xl sm:text-[36px] text-[#9A969C] font-light tracking-wide whitespace-nowrap opacity-65">
+              on
+            </span>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- BOTTOM RIGHT: MINIMAL EDITORIAL ALBUM / YEAR / GENRE METADATA -->
+      <footer class="flex flex-col items-end justify-end pb-1 text-right font-mono-code">
+        <div id="meta-album" class="text-[9.5px] sm:text-[10px] tracking-[0.24em] uppercase text-[#89858A] leading-relaxed">
+          ALBUM / CURRENTS
+        </div>
+        <div id="meta-year" class="text-[9.5px] sm:text-[10px] tracking-[0.24em] uppercase text-[#89858A] leading-relaxed">
+          YEAR / 2015
+        </div>
+        <div id="meta-genre" class="text-[9.5px] sm:text-[10px] tracking-[0.24em] uppercase text-[#89858A] leading-relaxed">
+          GENRE / PSYCHEDELIC ROCK
+        </div>
+        <div class="w-2.5 h-[1px] bg-white/30 mt-3"></div>
+      </footer>
+
+    </section>
+  </main>
+
+  <!-- ===================================================================== -->
+  <!-- SUBTLE AUTO-FADING ONBOARDING HINT (Disappears after 4.5 seconds)     -->
+  <!-- ===================================================================== -->
+  <div id="onboarding-hint" class="fixed bottom-4 left-1/2 -translate-x-1/2 z-40 pointer-events-none transition-opacity duration-1000 opacity-75">
+    <div class="px-3.5 py-1 rounded-full bg-black/70 border border-white/10 text-[10px] font-mono-code tracking-[0.18em] uppercase text-[#89858A] backdrop-blur-sm">
+      [H] Dev HUD &nbsp;•&nbsp; [A] Listen to Audio &nbsp;•&nbsp; [Space] Play/Pause &nbsp;•&nbsp; [M] Synth &nbsp;•&nbsp; [1-6] Demo Tracks
+    </div>
+  </div>
+
+  <!-- ===================================================================== -->
+  <!-- DEVELOPER HUD OVERLAY (TOGGLED VIA 'H' KEY, HIDDEN BY DEFAULT)        -->
+  <!-- ===================================================================== -->
+  <aside id="developer-hud" class="fixed top-6 right-6 z-50 w-[380px] max-w-[92vw] max-h-[88vh] overflow-y-auto rounded-lg bg-[#0B0A0C]/95 border border-white/15 p-4 text-xs font-mono-code text-[#F2F0ED] shadow-2xl backdrop-blur-md hidden">
+    <div class="flex items-center justify-between border-b border-white/10 pb-2.5 mb-3">
+      <div class="flex items-center gap-2">
+        <span class="w-2 h-2 rounded-full bg-[#C51E43]"></span>
+        <span class="tracking-[0.18em] uppercase font-medium text-[11px]">DREAMSCAPE // DEV HUD</span>
+      </div>
+      <button id="hud-close-btn" class="text-[#89858A] hover:text-white px-1.5 py-0.5 text-[10px] border border-white/10 rounded">
+        [H] ESC
+      </button>
+    </div>
+
+    <!-- System & Telemetry Readouts -->
+    <div class="space-y-1.5 text-[10.5px] border-b border-white/10 pb-3 mb-3">
+      <div class="flex justify-between"><span class="text-[#89858A]">MEDIA SOURCE:</span> <span id="hud-source" class="text-[#F2F0ED]">OFFLINE SHOWCASE ENGINE</span></div>
+      <div class="flex justify-between"><span class="text-[#89858A]">SMTC BRIDGE:</span> <span id="hud-bridge" class="text-amber-400/90">STANDBY (ws://127.0.0.1:8765)</span></div>
+      <div class="flex justify-between"><span class="text-[#89858A]">TRACK / ARTIST:</span> <span id="hud-track" class="text-[#F2F0ED] truncate max-w-[200px]">LET IT HAPPEN</span></div>
+      <div class="flex justify-between"><span class="text-[#89858A]">PLAYBACK STATE:</span> <span id="hud-state" class="text-emerald-400">PLAYING</span></div>
+      <div class="flex justify-between"><span class="text-[#89858A]">SYNC PRECISION:</span> <span id="hud-sync" class="text-[#F2F0ED]">WORD-LEVEL ENHANCED LRC</span></div>
+      <div class="flex justify-between"><span class="text-[#89858A]">ACTIVE WORD:</span> <span id="hud-word" class="text-[#C51E43] font-semibold">"coming"</span></div>
+      <div class="flex justify-between"><span class="text-[#89858A]">PERSONALITY:</span> <span id="hud-personality" class="text-[#F2F0ED]">PSYCHEDELIC CRIMSON</span></div>
+      <div class="flex justify-between"><span class="text-[#89858A]">ASCII GRID / FPS:</span> <span id="hud-fps" class="text-emerald-400">114×70 • 60 FPS (ATLAS GPU)</span></div>
+    </div>
+
+    <!-- Real-Time Audio Feature Meters -->
+    <div class="space-y-1.5 text-[10px] border-b border-white/10 pb-3 mb-3">
+      <div class="text-[#89858A] tracking-widest uppercase mb-1">AUDIO FEATURE EXTRACTION</div>
+      <div class="flex items-center gap-2">
+        <span class="w-16 text-[#89858A]">RMS AMP</span>
+        <div class="flex-1 h-1.5 bg-white/10 rounded overflow-hidden"><div id="meter-rms" class="h-full bg-[#F2F0ED] w-1/3"></div></div>
+      </div>
+      <div class="flex items-center gap-2">
+        <span class="w-16 text-[#89858A]">BASS</span>
+        <div class="flex-1 h-1.5 bg-white/10 rounded overflow-hidden"><div id="meter-bass" class="h-full bg-[#C51E43] w-1/2"></div></div>
+      </div>
+      <div class="flex items-center gap-2">
+        <span class="w-16 text-[#89858A]">MID</span>
+        <div class="flex-1 h-1.5 bg-white/10 rounded overflow-hidden"><div id="meter-mid" class="h-full bg-white/75 w-1/3"></div></div>
+      </div>
+      <div class="flex items-center gap-2">
+        <span class="w-16 text-[#89858A]">HIGH</span>
+        <div class="flex-1 h-1.5 bg-white/10 rounded overflow-hidden"><div id="meter-high" class="h-full bg-white/60 w-1/4"></div></div>
+      </div>
+      <div class="flex items-center gap-2">
+        <span class="w-16 text-[#89858A]">FLUX/BEAT</span>
+        <div class="flex-1 h-1.5 bg-white/10 rounded overflow-hidden"><div id="meter-flux" class="h-full bg-rose-500 w-1/5"></div></div>
+      </div>
+    </div>
+
+    <!-- Extracted Live Album Palette Swatches -->
+    <div class="border-b border-white/10 pb-3 mb-3">
+      <div class="text-[#89858A] tracking-widest uppercase mb-2 text-[9.5px]">EXTRACTED ALBUM PALETTE (LIVE)</div>
+      <div class="grid grid-cols-4 gap-2 text-center">
+        <div>
+          <div id="swatch-primary" class="w-full h-6 rounded border border-white/20 mb-1 transition-colors" style="background-color: var(--accent-primary)"></div>
+          <div class="text-[9px] text-[#89858A] tracking-wider uppercase">PRIMARY</div>
+          <div id="hex-primary" class="text-[8.5px] font-mono-code text-[#F2F0ED]">#C51E43</div>
+        </div>
+        <div>
+          <div id="swatch-secondary" class="w-full h-6 rounded border border-white/20 mb-1 transition-colors" style="background-color: var(--accent-secondary)"></div>
+          <div class="text-[9px] text-[#89858A] tracking-wider uppercase">SECONDARY</div>
+          <div id="hex-secondary" class="text-[8.5px] font-mono-code text-[#F2F0ED]">#7E122D</div>
+        </div>
+        <div>
+          <div id="swatch-highlight" class="w-full h-6 rounded border border-white/20 mb-1 transition-colors" style="background-color: var(--accent-highlight, #F1E7E8)"></div>
+          <div class="text-[9px] text-[#89858A] tracking-wider uppercase">HIGHLIGHT</div>
+          <div id="hex-highlight" class="text-[8.5px] font-mono-code text-[#F2F0ED]">#F1E7E8</div>
+        </div>
+        <div>
+          <div id="swatch-abyss" class="w-full h-6 rounded border border-white/20 mb-1 transition-colors" style="background-color: var(--bg-primary)"></div>
+          <div class="text-[9px] text-[#89858A] tracking-wider uppercase">ABYSS</div>
+          <div id="hex-abyss" class="text-[8.5px] font-mono-code text-[#F2F0ED]">#050506</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Interactive Developer Controls -->
+    <div class="space-y-2 text-[10.5px]">
+      <div class="text-[#89858A] tracking-widest uppercase">CONTROLS & OVERRIDES</div>
+      <div class="grid grid-cols-2 gap-1.5">
+        <button id="btn-hud-audio" class="col-span-2 px-2.5 py-1.5 rounded bg-white/10 hover:bg-white/20 text-left truncate font-medium text-[#F2F0ED]">Audio Input: IDLE (CLICK OR PRESS A)</button>
+        <button id="btn-toggle-play" class="px-2.5 py-1.5 rounded bg-white/10 hover:bg-white/20 text-left truncate">Play / Pause [Space]</button>
+        <button id="btn-toggle-synth" class="px-2.5 py-1.5 rounded bg-[#C51E43]/30 border border-[#C51E43]/60 hover:bg-[#C51E43]/50 text-left truncate">WebAudio Synth: OFF [M]</button>
+        <button id="btn-next-track" class="px-2.5 py-1.5 rounded bg-white/10 hover:bg-white/20 text-left truncate">Next Demo Track [N]</button>
+        <button id="btn-regen-ascii" class="px-2.5 py-1.5 rounded bg-white/10 hover:bg-white/20 text-left truncate">Regenerate ASCII [R]</button>
+        <button id="btn-reduced-motion" class="px-2.5 py-1.5 rounded bg-white/10 hover:bg-white/20 text-left truncate">Reduced Motion: OFF</button>
+        <button id="btn-low-power" class="px-2.5 py-1.5 rounded bg-white/10 hover:bg-white/20 text-left truncate">Low-Power 30FPS: OFF</button>
+        <button id="btn-reconnect-ws" class="col-span-2 px-2.5 py-1.5 rounded bg-white/10 hover:bg-white/20 text-center">Reconnect SMTC WebSocket Bridge</button>
+      </div>
+
+      <!-- Custom Local File Loaders (Audio, Artwork Image, or .LRC file) -->
+      <div class="pt-2 border-t border-white/10 mt-2 space-y-1.5">
+        <div class="text-[#89858A] text-[10px]">LOAD CUSTOM MEDIA (OR DRAG & DROP ON WINDOW)</div>
+        <div class="grid grid-cols-3 gap-1.5">
+          <label class="cursor-pointer px-2 py-1.5 rounded bg-white/10 hover:bg-white/20 text-center text-[10px]">
+            + Audio File
+            <input id="input-audio-file" type="file" accept="audio/*" class="hidden" />
+          </label>
+          <label class="cursor-pointer px-2 py-1.5 rounded bg-white/10 hover:bg-white/20 text-center text-[10px]">
+            + Artwork
+            <input id="input-image-file" type="file" accept="image/*" class="hidden" />
+          </label>
+          <label class="cursor-pointer px-2 py-1.5 rounded bg-white/10 hover:bg-white/20 text-center text-[10px]">
+            + .LRC File
+            <input id="input-lrc-file" type="file" accept=".lrc,.txt" class="hidden" />
+          </label>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Hidden Audio Element for Local Uploaded Files -->
+  <audio id="local-audio-element" crossorigin="anonymous" class="hidden"></audio>
+
+  <!-- ===================================================================== -->
+  <!-- MASTER APPLICATION ARCHITECTURE (SINGLE-FILE MODULAR ENGINE)          -->
+  <!-- ===================================================================== -->
+  <script>
+    (function() {
+      'use strict';
+
+      /* ===================================================================
+       * 1. CONFIGURATION & 6 SHOWCASE TRACK PERSONALITIES
+       * =================================================================== */
+      // Nuanced, high-fashion typographic ASCII density ramps without repetitive digits
+      const ASCII_RAMP_DENSE = "  ·.:-=+*#%@";
+      const ASCII_RAMP_EDITORIAL = "  ·.¨:;~+=*?%&#$@";
+      const ASCII_RAMP_CLASSIC = "  .:´¨!/+*xX$&#@";
+
+      const TRACK_LIBRARY = [
+        {
+          id: 'let-it-happen',
+          indexStr: '01',
+          chapterHighlight: 3, // Matches reference where [ 04 ] has arrow or active index
+          title: 'LET IT HAPPEN',
+          artist: 'TAME IMPALA',
+          album: 'CURRENTS',
+          year: '2015',
+          genre: 'PSYCHEDELIC ROCK',
+          topRightTitle: 'WAVY',
+          topRightSub: 'KARAN AUJLA • JAY TRAK',
+          duration: 467, // 7:47
+          defaultStartTime: 182.0, // 3:02 — exact reference timestamp!
+          personalityName: 'PSYCHEDELIC CRIMSON',
+          accentPrimary: '#C51E43',
+          accentSecondary: '#7E122D',
+          accentRgb: [197, 30, 67],
+          silhouetteType: 'crescent-profile', // Matches reference image's crescent & profile silhouette
+          asciiRamp: ASCII_RAMP_DENSE,
+          motionSpeed: 1.0,
+          turbulence: 1.0,
+          bpm: 125,
+          rootFreq: 110, // A2
+          phrases: [
+            { start: 0, prev: "it's always", active: "around", next: "me" },
+            { start: 14, prev: "all this", active: "noise", next: "inside" },
+            { start: 28, prev: "not nearly", active: "loud", next: "enough" },
+            { start: 45, prev: "cannot", active: "vanish", next: "now" },
+            { start: 65, prev: "it is", active: "holding", next: "on" },
+            { start: 90, prev: "hear the", active: "current", next: "pull" },
+            { start: 120, prev: "let it", active: "happen", next: "now" },
+            { start: 155, prev: "feel it", active: "drifting", next: "in" },
+            { start: 175, prev: "and it’s", active: "coming", next: "on" },
+            { start: 192, prev: "coming", active: "closer", next: "still" },
+            { start: 210, prev: "just let", active: "everything", next: "go" },
+            { start: 235, prev: "in the", active: "vortex", next: "light" },
+            { start: 265, prev: "all the", active: "static", next: "fades" },
+            { start: 300, prev: "take the", active: "phantom", next: "stride" },
+            { start: 340, prev: "and it’s", active: "coming", next: "on" },
+            { start: 385, prev: "maybe", active: "ready", next: "now" },
+            { start: 425, prev: "into", active: "crimson", next: "sleep" }
+          ]
+        },
+        {
+          id: 'wavy-aujla',
+          indexStr: '02',
+          title: 'WAVY',
+          artist: 'KARAN AUJLA • JAY TRAK',
+          album: 'STREET DREAMS',
+          year: '2024',
+          genre: 'EXPERIMENTAL HIP-HOP',
+          topRightTitle: 'SPACE SONG',
+          topRightSub: 'BEACH HOUSE',
+          duration: 214, // 3:34
+          defaultStartTime: 64.0,
+          personalityName: 'RHYTHMIC RUBY GRAPHIC',
+          accentPrimary: '#D9264E',
+          accentSecondary: '#8A112E',
+          accentRgb: [217, 38, 78],
+          silhouetteType: 'topographic-vortex',
+          asciiRamp: ASCII_RAMP_CLASSIC,
+          motionSpeed: 1.35,
+          turbulence: 1.3,
+          bpm: 138,
+          rootFreq: 98, // G2
+          phrases: [
+            { start: 0, prev: "riding", active: "heavy", next: "waves" },
+            { start: 18, prev: "through the", active: "midnight", next: "haze" },
+            { start: 38, prev: "every", active: "shadow", next: "moves" },
+            { start: 56, prev: "keep the", active: "vision", next: "sharp" },
+            { start: 78, prev: "never", active: "folding", next: "back" },
+            { start: 105, prev: "under", active: "crimson", next: "skies" },
+            { start: 135, prev: "catch the", active: "tempo", next: "shift" },
+            { start: 170, prev: "still we", active: "rising", next: "up" }
+          ]
+        },
+        {
+          id: 'space-song',
+          indexStr: '03',
+          title: 'SPACE SONG',
+          artist: 'BEACH HOUSE',
+          album: 'DEPRESSION CHERRY',
+          year: '2015',
+          genre: 'DREAM POP / AMBIENT',
+          topRightTitle: 'XTAL',
+          topRightSub: 'APHEX TWIN',
+          duration: 320, // 5:20
+          defaultStartTime: 96.0,
+          personalityName: 'VELVET DREAM POP',
+          accentPrimary: '#B82548',
+          accentSecondary: '#631227',
+          accentRgb: [184, 37, 72],
+          silhouetteType: 'celestial-nebula',
+          asciiRamp: ASCII_RAMP_DENSE,
+          motionSpeed: 0.68,
+          turbulence: 0.65,
+          bpm: 75,
+          rootFreq: 130.8, // C3
+          phrases: [
+            { start: 0, prev: "it was", active: "late", next: "at night" },
+            { start: 25, prev: "you held", active: "onto", next: "me" },
+            { start: 55, prev: "tender", active: "silver", next: "light" },
+            { start: 85, prev: "fall", active: "back", next: "into place" },
+            { start: 120, prev: "across", active: "empty", next: "space" },
+            { start: 165, prev: "slowly", active: "drifting", next: "home" },
+            { start: 220, prev: "in a", active: "velvet", next: "dream" },
+            { start: 270, prev: "fade to", active: "quiet", next: "stars" }
+          ]
+        },
+        {
+          id: 'xtal-aphex',
+          indexStr: '04',
+          title: 'XTAL',
+          artist: 'APHEX TWIN',
+          album: 'SELECTED AMBIENT WORKS',
+          year: '1992',
+          genre: 'AMBIENT ELECTRONIC',
+          topRightTitle: 'KID A',
+          topRightSub: 'RADIOHEAD',
+          duration: 294, // 4:54
+          defaultStartTime: 112.0,
+          personalityName: 'CRYSTALLINE ELECTRONIC',
+          accentPrimary: '#C51E43',
+          accentSecondary: '#5A182E',
+          accentRgb: [197, 30, 67],
+          silhouetteType: 'crystal-polyhedron',
+          asciiRamp: ASCII_RAMP_CLASSIC,
+          motionSpeed: 1.2,
+          turbulence: 1.15,
+          bpm: 116,
+          rootFreq: 146.8, // D3
+          phrases: [
+            { start: 0, prev: "signal", active: "breathing", next: "low" },
+            { start: 30, prev: "glassy", active: "echoes", next: "form" },
+            { start: 65, prev: "inside", active: "memory", next: "fields" },
+            { start: 100, prev: "lucid", active: "vapor", next: "pulse" },
+            { start: 140, prev: "beyond", active: "silicon", next: "dawn" },
+            { start: 190, prev: "floating", active: "weightless", next: "now" },
+            { start: 240, prev: "pure", active: "horizon", next: "wave" }
+          ]
+        },
+        {
+          id: 'everything-right-place',
+          indexStr: '05',
+          title: 'EVERYTHING IN ITS RIGHT PLACE',
+          artist: 'RADIOHEAD',
+          album: 'KID A',
+          year: '2000',
+          genre: 'MELANCHOLIC ART ROCK',
+          topRightTitle: 'ARCHANGEL',
+          topRightSub: 'BURIAL',
+          duration: 251, // 4:11
+          defaultStartTime: 78.0,
+          personalityName: 'DESATURATED CARMINE',
+          accentPrimary: '#AD283B',
+          accentSecondary: '#5E1420',
+          accentRgb: [173, 40, 59],
+          silhouetteType: 'fragmented-monolith',
+          asciiRamp: ASCII_RAMP_DENSE,
+          motionSpeed: 0.82,
+          turbulence: 0.9,
+          bpm: 124,
+          rootFreq: 130.8, // C3
+          phrases: [
+            { start: 0, prev: "everything", active: "in its", next: "right place" },
+            { start: 28, prev: "yesterday", active: "woke up", next: "quiet" },
+            { start: 65, prev: "there are", active: "two", next: "colors" },
+            { start: 105, prev: "in my", active: "head", next: "tonight" },
+            { start: 150, prev: "what was", active: "spoken", next: "stays" },
+            { start: 200, prev: "phantom", active: "mirror", next: "frame" }
+          ]
+        },
+        {
+          id: 'archangel-burial',
+          indexStr: '06',
+          title: 'ARCHANGEL',
+          artist: 'BURIAL',
+          album: 'UNTRUE',
+          year: '2007',
+          genre: 'NOCTURNAL GARAGE',
+          topRightTitle: 'LET IT HAPPEN',
+          topRightSub: 'TAME IMPALA',
+          duration: 238, // 3:58
+          defaultStartTime: 88.0,
+          personalityName: 'NOCTURNAL EMBER',
+          accentPrimary: '#9E1B37',
+          accentSecondary: '#4B0B19',
+          accentRgb: [158, 27, 55],
+          silhouetteType: 'nocturnal-silhouette',
+          asciiRamp: ASCII_RAMP_CLASSIC,
+          motionSpeed: 0.75,
+          turbulence: 0.8,
+          bpm: 134,
+          rootFreq: 103.8, // G#2
+          phrases: [
+            { start: 0, prev: "holding", active: "you", next: "close" },
+            { start: 30, prev: "through the", active: "london", next: "rain" },
+            { start: 68, prev: "could not", active: "stay", next: "alone" },
+            { start: 110, prev: "distant", active: "streetlights", next: "glow" },
+            { start: 160, prev: "whisper", active: "in the", next: "dark" },
+            { start: 200, prev: "never", active: "fade", next: "away" }
+          ]
+        }
+      ];
+
+      /* ===================================================================
+       * 2. APPLICATION STATE
+       * =================================================================== */
+      const State = {
+        currentTrackIndex: 0,
+        activeChaptersPointer: 3, // [ 04 ] indicator on initial screen matching reference, updates to track index on click
+        hasUserSwitchedTrack: false,
+        isPlaying: true,
+        currentTime: TRACK_LIBRARY[0].defaultStartTime,
+        duration: TRACK_LIBRARY[0].duration,
+        mediaSource: 'OFFLINE SHOWCASE ENGINE',
+        bridgeStatus: 'STANDBY (ws://127.0.0.1:8765)',
+        syncMode: 'WORD-LEVEL ENHANCED LRC',
+
+        // Disc rotation & physics
+        discAngle: 0.0,
+        discAngularVelocity: 0.42, // radians/sec when playing
+        tiltX: 0,
+        tiltY: 0,
+        targetTiltX: 0,
+        targetTiltY: 0,
+
+        // Transition animation state (0 = settled, >0 = transitioning)
+        transitionProgress: 0,
+        isTransitioning: false,
+
+        // Lyric state & connected transition dynamics
+        currentPhraseIndex: 8,
+        prevWord: "and it’s",
+        activeWord: "coming",
+        nextWord: "on",
+        wordEntryTime: 0,
+        wordSlideProgress: 1.0,
+        particles: [],
+
+        // Interactive ASCII Mouse & Shockwave Dynamics
+        mouse: {
+          x: -1000,
+          y: -1000,
+          vx: 0,
+          vy: 0,
+          active: false,
+          clickWave: 0.0,
+          clickX: 0,
+          clickY: 0
+        },
+
+        // Performance & accessibility flags
+        reducedMotion: false,
+        lowPower30Fps: false,
+        hudVisible: false,
+        synthEnabled: false,
+        fps: 60,
+
+        // Live SMTC Bridge & Lyrics Stream
+        isLiveSmtcMode: false,
+        liveTrackTitle: '',
+        liveTrackArtist: '',
+        liveTrackAlbum: '',
+        livePhrases: null,
+
+        // Live Audio Input (Microphone / Stereo Mix)
+        isListeningToAudio: false,
+        micMediaStream: null,
+
+        // Audio reactive features (smoothed 0.0 - 1.0)
+        audio: {
+          rms: 0.34,
+          bass: 0.42,
+          mid: 0.28,
+          high: 0.22,
+          flux: 0.15,
+          beatPulse: 0.0
+        },
+
+        // Extracted & Interpolated Album Color Palette
+        palette: {
+          current: {
+            primary: [197, 30, 67],
+            secondary: [126, 18, 45],
+            highlight: [241, 231, 232],
+            abyss: [5, 5, 6]
+          },
+          target: {
+            primary: [197, 30, 67],
+            secondary: [126, 18, 45],
+            highlight: [241, 231, 232],
+            abyss: [5, 5, 6]
+          }
+        },
+
+        // Cached textures
+        artworkCache: new Map(),
+        customArtworkCanvas: null,
+        customSilhouetteGrid: null
+      };
+
+      /* ===================================================================
+       * 3. PROCEDURAL ALBUM ARTWORK GENERATOR & TEXTURE CACHE
+       * Generates high-resolution 1024x1024 album covers for each track.
+       * Track 1 matches the exact crimson silk wave & profile portrait on
+       * the rotating disc in the reference image!
+       * =================================================================== */
+      function getTrackArtworkCanvas(track, size = 1024) {
+        if (State.customArtworkCanvas) return State.customArtworkCanvas;
+        if (State.artworkCache.has(track.id)) return State.artworkCache.get(track.id);
+
+        const canvas = document.createElement('canvas');
+        canvas.width = size;
+        canvas.height = size;
+        const ctx = canvas.getContext('2d');
+        const cx = size / 2;
+        const cy = size / 2;
+
+        // Deep obsidian vinyl/optical base
+        ctx.fillStyle = '#060507';
+        ctx.fillRect(0, 0, size, size);
+
+        if (track.id === 'let-it-happen') {
+          // 1. Upper-left flowing crimson silk ribbon wave (matching reference disc!)
+          ctx.save();
+          const waveGrad = ctx.createLinearGradient(size * 0.15, size * 0.48, size * 0.85, size * 0.15);
+          waveGrad.addColorStop(0, 'rgba(90, 10, 25, 0.0)');
+          waveGrad.addColorStop(0.25, 'rgba(185, 22, 52, 0.88)');
+          waveGrad.addColorStop(0.55, 'rgba(235, 50, 82, 0.96)');
+          waveGrad.addColorStop(0.8, 'rgba(165, 18, 45, 0.75)');
+          waveGrad.addColorStop(1, 'rgba(70, 8, 20, 0.15)');
+
+          ctx.fillStyle = waveGrad;
+          ctx.beginPath();
+          ctx.moveTo(size * 0.08, size * 0.52);
+          ctx.bezierCurveTo(size * 0.25, size * 0.34, size * 0.42, size * 0.38, size * 0.68, size * 0.12);
+          ctx.bezierCurveTo(size * 0.82, size * 0.22, size * 0.94, size * 0.36, size * 0.96, size * 0.44);
+          ctx.bezierCurveTo(size * 0.72, size * 0.32, size * 0.46, size * 0.35, size * 0.12, size * 0.54);
+          ctx.closePath();
+          ctx.filter = 'blur(14px)';
+          ctx.fill();
+
+          // Secondary bright silk ridge
+          ctx.beginPath();
+          ctx.moveTo(size * 0.22, size * 0.42);
+          ctx.bezierCurveTo(size * 0.45, size * 0.30, size * 0.62, size * 0.22, size * 0.76, size * 0.18);
+          ctx.bezierCurveTo(size * 0.85, size * 0.26, size * 0.88, size * 0.34, size * 0.92, size * 0.38);
+          ctx.bezierCurveTo(size * 0.68, size * 0.28, size * 0.45, size * 0.36, size * 0.22, size * 0.42);
+          ctx.fillStyle = 'rgba(255, 95, 125, 0.55)';
+          ctx.fill();
+          ctx.restore();
+
+          // 2. Lower-left to bottom-center sculpted crimson portrait lighting (matching reference disc!)
+          ctx.save();
+          const faceGlow = ctx.createRadialGradient(size * 0.46, size * 0.72, size * 0.02, size * 0.44, size * 0.72, size * 0.36);
+          faceGlow.addColorStop(0, 'rgba(235, 58, 88, 0.95)');
+          faceGlow.addColorStop(0.38, 'rgba(182, 22, 50, 0.82)');
+          faceGlow.addColorStop(0.7, 'rgba(92, 10, 26, 0.35)');
+          faceGlow.addColorStop(1, 'rgba(6, 5, 7, 0)');
+          ctx.fillStyle = faceGlow;
+          ctx.filter = 'blur(12px)';
+          ctx.beginPath();
+          ctx.arc(size * 0.44, size * 0.72, size * 0.36, 0, Math.PI * 2);
+          ctx.fill();
+
+          // Sculpted profile shadow contours (forehead, nose bridge, lips, chin facing right)
+          ctx.filter = 'blur(6px)';
+          ctx.fillStyle = '#070507';
+          ctx.beginPath();
+          ctx.moveTo(size * 0.56, size * 0.44);
+          ctx.lineTo(size * 0.57, size * 0.56); // forehead
+          ctx.lineTo(size * 0.63, size * 0.64); // nose tip
+          ctx.lineTo(size * 0.58, size * 0.67); // philtrum
+          ctx.lineTo(size * 0.61, size * 0.70); // upper lip
+          ctx.lineTo(size * 0.58, size * 0.72); // mouth
+          ctx.lineTo(size * 0.60, size * 0.75); // lower lip
+          ctx.lineTo(size * 0.59, size * 0.81); // chin
+          ctx.lineTo(size * 0.48, size * 0.86); // jawline shadow
+          ctx.lineTo(size * 0.95, size * 0.95);
+          ctx.lineTo(size * 0.95, size * 0.44);
+          ctx.closePath();
+          ctx.fill();
+
+          // Subtle eye/cheek shadow for chiaroscuro realism
+          ctx.fillStyle = 'rgba(12, 4, 8, 0.78)';
+          ctx.beginPath();
+          ctx.ellipse(size * 0.51, size * 0.59, size * 0.04, size * 0.022, -0.2, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.restore();
+        } else {
+          // Distinct procedural artwork for Tracks 2 - 6
+          const [r, g, b] = track.accentRgb;
+          ctx.save();
+          for (let i = 0; i < 5; i++) {
+            const angle = (i / 5) * Math.PI * 2 + track.duration;
+            const gx = cx + Math.cos(angle) * size * 0.22;
+            const gy = cy + Math.sin(angle) * size * 0.22;
+            const grad = ctx.createRadialGradient(gx, gy, size * 0.02, gx, gy, size * 0.42);
+            grad.addColorStop(0, `rgba(${Math.min(255, r + 40)}, ${g + 25}, ${b + 35}, 0.85)`);
+            grad.addColorStop(0.5, `rgba(${r}, ${g}, ${b}, 0.35)`);
+            grad.addColorStop(1, 'rgba(5, 5, 6, 0)');
+            ctx.fillStyle = grad;
+            ctx.beginPath();
+            ctx.arc(gx, gy, size * 0.42, 0, Math.PI * 2);
+            ctx.fill();
+          }
+          // Geometric dark silhouette overlay
+          ctx.strokeStyle = 'rgba(255,255,255,0.14)';
+          ctx.lineWidth = 3;
+          for (let k = 1; k <= 6; k++) {
+            ctx.beginPath();
+            ctx.arc(cx, cy, size * 0.06 * k, 0, Math.PI * 1.65);
+            ctx.stroke();
+          }
+          ctx.restore();
+        }
+
+        State.artworkCache.set(track.id, canvas);
+        return canvas;
+      }
+
+      /* ===================================================================
+       * 4. ROTATING 3D / OPTICAL DISC RENDERER (#disc-canvas)
+       * Renders the recessed tray, rotating circular artwork, optical sheen,
+       * concentric clamping hub, and printed disc typography.
+       * =================================================================== */
+      const discCanvas = document.getElementById('disc-canvas');
+      const discCtx = discCanvas.getContext('2d');
+      const miniThumbCanvas = document.getElementById('mini-thumb-canvas');
+      const miniThumbCtx = miniThumbCanvas ? miniThumbCanvas.getContext('2d') : null;
+
+      function updateMiniThumbnail(track) {
+        if (!miniThumbCtx) return;
+        const art = getTrackArtworkCanvas(track);
+        miniThumbCtx.clearRect(0, 0, 88, 88);
+        miniThumbCtx.drawImage(art, 0, 0, 88, 88);
+      }
+
+      function renderOpticalDisc(timeSec) {
+        const dpr = Math.min(window.devicePixelRatio || 1, 2);
+        const rect = discCanvas.getBoundingClientRect();
+        const targetW = Math.round(rect.width * dpr);
+        const targetH = Math.round(rect.height * dpr);
+        if (discCanvas.width !== targetW || discCanvas.height !== targetH) {
+          discCanvas.width = targetW;
+          discCanvas.height = targetH;
+        }
+
+        const w = discCanvas.width;
+        const h = discCanvas.height;
+        if (w === 0 || h === 0) return;
+
+        const cx = w * 0.51; // Slightly offset right to clear left mechanical spine, matching reference
+        const cy = h * 0.50;
+        const discRadius = Math.min(w, h) * 0.415;
+        const track = TRACK_LIBRARY[State.currentTrackIndex];
+        const [ar, ag, ab] = State.palette.current.primary;
+        const [sr, sg, sb] = State.palette.current.secondary;
+
+        discCtx.clearRect(0, 0, w, h);
+
+        // 1. Deep Recessed Circular Optical Tray Well
+        discCtx.save();
+        const trayRadius = discRadius * 1.055;
+        const trayGrad = discCtx.createRadialGradient(cx, cy, discRadius * 0.85, cx, cy, trayRadius * 1.08);
+        trayGrad.addColorStop(0, '#040405');
+        trayGrad.addColorStop(0.75, '#09080B');
+        trayGrad.addColorStop(0.95, `rgba(${Math.round(ar)}, ${Math.round(ag)}, ${Math.round(ab)}, 0.28)`);
+        trayGrad.addColorStop(1, 'rgba(255, 255, 255, 0.08)');
+        discCtx.fillStyle = trayGrad;
+        discCtx.beginPath();
+        discCtx.arc(cx, cy, trayRadius, 0, Math.PI * 2);
+        discCtx.fill();
+
+        // Subtle outer tray bevel ring
+        discCtx.strokeStyle = 'rgba(255, 255, 255, 0.22)';
+        discCtx.lineWidth = 1.2 * dpr;
+        discCtx.beginPath();
+        discCtx.arc(cx, cy, trayRadius, 0, Math.PI * 2);
+        discCtx.stroke();
+        discCtx.restore();
+
+        // 2. Rotating Physical Optical Disc Surface (Clipped to Outer Radius & Inner Spindle Hole)
+        const spindleHoleRadius = discRadius * 0.085;
+        const artCanvas = getTrackArtworkCanvas(track);
+
+        discCtx.save();
+        discCtx.beginPath();
+        discCtx.arc(cx, cy, discRadius, 0, Math.PI * 2);
+        discCtx.arc(cx, cy, spindleHoleRadius, 0, Math.PI * 2, true);
+        discCtx.clip('evenodd');
+
+        // Rotate artwork & micro-grooves
+        discCtx.save();
+        discCtx.translate(cx, cy);
+        discCtx.rotate(State.discAngle);
+        discCtx.drawImage(artCanvas, -discRadius, -discRadius, discRadius * 2, discRadius * 2);
+
+        // Concentric optical data track micro-grooves
+        discCtx.strokeStyle = 'rgba(255, 255, 255, 0.035)';
+        discCtx.lineWidth = 1 * dpr;
+        for (let r = discRadius * 0.28; r < discRadius * 0.96; r += discRadius * 0.045) {
+          discCtx.beginPath();
+          discCtx.arc(0, 0, r, 0, Math.PI * 2);
+          discCtx.stroke();
+        }
+        discCtx.restore();
+
+        // 3. World-Space Anisotropic Optical Disc Reflections (React to Audio Bass)
+        discCtx.save();
+        discCtx.translate(cx, cy);
+        const sheenAngle = -0.65 + Math.sin(timeSec * 0.5) * 0.08;
+        discCtx.rotate(sheenAngle);
+        const sheenAlpha = 0.09 + State.audio.bass * 0.08;
+        const sheenGrad = discCtx.createLinearGradient(-discRadius, 0, discRadius, 0);
+        sheenGrad.addColorStop(0, 'rgba(255,255,255,0)');
+        sheenGrad.addColorStop(0.38, `rgba(255,240,245,${sheenAlpha * 0.4})`);
+        sheenGrad.addColorStop(0.5, `rgba(255,255,255,${sheenAlpha})`);
+        sheenGrad.addColorStop(0.62, `rgba(${Math.round(ar)}, ${Math.round(ag)}, ${Math.round(ab)}, ${sheenAlpha * 0.7})`);
+        sheenGrad.addColorStop(1, 'rgba(255,255,255,0)');
+        discCtx.fillStyle = sheenGrad;
+        discCtx.fillRect(-discRadius, -discRadius, discRadius * 2, discRadius * 2);
+        discCtx.restore();
+
+        // 4. Printed Micro-Typography & Registration Marks on Disc Surface (Matches Reference Image)
+        discCtx.save();
+        discCtx.translate(cx, cy);
+        const fontSize = Math.max(8, Math.round(discRadius * 0.038));
+        discCtx.font = `600 ${fontSize}px 'Space Grotesk', sans-serif`;
+        discCtx.fillStyle = 'rgba(242, 240, 237, 0.85)';
+        discCtx.textBaseline = 'middle';
+
+        // Left of spindle: ARTIST NAME
+        discCtx.textAlign = 'left';
+        const displayArtist = (State.isLiveSmtcMode && State.liveTrackArtist) ? State.liveTrackArtist : track.artist;
+        const leftText = displayArtist.split('•')[0].trim().split('').join(' ');
+        discCtx.fillText(leftText, -discRadius * 0.84, 0);
+
+        // Right of spindle: TRACK TITLE (Stacked in 2 lines if multi-word, matching LET IT / HAPPEN)
+        const displayTitle = (State.isLiveSmtcMode && State.liveTrackTitle) ? State.liveTrackTitle : track.title;
+        const words = displayTitle.split(' ');
+        const line1 = words.slice(0, Math.ceil(words.length / 2)).join(' ').split('').join(' ');
+        const line2 = words.slice(Math.ceil(words.length / 2)).join(' ').split('').join(' ');
+        discCtx.textAlign = 'center';
+        if (line2) {
+          discCtx.fillText(line1, discRadius * 0.61, -fontSize * 0.85);
+          discCtx.fillText(line2, discRadius * 0.61, fontSize * 0.85);
+        } else {
+          discCtx.fillText(line1, discRadius * 0.61, 0);
+        }
+
+        // Top & Center Crosshairs (+) on Disc Vertical Axis
+        const chSize = 4.5 * dpr;
+        discCtx.strokeStyle = 'rgba(255, 255, 255, 0.45)';
+        discCtx.lineWidth = 1 * dpr;
+        // Top disc crosshair
+        const topCrossY = -discRadius * 0.62;
+        discCtx.beginPath();
+        discCtx.moveTo(-chSize, topCrossY);
+        discCtx.lineTo(chSize, topCrossY);
+        discCtx.moveTo(0, topCrossY - chSize);
+        discCtx.lineTo(0, topCrossY + chSize);
+        discCtx.stroke();
+
+        // Bottom [ A ] Record Emblem
+        const emblemY = discRadius * 0.68;
+        const boxS = 10 * dpr;
+        discCtx.strokeStyle = 'rgba(255, 255, 255, 0.45)';
+        discCtx.strokeRect(-boxS / 2, emblemY - boxS / 2, boxS, boxS);
+        discCtx.font = `600 ${Math.round(6.5 * dpr)}px 'Inter', sans-serif`;
+        discCtx.fillText('A', 0, emblemY + 0.5 * dpr);
+        discCtx.restore();
+
+        discCtx.restore(); // End disc clip
+
+        // 5. Metallic Outer Rim & Inner Clamping Hub Rings
+        discCtx.save();
+        discCtx.translate(cx, cy);
+
+        // Outer metallic CD edge rim
+        discCtx.strokeStyle = 'rgba(235, 235, 240, 0.68)';
+        discCtx.lineWidth = 1.6 * dpr;
+        discCtx.beginPath();
+        discCtx.arc(0, 0, discRadius, 0, Math.PI * 2);
+        discCtx.stroke();
+
+        discCtx.strokeStyle = 'rgba(255, 255, 255, 0.24)';
+        discCtx.lineWidth = 1 * dpr;
+        discCtx.beginPath();
+        discCtx.arc(0, 0, discRadius * 0.978, 0, Math.PI * 2);
+        discCtx.stroke();
+
+        // Inner transparent polycarbonate clamping ring assembly
+        const clampOuter = discRadius * 0.245;
+        const clampMid = discRadius * 0.175;
+        const clampInner = discRadius * 0.115;
+
+        const clampGrad = discCtx.createRadialGradient(0, 0, spindleHoleRadius, 0, 0, clampOuter);
+        clampGrad.addColorStop(0, 'rgba(10, 10, 12, 0.94)');
+        clampGrad.addColorStop(0.45, 'rgba(195, 195, 205, 0.22)');
+        clampGrad.addColorStop(0.75, 'rgba(32, 30, 36, 0.68)');
+        clampGrad.addColorStop(1, 'rgba(255, 255, 255, 0.38)');
+
+        discCtx.fillStyle = clampGrad;
+        discCtx.beginPath();
+        discCtx.arc(0, 0, clampOuter, 0, Math.PI * 2);
+        discCtx.fill();
+
+        // Concentric metallic spindle rings
+        [clampOuter, clampMid, clampInner, spindleHoleRadius].forEach((rad, idx) => {
+          discCtx.strokeStyle = idx === 1 ? 'rgba(255,255,255,0.56)' : 'rgba(255,255,255,0.30)';
+          discCtx.lineWidth = (idx === 1 ? 1.5 : 1) * dpr;
+          discCtx.beginPath();
+          discCtx.arc(0, 0, rad, 0, Math.PI * 2);
+          discCtx.stroke();
+        });
+
+        // Center Spindle Crosshair (+)
+        const spCross = 4 * dpr;
+        discCtx.strokeStyle = 'rgba(255, 255, 255, 0.55)';
+        discCtx.lineWidth = 1 * dpr;
+        discCtx.beginPath();
+        discCtx.moveTo(-spCross, 0);
+        discCtx.lineTo(spCross, 0);
+        discCtx.moveTo(0, -spCross);
+        discCtx.lineTo(0, spCross);
+        discCtx.stroke();
+
+        discCtx.restore();
+      }
+
+      /* ===================================================================
+       * 5. GLYPH-ATLAS GENERATIVE ASCII ARTWORK & WAVE-MESH ENGINE
+       * Pre-builds a crisp character glyph atlas and renders:
+       *  - Large organic ASCII silhouette on the right stage
+       *  - Tilted elliptical orbital arc + luminous node dot
+       *  - Bottom undulating 3D crimson/silver dotted wave ribbons
+       *  - Dissolving character particles around the active lyric word
+       * =================================================================== */
+      const asciiCanvas = document.getElementById('ascii-stage-canvas');
+      const asciiCtx = asciiCanvas.getContext('2d');
+
+      /* ===================================================================
+       * GENERATIVE ASCII STAGE ENGINE & ALBUM ART CONTOUR SAMPLER
+       * =================================================================== */
+      const GRID_COLS = 114;
+      const GRID_ROWS = 70;
+      const GRID_SIZE = GRID_COLS * GRID_ROWS;
+
+      // Authentic Album-Sampled Generative ASCII Art Data Buffers
+      const AsciiStage = {
+        lum: new Float32Array(GRID_SIZE),
+        r: new Uint8Array(GRID_SIZE),
+        g: new Uint8Array(GRID_SIZE),
+        b: new Uint8Array(GRID_SIZE),
+        edgeMag: new Float32Array(GRID_SIZE),
+        edgeAngle: new Float32Array(GRID_SIZE),
+        isEdge: new Uint8Array(GRID_SIZE),
+        // Interactive physical spring displacements & velocities
+        dispX: new Float32Array(GRID_SIZE),
+        dispY: new Float32Array(GRID_SIZE),
+        velX: new Float32Array(GRID_SIZE),
+        velY: new Float32Array(GRID_SIZE)
+      };
+
+      // 4x4 Bayer Dither Matrix to eliminate banding
+      const BAYER_4X4 = [
+        0/16,  8/16,  2/16, 10/16,
+       12/16,  4/16, 14/16,  6/16,
+        3/16, 11/16,  1/16,  9/16,
+       15/16,  7/16, 13/16,  5/16
+      ];
+
+      // Tactile Shockwave Queues for live clicks & soundwave detonation
+      const activeShockwaves = [];
+      function triggerShockwave(x, y, power = 1.0) {
+        if (activeShockwaves.length > 5) activeShockwaves.shift();
+        activeShockwaves.push({
+          x,
+          y,
+          radius: 0,
+          maxRadius: Math.max(window.innerWidth, window.innerHeight) * 0.75,
+          speed: 820,
+          strength: power,
+          thickness: 55,
+          age: 0
+        });
+      }
+
+      // Sample Album Cover or High-Res Artwork Directly into Supersampled ASCII Grid
+      function sampleImageIntoAsciiGrid(source) {
+        if (!source) return;
+        try {
+          // 2x Supersampled offscreen buffer for anti-aliasing and micro-detail extraction
+          const sampleW = GRID_COLS * 2;
+          const sampleH = GRID_ROWS * 2;
+          const samp = document.createElement('canvas');
+          samp.width = sampleW;
+          samp.height = sampleH;
+          const sctx = samp.getContext('2d', { willReadFrequently: true });
+          sctx.imageSmoothingEnabled = true;
+          sctx.imageSmoothingQuality = 'high';
+          sctx.drawImage(source, 0, 0, sampleW, sampleH);
+
+          const imgData = sctx.getImageData(0, 0, sampleW, sampleH).data;
+          const rawLum = new Float32Array(GRID_SIZE);
+
+          // 1. Box-filter 2x2 downsample & extract authentic RGB and contrast-stretched luminance
+          for (let r = 0; r < GRID_ROWS; r++) {
+            const ny = (r / (GRID_ROWS - 1)) * 2 - 1; // -1 (top) to +1 (bottom)
+            for (let c = 0; c < GRID_COLS; c++) {
+              const nx = (c / (GRID_COLS - 1)) * 2 - 1; // -1 (left) to +1 (right)
+              const cellIdx = r * GRID_COLS + c;
+
+              const sx = c * 2;
+              const sy = r * 2;
+
+              let rSum = 0, gSum = 0, bSum = 0;
+              for (let dy = 0; dy < 2; dy++) {
+                for (let dx = 0; dx < 2; dx++) {
+                  const pIdx = ((sy + dy) * sampleW + (sx + dx)) * 4;
+                  rSum += imgData[pIdx];
+                  gSum += imgData[pIdx + 1];
+                  bSum += imgData[pIdx + 2];
+                }
+              }
+
+              const red = rSum / 4;
+              const green = gSum / 4;
+              const blue = bSum / 4;
+
+              // Authentic Rec.709 perceived luminance
+              let lum = (0.2126 * red + 0.7152 * green + 0.0722 * blue) / 255.0;
+
+              // S-curve contrast expansion: lifts subtle shadow textures and boosts luminous highlights
+              lum = Math.min(1.0, Math.max(0.0, lum));
+              let contrastLum = (lum < 0.5)
+                ? Math.pow(lum * 2, 1.35) * 0.5
+                : 1.0 - Math.pow((1.0 - lum) * 2, 1.35) * 0.5;
+
+              // Atmospheric editorial edge falloff (vignette so the artwork dissolves gracefully into dark void)
+              const dVignette = Math.hypot(nx * 0.88, ny * 0.98);
+              const edgeFade = Math.max(0.0, Math.min(1.0, (1.20 - dVignette) / 0.40));
+              contrastLum *= edgeFade;
+
+              rawLum[cellIdx] = contrastLum;
+              AsciiStage.lum[cellIdx] = contrastLum;
+              AsciiStage.r[cellIdx] = Math.round(red);
+              AsciiStage.g[cellIdx] = Math.round(green);
+              AsciiStage.b[cellIdx] = Math.round(blue);
+            }
+          }
+
+          // 2. 3x3 Sobel Gradient & Edge Orientation Detection
+          for (let r = 1; r < GRID_ROWS - 1; r++) {
+            for (let c = 1; c < GRID_COLS - 1; c++) {
+              const idx = r * GRID_COLS + c;
+
+              const tl = rawLum[(r - 1) * GRID_COLS + (c - 1)];
+              const tc = rawLum[(r - 1) * GRID_COLS + c];
+              const tr = rawLum[(r - 1) * GRID_COLS + (c + 1)];
+
+              const ml = rawLum[r * GRID_COLS + (c - 1)];
+              const mr = rawLum[r * GRID_COLS + (c + 1)];
+
+              const bl = rawLum[(r + 1) * GRID_COLS + (c - 1)];
+              const bc = rawLum[(r + 1) * GRID_COLS + c];
+              const br = rawLum[(r + 1) * GRID_COLS + (c + 1)];
+
+              const gx = (tr + 2 * mr + br) - (tl + 2 * ml + bl);
+              const gy = (bl + 2 * bc + br) - (tl + 2 * tc + tr);
+
+              const mag = Math.hypot(gx, gy);
+              const angle = Math.atan2(gy, gx);
+
+              AsciiStage.edgeMag[idx] = mag;
+              AsciiStage.edgeAngle[idx] = angle;
+              AsciiStage.isEdge[idx] = mag > 0.22 ? 1 : 0;
+            }
+          }
+
+          State.hasAsciiData = true;
+        } catch (e) {
+          console.warn('Could not sample ASCII grid from image:', e);
+        }
+      }
+
+      function buildAsciiSilhouetteGrid(track) {
+        if (!track) track = TRACK_LIBRARY[State.currentTrackIndex];
+        const art = getTrackArtworkCanvas(track);
+        if (art) {
+          sampleImageIntoAsciiGrid(art);
+        }
+      }
+
+      function getContourChar(angle, mag) {
+        const a = Math.abs(angle);
+        if (a < 0.38 || a > 2.76) {
+          return mag > 0.42 ? '—' : '-';
+        } else if (a > 1.18 && a < 1.96) {
+          return mag > 0.42 ? '|' : '!';
+        } else if (angle > 0) {
+          return '/';
+        } else {
+          return '\\';
+        }
+      }
+
+      // Render Right-Stage Generative ASCII Composition, Orbital Arc, Ligatures & Wave Mesh
+      function renderAsciiStage(timeSec, dt) {
+        const dpr = Math.min(window.devicePixelRatio || 1, 2);
+        const w = window.innerWidth;
+        const h = window.innerHeight;
+        if (asciiCanvas.width !== Math.round(w * dpr) || asciiCanvas.height !== Math.round(h * dpr)) {
+          asciiCanvas.width = Math.round(w * dpr);
+          asciiCanvas.height = Math.round(h * dpr);
+        }
+
+        asciiCtx.save();
+        asciiCtx.scale(dpr, dpr);
+        asciiCtx.clearRect(0, 0, w, h);
+
+        const track = TRACK_LIBRARY[State.currentTrackIndex];
+        const ramp = track.asciiRamp || ASCII_RAMP_EDITORIAL;
+        const rampLen = ramp.length;
+
+        // Right Stage Bounds (44.5% to 96% width, 3% to 96% height)
+        const stageLeft = w * 0.445;
+        const stageWidth = w * 0.49;
+        const stageTop = h * 0.03;
+        const stageHeight = h * 0.93;
+
+        const cellW = stageWidth / GRID_COLS;
+        const cellH = stageHeight / GRID_ROWS;
+        const fontSize = Math.max(8, Math.min(12.5, cellH * 0.88));
+
+        asciiCtx.font = `400 ${fontSize.toFixed(1)}px 'JetBrains Mono', monospace`;
+        asciiCtx.textAlign = 'center';
+        asciiCtx.textBaseline = 'middle';
+
+        const motionMult = State.reducedMotion ? 0.12 : track.motionSpeed;
+        const t = timeSec * 0.85 * motionMult;
+        const bassDisplace = State.audio.bass * (State.reducedMotion ? 2 : 11);
+        const highShimmer = State.audio.high;
+
+        const [ar, ag, ab] = State.palette.current.primary;
+        const [sr, sg, sb] = State.palette.current.secondary;
+
+        // Active Lyric Repulsor/Attractor Focal Point
+        const focalX = 0.02;
+        const focalY = -0.02;
+
+        // 1. Update Active Shockwaves
+        for (let i = activeShockwaves.length - 1; i >= 0; i--) {
+          const sw = activeShockwaves[i];
+          sw.radius += sw.speed * dt;
+          sw.age += dt;
+          sw.strength *= Math.pow(0.12, dt);
+          if (sw.radius > sw.maxRadius || sw.age > 1.1 || sw.strength < 0.01) {
+            activeShockwaves.splice(i, 1);
+          }
+        }
+
+        // Spring Return Parameters
+        const springK = 32.0;
+        const damping = 8.5;
+
+        // 2. Render Generative ASCII Characters with Album Colors, Directional Contours & Spring Physics
+        for (let r = 0; r < GRID_ROWS; r++) {
+          const ny = (r / (GRID_ROWS - 1)) * 2 - 1;
+          const pyBase = stageTop + r * cellH;
+
+          for (let c = 0; c < GRID_COLS; c++) {
+            const idx = r * GRID_COLS + c;
+            let lum = AsciiStage.lum[idx];
+            if (lum <= 0.025) continue;
+
+            const nx = (c / (GRID_COLS - 1)) * 2 - 1;
+
+            // Organic wave deformation coupled with rotating disc angle & bass
+            const wave1 = Math.sin(ny * 4.2 + t + State.discAngle * 0.45) * Math.cos(nx * 3.6 - t * 0.65);
+            const wave2 = Math.cos((nx * nx + ny * ny) * 4.8 - t * 1.3);
+
+            // Bayer stipple dither prevents flat repetitive digit bands
+            const dither = (BAYER_4X4[(r & 3) * 4 + (c & 3)] - 0.5) * 0.075;
+
+            let dynamicLum = lum + wave1 * 0.06 + State.audio.rms * 0.12 + dither;
+
+            // Track transition dissolve
+            if (State.transitionProgress > 0) {
+              dynamicLum *= (1.0 - State.transitionProgress * 0.70);
+            }
+
+            if (dynamicLum <= 0.03) continue;
+            dynamicLum = Math.min(0.999, Math.max(0.01, dynamicLum));
+
+            // Home position
+            const homeX = stageLeft + c * cellW + wave1 * (2.8 + bassDisplace * 0.5);
+            const homeY = pyBase + wave2 * (1.8 + bassDisplace * 0.35);
+
+            // Directional Aerodynamic Force Field (Responds to movement velocity, NEVER creates a circular hole or blob)
+            if (State.mouse.active) {
+              const mDist = Math.hypot(homeX - State.mouse.x, homeY - State.mouse.y);
+              const fieldRadius = 90;
+              if (mDist < fieldRadius) {
+                const normDist = mDist / fieldRadius;
+                const falloff = (1.0 - normDist) * (1.0 - normDist); // smooth quadratic falloff
+                const mouseSpeed = Math.hypot(State.mouse.vx || 0, State.mouse.vy || 0);
+
+                if (mouseSpeed > 8) {
+                  // Directional wake: characters sway gently in the direction of mouse movement (like reeds in wind)
+                  const speedFactor = Math.min(1.0, mouseSpeed / 600);
+                  const wakeImpulse = falloff * speedFactor * 0.0035;
+                  AsciiStage.velX[idx] += (State.mouse.vx || 0) * wakeImpulse;
+                  AsciiStage.velY[idx] += (State.mouse.vy || 0) * wakeImpulse;
+                } else {
+                  // Stationary hover: subtle microscopic breathing oscillation (NO radial push, NO hole, NO blob)
+                  const subtleOsc = Math.sin(timeSec * 3.0 + (r * 7 + c * 5)) * falloff * 0.6;
+                  AsciiStage.dispY[idx] += (subtleOsc - AsciiStage.dispY[idx]) * 0.08;
+                }
+              }
+            }
+
+            // Interactive Sonic Pressure Wave (Subtle acoustic ripple, max 4px deflection)
+            for (let s = 0; s < activeShockwaves.length; s++) {
+              const sw = activeShockwaves[s];
+              const sDist = Math.hypot(homeX - sw.x, homeY - sw.y);
+              const sDiff = Math.abs(sDist - sw.radius);
+              if (sDiff < sw.thickness) {
+                const sFactor = Math.cos((sDiff / sw.thickness) * (Math.PI * 0.5)) * sw.strength;
+                const sAngle = Math.atan2(homeY - sw.y, homeX - sw.x);
+                AsciiStage.velX[idx] += Math.cos(sAngle) * sFactor * 4;
+                AsciiStage.velY[idx] += Math.sin(sAngle) * sFactor * 4;
+              }
+            }
+
+            // Spring return physics update
+            AsciiStage.velX[idx] += (-AsciiStage.dispX[idx] * springK - AsciiStage.velX[idx] * damping) * dt;
+            AsciiStage.velY[idx] += (-AsciiStage.dispY[idx] * springK - AsciiStage.velY[idx] * damping) * dt;
+            AsciiStage.dispX[idx] += AsciiStage.velX[idx] * dt;
+            AsciiStage.dispY[idx] += AsciiStage.velY[idx] * dt;
+
+            // Clamped subtle displacement bounds (delicate 6px max sway)
+            AsciiStage.dispX[idx] = Math.max(-6, Math.min(6, AsciiStage.dispX[idx]));
+            AsciiStage.dispY[idx] = Math.max(-6, Math.min(6, AsciiStage.dispY[idx]));
+
+            const px = homeX + AsciiStage.dispX[idx];
+            const py = homeY + AsciiStage.dispY[idx];
+
+            // Character Selection: Directional Contour vs Typographic Ramp
+            let ch = '';
+            const isEdge = AsciiStage.isEdge[idx];
+            if (isEdge && dynamicLum > 0.16) {
+              ch = getContourChar(AsciiStage.edgeAngle[idx], AsciiStage.edgeMag[idx]);
+            } else {
+              const charIdx = Math.min(rampLen - 1, Math.max(1, Math.floor(dynamicLum * rampLen)));
+              ch = ramp[charIdx];
+            }
+
+            // High shimmer twinkle stars on prominent edges
+            if (highShimmer > 0.28 && isEdge && ((r * 11 + c * 17) % 23 === 0)) {
+              ch = '✦';
+            }
+
+            // COLOR RENDERING: Authentic Sampled Album Pigments (Clean, Unified Editorial Palette)
+            const artR = AsciiStage.r[idx];
+            const artG = AsciiStage.g[idx];
+            const artB = AsciiStage.b[idx];
+
+            let alpha = Math.min(0.94, dynamicLum * 0.98);
+
+            // Active Lyric Word Exclusion Zone: Gently attenuate characters behind the active lyric word
+            const distLyric = Math.hypot((nx - focalX) * 1.3, (ny - focalY) * 2.2);
+            if (distLyric < 0.42) {
+              const lyricMask = Math.pow(distLyric / 0.42, 1.5);
+              alpha *= (0.20 + 0.80 * lyricMask);
+            }
+
+            // Pearlescent highlight blending for high-luminance points
+            const hlBlend = Math.max(0, Math.min(1, (dynamicLum - 0.62) / 0.38));
+            const finalR = Math.round(artR * (1 - hlBlend) + 246 * hlBlend);
+            const finalG = Math.round(artG * (1 - hlBlend) + 244 * hlBlend);
+            const finalB = Math.round(artB * (1 - hlBlend) + 242 * hlBlend);
+
+            asciiCtx.fillStyle = `rgba(${finalR}, ${finalG}, ${finalB}, ${alpha.toFixed(2)})`;
+
+            asciiCtx.fillText(ch, px, py);
+          }
+        }
+
+        // 3. Render Continuous Connected Typographic Thread / Ligature between Lyric Words
+        if (elPrevGroup && elActiveGroup && elNextGroup) {
+          const rPrev = elPrevGroup.getBoundingClientRect();
+          const rAct = elActiveGroup.getBoundingClientRect();
+          const rNext = elNextGroup.getBoundingClientRect();
+
+          if (rPrev.width > 0 && rAct.width > 0) {
+            asciiCtx.save();
+            asciiCtx.lineWidth = 1.0;
+            const threadPulse = 0.28 + 0.18 * Math.sin(timeSec * 3.2);
+
+            const prevEndX = rPrev.right;
+            const prevEndY = rPrev.top + rPrev.height * 0.52;
+            const actStartX = rAct.left + 8;
+            const actStartY = rAct.top + rAct.height * 0.52;
+            const actEndX = rAct.right - 8;
+            const actEndY = actStartY;
+
+            // Link Prev to Active Word
+            const grad1 = asciiCtx.createLinearGradient(prevEndX, prevEndY, actStartX, actStartY);
+            grad1.addColorStop(0, `rgba(255, 255, 255, ${(0.14 * threadPulse).toFixed(3)})`);
+            grad1.addColorStop(0.5, `rgba(${Math.round(ar)}, ${Math.round(ag)}, ${Math.round(ab)}, ${(0.55 * threadPulse).toFixed(3)})`);
+            grad1.addColorStop(1, `rgba(255, 255, 255, ${(0.42 * threadPulse).toFixed(3)})`);
+            asciiCtx.strokeStyle = grad1;
+            asciiCtx.beginPath();
+            asciiCtx.moveTo(prevEndX, prevEndY);
+            const cpx1 = (prevEndX + actStartX) * 0.5;
+            asciiCtx.bezierCurveTo(cpx1, prevEndY, cpx1, actStartY, actStartX, actStartY);
+            asciiCtx.stroke();
+
+            // Link Active Word to Next Word
+            if (rNext.width > 0) {
+              const nextStartX = rNext.left;
+              const nextStartY = rNext.top + rNext.height * 0.52;
+              const grad2 = asciiCtx.createLinearGradient(actEndX, actEndY, nextStartX, nextStartY);
+              grad2.addColorStop(0, `rgba(255, 255, 255, ${(0.42 * threadPulse).toFixed(3)})`);
+              grad2.addColorStop(0.5, `rgba(${Math.round(ar)}, ${Math.round(ag)}, ${Math.round(ab)}, ${(0.55 * threadPulse).toFixed(3)})`);
+              grad2.addColorStop(1, `rgba(255, 255, 255, ${(0.14 * threadPulse).toFixed(3)})`);
+              asciiCtx.strokeStyle = grad2;
+              asciiCtx.beginPath();
+              asciiCtx.moveTo(actEndX, actEndY);
+              const cpx2 = (actEndX + nextStartX) * 0.5;
+              asciiCtx.bezierCurveTo(cpx2, actEndY, cpx2, nextStartY, nextStartX, nextStartY);
+              asciiCtx.stroke();
+            }
+            asciiCtx.restore();
+          }
+        }
+
+        // 4. Render Cleanly Framed Celestial Orbital Bezier Arc & Glowing Tracking Dot
+        asciiCtx.save();
+        const orbitCx = stageLeft + stageWidth * 0.45;
+        const orbitCy = stageTop + stageHeight * 0.48;
+        const orbitRx = stageWidth * 0.36; // Safely proportioned inside stage
+        const orbitRy = stageHeight * 0.115;
+        const orbitTilt = -0.30;
+
+        asciiCtx.translate(orbitCx, orbitCy);
+        asciiCtx.rotate(orbitTilt);
+
+        // Draw delicate elliptical orbital hairline
+        asciiCtx.strokeStyle = 'rgba(216, 216, 220, 0.18)';
+        asciiCtx.lineWidth = 1.0;
+        asciiCtx.beginPath();
+        asciiCtx.ellipse(0, 0, orbitRx, orbitRy, 0, -0.35, Math.PI * 1.82);
+        asciiCtx.stroke();
+
+        // Luminous Orbital Node Dot
+        const nodeAngle = 0.22 + Math.sin(timeSec * 0.35) * 0.08;
+        const nodeX = Math.cos(nodeAngle) * orbitRx;
+        const nodeY = Math.sin(nodeAngle) * orbitRy;
+
+        const nodeGlow = asciiCtx.createRadialGradient(nodeX, nodeY, 0.5, nodeX, nodeY, 10 + State.audio.bass * 6);
+        nodeGlow.addColorStop(0, 'rgba(255, 255, 255, 1)');
+        nodeGlow.addColorStop(0.35, 'rgba(242, 240, 237, 0.55)');
+        nodeGlow.addColorStop(1, 'rgba(242, 240, 237, 0)');
+        asciiCtx.fillStyle = nodeGlow;
+        asciiCtx.beginPath();
+        asciiCtx.arc(nodeX, nodeY, 10 + State.audio.bass * 6, 0, Math.PI * 2);
+        asciiCtx.fill();
+
+        asciiCtx.fillStyle = '#FFFFFF';
+        asciiCtx.beginPath();
+        asciiCtx.arc(nodeX, nodeY, 2.2, 0, Math.PI * 2);
+        asciiCtx.fill();
+        asciiCtx.restore();
+
+        // 5. Render Bottom Undulating 3D Crimson & Silver Dotted Wave Mesh
+        asciiCtx.save();
+        const waveLines = 24;
+        const waveSteps = 130;
+        const waveStartX = w * 0.43;
+        const waveEndX = w * 0.83;
+        const waveBaseY = h * 0.945;
+
+        for (let l = 0; l < waveLines; l++) {
+          const layerNorm = l / (waveLines - 1); // 0 (back) to 1 (front)
+          for (let s = 0; s < waveSteps; s += 2) {
+            const u = s / (waveSteps - 1); // 0 to 1 horizontally
+            const wx = waveStartX + u * (waveEndX - waveStartX);
+
+            // Envelope peaks on the left-center of the right stage and tapers to the right
+            const env = Math.sin(u * Math.PI) * Math.exp(-Math.pow((u - 0.28) * 2.2, 2));
+            const phase = u * 8.5 - timeSec * (0.9 * motionMult) + layerNorm * 2.1;
+            const wy = waveBaseY
+              - env * (68 + State.audio.bass * 26) * (0.35 + 0.65 * Math.sin(phase))
+              + (layerNorm - 0.5) * 34 * (1.0 - u * 0.5);
+
+            if (wy > h || wy < h * 0.72) continue;
+
+            // Color blend: Primary album accent ridge along the primary crest, silver/charcoal elsewhere
+            const isCrimsonCrest = (layerNorm > 0.55 && layerNorm < 0.85 && u < 0.55);
+            if (isCrimsonCrest) {
+              const cAlpha = (0.24 + env * 0.60).toFixed(2);
+              asciiCtx.fillStyle = `rgba(${Math.round(ar)}, ${Math.round(ag)}, ${Math.round(ab)}, ${cAlpha})`;
+            } else {
+              const sAlpha = (0.08 + env * 0.28 * (1 - Math.abs(layerNorm - 0.5))).toFixed(2);
+              asciiCtx.fillStyle = `rgba(210, 208, 214, ${sAlpha})`;
+            }
+
+            asciiCtx.fillRect(wx, wy, 1.5, 1.2);
+          }
+        }
+        asciiCtx.restore();
+
+        // 6. Render Active Character Particles (Dissolving from/toward Lyric Typography)
+        if (State.particles.length > 0) {
+          for (let i = State.particles.length - 1; i >= 0; i--) {
+            const p = State.particles[i];
+            p.x += p.vx * dt * 60;
+            p.y += p.vy * dt * 60;
+            p.life -= dt * 0.9;
+            if (p.life <= 0) {
+              State.particles.splice(i, 1);
+              continue;
+            }
+            asciiCtx.font = `500 ${p.size || 10}px 'JetBrains Mono', monospace`;
+            asciiCtx.fillStyle = p.isAccent
+              ? `rgba(${Math.round(ar)}, ${Math.round(ag)}, ${Math.round(ab)}, ${(p.life * 0.88).toFixed(2)})`
+              : `rgba(242, 240, 237, ${(p.life * 0.78).toFixed(2)})`;
+            asciiCtx.fillText(p.char, p.x, p.y);
+          }
+        }
+
+        asciiCtx.restore();
+      }
+
+      // ASCII Matrix Scramble Engine for Kinetic Typography Transitions (with Unicode & Indic Grapheme support)
+      const ASCII_SCRAMBLE_POOL = '$/%*#!?&+=~<>\\[]{}|;:_0179^@§ø∆';
+      let scrambleAnimFrame = null;
+
+      function startLyricScramble(targetWord) {
+        if (!targetWord) {
+          elActiveText.textContent = '';
+          return;
+        }
+
+        if (State.reducedMotion) {
+          elActiveText.textContent = targetWord;
+          return;
+        }
+
+        if (scrambleAnimFrame) {
+          cancelAnimationFrame(scrambleAnimFrame);
+          scrambleAnimFrame = null;
+        }
+
+        // Segment international words safely without breaking combining glyphs (e.g. Hindi, Punjabi, Japanese)
+        const segmenter = (typeof Intl !== 'undefined' && Intl.Segmenter) ? new Intl.Segmenter(undefined, { granularity: 'grapheme' }) : null;
+        const chars = segmenter ? [...segmenter.segment(targetWord)].map(s => s.segment) : Array.from(targetWord);
+        const len = chars.length;
+        const startTime = performance.now();
+        // Dynamic duration: snappy for short words (140ms), graceful for long words (280ms)
+        const totalDuration = Math.min(280, Math.max(140, 90 + len * 16));
+
+        const resolves = chars.map((ch, idx) => {
+          return {
+            char: ch,
+            // Cascading resolve from left to right
+            resolveAt: startTime + 35 + (idx / Math.max(1, len - 1)) * (totalDuration - 35)
+          };
+        });
+
+        function step() {
+          const now = performance.now();
+          let allDone = true;
+          let outStr = '';
+
+          for (let i = 0; i < resolves.length; i++) {
+            const item = resolves[i];
+            if (item.char === ' ' || item.char === '\n') {
+              outStr += item.char;
+            } else if (now >= item.resolveAt) {
+              outStr += item.char;
+            } else {
+              allDone = false;
+              // Shimmer with a random glyph from the ASCII pool
+              const rIdx = Math.floor(Math.random() * ASCII_SCRAMBLE_POOL.length);
+              outStr += ASCII_SCRAMBLE_POOL[rIdx];
+            }
+          }
+
+          elActiveText.textContent = outStr;
+
+          if (!allDone) {
+            scrambleAnimFrame = requestAnimationFrame(step);
+          } else {
+            elActiveText.textContent = targetWord;
+            scrambleAnimFrame = null;
+          }
+        }
+
+        step();
+      }
+
+      // Spawn a burst of kinetic ASCII character shards around the active word on lyric change
+      function spawnLyricParticles(wordText) {
+        if (State.reducedMotion) return;
+        const w = window.innerWidth;
+        const h = window.innerHeight;
+        const rect = elActiveText.getBoundingClientRect();
+        const centerX = rect.width ? (rect.left + rect.width * 0.5) : (w * 0.58);
+        const centerY = rect.height ? (rect.top + rect.height * 0.5) : (h * 0.48);
+        const chars = (wordText || 'coming') + '#@$%&*!?+~<>/^;:=1279';
+
+        const count = 38;
+        for (let i = 0; i < count; i++) {
+          const angle = Math.random() * Math.PI * 2;
+          const speed = 0.6 + Math.random() * 2.8;
+          State.particles.push({
+            x: centerX + (Math.random() - 0.5) * Math.max(80, rect.width || 180),
+            y: centerY + (Math.random() - 0.5) * Math.max(30, rect.height || 60),
+            vx: Math.cos(angle) * speed,
+            vy: Math.sin(angle) * speed - 0.4,
+            char: chars[Math.floor(Math.random() * chars.length)],
+            life: 0.7 + Math.random() * 0.6,
+            maxLife: 1.3,
+            size: 8 + Math.floor(Math.random() * 7),
+            isAccent: Math.random() < 0.38
+          });
+        }
+      }
+
+      /* ===================================================================
+       * 7. REAL-TIME WEB AUDIO SYNTHESIS, FILE ANALYZER & ENVELOPE FOLLOWER
+       * =================================================================== */
+      let audioCtx = null;
+      let analyserNode = null;
+      let freqDataArray = null;
+      let synthInterval = null;
+      let localAudioSourceConnected = false;
+
+      function initWebAudio() {
+        if (audioCtx) return;
+        const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+        audioCtx = new AudioContextClass();
+        analyserNode = audioCtx.createAnalyser();
+        analyserNode.fftSize = 256;
+        analyserNode.smoothingTimeConstant = 0.82;
+        freqDataArray = new Uint8Array(analyserNode.frequencyBinCount);
+      }
+
+      function toggleBuiltInSynth(forceState) {
+        State.synthEnabled = typeof forceState === 'boolean' ? forceState : !State.synthEnabled;
+        const btn = document.getElementById('btn-toggle-synth');
+        if (btn) {
+          btn.textContent = `WebAudio Synth: ${State.synthEnabled ? 'ON' : 'OFF'} [M]`;
+        }
+
+        if (State.synthEnabled) {
+          initWebAudio();
+          if (audioCtx.state === 'suspended') audioCtx.resume();
+          startSynthLoop();
+        } else {
+          if (synthInterval) {
+            clearInterval(synthInterval);
+            synthInterval = null;
+          }
+        }
+      }
+
+      function startSynthLoop() {
+        if (synthInterval) clearInterval(synthInterval);
+        let step = 0;
+        synthInterval = setInterval(() => {
+          if (!State.synthEnabled || !State.isPlaying || !audioCtx) return;
+          const track = TRACK_LIBRARY[State.currentTrackIndex];
+          const now = audioCtx.currentTime;
+          const root = track.rootFreq || 110;
+          const chordRatios = [1, 1.2, 1.5, 1.8, 2.0];
+          const noteFreq = root * chordRatios[step % chordRatios.length];
+
+          // Atmospheric warm pad / bass pulse
+          const osc = audioCtx.createOscillator();
+          const gain = audioCtx.createGain();
+          const filter = audioCtx.createBiquadFilter();
+
+          osc.type = step % 2 === 0 ? 'sawtooth' : 'triangle';
+          osc.frequency.setValueAtTime(step % 4 === 0 ? root * 0.5 : noteFreq, now);
+
+          filter.type = 'lowpass';
+          filter.frequency.setValueAtTime(380 + (step % 3) * 260, now);
+
+          gain.gain.setValueAtTime(0.001, now);
+          gain.gain.exponentialRampToValueAtTime(step % 4 === 0 ? 0.14 : 0.06, now + 0.06);
+          gain.gain.exponentialRampToValueAtTime(0.0008, now + 0.65);
+
+          osc.connect(filter);
+          filter.connect(gain);
+          gain.connect(analyserNode);
+          analyserNode.connect(audioCtx.destination);
+
+          osc.start(now);
+          osc.stop(now + 0.68);
+          step++;
+        }, 480);
+      }
+
+      async function toggleLiveAudioListening(forceState) {
+        const nextState = typeof forceState === 'boolean' ? forceState : !State.isListeningToAudio;
+
+        if (!nextState) {
+          // Stop listening
+          if (State.micMediaStream) {
+            State.micMediaStream.getTracks().forEach(t => t.stop());
+            State.micMediaStream = null;
+          }
+          State.isListeningToAudio = false;
+          updateAudioListenUi();
+          return;
+        }
+
+        try {
+          initWebAudio();
+          if (audioCtx.state === 'suspended') {
+            await audioCtx.resume();
+          }
+
+          const stream = await navigator.mediaDevices.getUserMedia({
+            audio: {
+              echoCancellation: false,
+              noiseSuppression: false,
+              autoGainControl: false
+            },
+            video: false
+          });
+
+          State.micMediaStream = stream;
+          const micSource = audioCtx.createMediaStreamSource(stream);
+          micSource.connect(analyserNode);
+          // Note: NOT connected to audioCtx.destination to prevent speaker feedback loop!
+
+          State.isListeningToAudio = true;
+          State.mediaSource = 'LIVE AUDIO INPUT (MIC / STEREO MIX)';
+          document.getElementById('hud-source').textContent = State.mediaSource;
+          updateAudioListenUi();
+        } catch (err) {
+          console.warn('[Song-Node] Live audio capture not granted or unavailable:', err);
+          updateAudioListenUi();
+        }
+      }
+
+      function updateAudioListenUi() {
+        const dot = document.getElementById('audio-listen-dot');
+        const label = document.getElementById('audio-listen-label');
+        const btn = document.getElementById('btn-audio-listen');
+        const hudBtn = document.getElementById('btn-hud-audio');
+
+        if (State.isListeningToAudio) {
+          if (dot) dot.className = 'w-1.5 h-1.5 rounded-full bg-emerald-400 shadow-[0_0_8px_#34d399] animate-pulse';
+          if (label) {
+            label.textContent = 'LISTENING [A]';
+            label.className = 'text-emerald-300 font-medium';
+          }
+          if (btn) btn.classList.add('border-emerald-500/50', 'bg-emerald-950/40');
+          if (hudBtn) {
+            hudBtn.textContent = 'Audio Input: LISTENING (MIC/DESKTOP) [A]';
+            hudBtn.className = 'col-span-2 px-2.5 py-1.5 rounded bg-emerald-950/60 border border-emerald-500/50 text-left truncate text-emerald-300 font-medium';
+          }
+        } else {
+          if (dot) dot.className = 'w-1.5 h-1.5 rounded-full bg-neutral-600 transition-colors';
+          if (label) {
+            label.textContent = 'LISTEN TO AUDIO [A]';
+            label.className = 'text-[#B8B4BA] font-normal';
+          }
+          if (btn) btn.classList.remove('border-emerald-500/50', 'bg-emerald-950/40');
+          if (hudBtn) {
+            hudBtn.textContent = 'Audio Input: IDLE (CLICK OR PRESS A)';
+            hudBtn.className = 'col-span-2 px-2.5 py-1.5 rounded bg-white/10 hover:bg-white/20 text-left truncate font-medium text-[#F2F0ED]';
+          }
+        }
+      }
+
+      function updateAudioFeatures(timeSec, dt) {
+        const track = TRACK_LIBRARY[State.currentTrackIndex];
+
+        // If real Web Audio Analyser is active (Live Audio Listening, Synth, or Uploaded Audio File)
+        if (analyserNode && (State.isListeningToAudio || State.synthEnabled || localAudioSourceConnected)) {
+          analyserNode.getByteFrequencyData(freqDataArray);
+          let bassSum = 0, midSum = 0, highSum = 0;
+          const len = freqDataArray.length;
+          for (let i = 0; i < len; i++) {
+            const val = freqDataArray[i] / 255.0;
+            if (i < 12) bassSum += val;
+            else if (i < 48) midSum += val;
+            else highSum += val;
+          }
+          const targetBass = bassSum / 12;
+          const targetMid = midSum / 36;
+          const targetHigh = highSum / (len - 48);
+          const targetRms = targetBass * 0.45 + targetMid * 0.35 + targetHigh * 0.20;
+
+          const prevBass = State.audio.bass;
+          State.audio.bass += (targetBass - State.audio.bass) * 0.30;
+          State.audio.mid += (targetMid - State.audio.mid) * 0.26;
+          State.audio.high += (targetHigh - State.audio.high) * 0.30;
+          State.audio.rms += (targetRms - State.audio.rms) * 0.24;
+          State.audio.flux = Math.min(1, Math.max(0, (State.audio.bass - prevBass) * 5.0));
+          return;
+        }
+
+        if (!State.isPlaying) {
+          // Smooth decay when paused
+          State.audio.rms *= 0.92;
+          State.audio.bass *= 0.92;
+          State.audio.mid *= 0.92;
+          State.audio.high *= 0.92;
+          State.audio.flux *= 0.90;
+          State.audio.beatPulse *= 0.88;
+          return;
+        }
+
+        // Expressive Tempo-Synced Audio Simulation Profile when running in Offline Showcase Mode
+        const bpm = (State.isLiveSmtcMode ? 120 : (track ? track.bpm : 120)) || 120;
+        const beatFreq = (bpm / 60) * Math.PI * 2;
+        const beatWave = Math.pow(0.5 + 0.5 * Math.sin(timeSec * beatFreq), 4);
+        const subWave = 0.5 + 0.5 * Math.sin(timeSec * 1.7 + (State.duration || 200));
+        const highWave = 0.5 + 0.5 * Math.cos(timeSec * 6.3);
+
+        const turb = track ? (track.turbulence || 0.7) : 0.7;
+        const targetBass = 0.22 + beatWave * 0.52 * turb;
+        const targetMid = 0.20 + subWave * 0.38;
+        const targetHigh = 0.14 + highWave * 0.30;
+        const targetRms = targetBass * 0.42 + targetMid * 0.38 + targetHigh * 0.20;
+
+        State.audio.bass += (targetBass - State.audio.bass) * 0.18;
+        State.audio.mid += (targetMid - State.audio.mid) * 0.15;
+        State.audio.high += (targetHigh - State.audio.high) * 0.18;
+        State.audio.rms += (targetRms - State.audio.rms) * 0.15;
+        State.audio.flux = beatWave * 0.65;
+      }
+
+      /* ===================================================================
+       * 8. LYRIC SYNCHRONIZATION & KINETIC TYPOGRAPHY CONTROLLER
+       * =================================================================== */
+      const elPrevText = document.getElementById('lyric-prev-text');
+      const elActiveText = document.getElementById('lyric-active-text');
+      const elNextText = document.getElementById('lyric-next-text');
+      const elActiveGroup = document.getElementById('lyric-active-group');
+      const elPrevGroup = document.getElementById('lyric-prev-group');
+      const elNextGroup = document.getElementById('lyric-next-group');
+
+      function syncLyricsToTimestamp(currentTime, timeSec) {
+        let phrases = [];
+        if (State.isLiveSmtcMode) {
+          if (State.livePhrases && State.livePhrases.length > 0) {
+            phrases = State.livePhrases;
+          } else {
+            // Live track active, but timed lyrics not loaded yet or unavailable
+            // Display clean editorial typography for track title and artist cue instead of another track's lyrics!
+            const titleWord = State.liveTrackTitle ? State.liveTrackTitle.toUpperCase() : 'PLAYING';
+            const artistWord = State.liveTrackArtist ? State.liveTrackArtist.toUpperCase() : '';
+            if (State.currentPhraseIndex !== -999) {
+              State.currentPhraseIndex = -999;
+              State.prevWord = '';
+              State.activeWord = titleWord;
+              State.nextWord = artistWord;
+              State.wordEntryTime = timeSec;
+
+              elPrevText.textContent = '';
+              elPrevGroup.style.opacity = '0';
+              elNextText.textContent = artistWord;
+              elNextGroup.style.opacity = '0.7';
+
+              elActiveText.textContent = titleWord;
+              const activeLen = titleWord.length;
+              if (activeLen > 14) {
+                elActiveText.style.fontSize = 'clamp(1.6rem, 3.8vw, 3.2rem)';
+              } else if (activeLen > 8) {
+                elActiveText.style.fontSize = 'clamp(2.2rem, 5.2vw, 4.4rem)';
+              } else {
+                elActiveText.style.fontSize = '';
+              }
+              elActiveText.style.letterSpacing = '';
+              startLyricScramble(titleWord);
+            }
+            return;
+          }
+        } else {
+          const track = TRACK_LIBRARY[State.currentTrackIndex];
+          phrases = track ? track.phrases : [];
+        }
+
+        if (!phrases || phrases.length === 0) return;
+
+        // Check if currentTime is before first cue (Intro instrumental state)
+        if (currentTime < phrases[0].start) {
+          if (State.currentPhraseIndex !== -1) {
+            State.currentPhraseIndex = -1;
+            State.prevWord = '';
+            State.activeWord = '···';
+            State.nextWord = phrases[0].active || '';
+            State.wordEntryTime = timeSec;
+
+            elPrevText.textContent = '';
+            elPrevGroup.style.opacity = '0';
+            elNextText.textContent = State.nextWord;
+            elNextGroup.style.opacity = '0.55';
+
+            elActiveText.textContent = '···';
+            elActiveText.style.fontSize = 'clamp(2.4rem, 5vw, 4.2rem)';
+            elActiveText.style.letterSpacing = '0.35em';
+          }
+          return;
+        }
+
+        let activeIdx = 0;
+        for (let i = 0; i < phrases.length; i++) {
+          if (currentTime >= phrases[i].start) {
+            activeIdx = i;
+          } else {
+            break;
+          }
+        }
+
+        if (activeIdx !== State.currentPhraseIndex) {
+          State.currentPhraseIndex = activeIdx;
+          const cue = phrases[activeIdx];
+          State.prevWord = cue.prev || '';
+          State.activeWord = cue.active || '';
+          State.nextWord = cue.next || '';
+          State.wordEntryTime = timeSec;
+
+          elPrevText.textContent = State.prevWord;
+          elPrevGroup.style.opacity = State.prevWord ? '1' : '0';
+
+          elNextText.textContent = State.nextWord;
+          elNextGroup.style.opacity = State.nextWord ? '1' : '0';
+
+          // Adaptive font size for long words so typography never overflows
+          const activeLen = State.activeWord.length;
+          if (activeLen > 14) {
+            elActiveText.style.fontSize = 'clamp(1.6rem, 3.8vw, 3.4rem)';
+          } else if (activeLen > 8) {
+            elActiveText.style.fontSize = 'clamp(2.2rem, 5.2vw, 4.6rem)';
+          } else {
+            elActiveText.style.fontSize = '';
+          }
+          elActiveText.style.letterSpacing = '';
+
+          // Trigger ASCII Matrix Scramble & Particle Burst
+          startLyricScramble(State.activeWord);
+
+          const hudWord = document.getElementById('hud-word');
+          if (hudWord) hudWord.textContent = `"${State.activeWord}"`;
+
+          spawnLyricParticles(State.activeWord);
+        }
+
+        // Instrumental bridge gap handling (> 2.8s after cue ends, and > 2s before next cue starts)
+        const currentCue = phrases[activeIdx];
+        if (currentCue && currentCue.end && (currentTime > currentCue.end + 2.8) && (activeIdx < phrases.length - 1)) {
+          const nextStart = phrases[activeIdx + 1].start;
+          if (nextStart - currentTime > 2.0) {
+            elActiveGroup.style.opacity = '0.35';
+          } else {
+            elActiveGroup.style.opacity = '1';
+          }
+        } else {
+          elActiveGroup.style.opacity = '1';
+        }
+
+        // Connected transition slide interpolation (words glide smoothly along the horizontal thread)
+        const transitionAge = Math.min(1.0, (timeSec - State.wordEntryTime) / 0.38);
+        const slideEase = 1 - Math.pow(1 - transitionAge, 3); // cubic ease-out
+        const slideOffset = (1 - slideEase) * 26; // slides smoothly along the connected thread
+
+        // Subtle kinetic floating & audio-reactive kick scale on active word
+        const age = Math.min(1, (timeSec - State.wordEntryTime) * 1.8);
+        const springScale = 0.94 + 0.06 * (1 - Math.pow(1 - age, 3)) + State.audio.bass * (State.reducedMotion ? 0.005 : 0.022);
+        const driftX = Math.sin(timeSec * 0.65) * (State.reducedMotion ? 1 : 5);
+        const driftY = Math.cos(timeSec * 0.5) * (State.reducedMotion ? 0.5 : 3);
+
+        const activeX = driftX + slideOffset;
+        const prevX = -driftX * 0.45 + slideOffset * 0.55;
+        const nextX = driftX * 0.55 + slideOffset * 0.65;
+
+        elActiveGroup.style.transform = `translate3d(${activeX.toFixed(1)}px, ${driftY.toFixed(1)}px, 0) scale(${springScale.toFixed(3)})`;
+        elPrevGroup.style.transform = `translate3d(${prevX.toFixed(1)}px, ${(driftY * 0.35).toFixed(1)}px, 0)`;
+        elNextGroup.style.transform = `translate3d(${nextX.toFixed(1)}px, ${(-driftY * 0.4).toFixed(1)}px, 0)`;
+
+        // Connected hairline glow pulse during word transition
+        const leadLine = document.getElementById('lyric-active-leadline');
+        const trailLine = document.getElementById('lyric-active-trailline');
+        if (leadLine && trailLine) {
+          const lineAlpha = (0.28 + (1 - transitionAge) * 0.50).toFixed(2);
+          leadLine.style.opacity = lineAlpha;
+          trailLine.style.opacity = lineAlpha;
+        }
+      }
+
+      /* ===================================================================
+       * 9. UI, CLOCK, METADATA, MICRO-EQ & TRACK TRANSITIONS
+       * =================================================================== */
+      const microEqBars = [];
+      function initMicroEqualizerAndRuler() {
+        const eqContainer = document.getElementById('micro-eq-container');
+        eqContainer.innerHTML = '';
+        for (let i = 0; i < 20; i++) {
+          const bar = document.createElement('div');
+          bar.className = 'w-[1.5px] bg-[#9E9A9F] rounded-t transition-all duration-75';
+          bar.style.height = '4px';
+          eqContainer.appendChild(bar);
+          microEqBars.push(bar);
+        }
+        eqContainer.style.cursor = 'pointer';
+        eqContainer.addEventListener('click', () => toggleBuiltInSynth());
+
+        // Left-edge subtle crimson micro-tick ruler
+        const ruler = document.getElementById('left-edge-ruler');
+        ruler.innerHTML = '';
+        for (let i = 0; i < 48; i++) {
+          const tick = document.createElement('div');
+          tick.className = 'h-[1px] bg-[#C51E43]/45';
+          tick.style.width = (i % 5 === 0) ? '6px' : '3px';
+          ruler.appendChild(tick);
+        }
+      }
+
+      function formatTime(sec) {
+        const s = Math.max(0, Math.floor(sec));
+        const m = Math.floor(s / 60);
+        const rem = s % 60;
+        return `${m}:${rem < 10 ? '0' : ''}${rem}`;
+      }
+
+      function updateClock() {
+        const now = new Date();
+        const days = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
+        const months = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
+        const dStr = `${days[now.getDay()]} ${String(now.getDate()).padStart(2, '0')} ${months[now.getMonth()]}`;
+        const hh = String(now.getHours()).padStart(2, '0');
+        const mm = String(now.getMinutes()).padStart(2, '0');
+        const ss = String(now.getSeconds()).padStart(2, '0');
+
+        document.getElementById('clock-date').textContent = dStr;
+        document.getElementById('clock-hm').textContent = `${hh}:${mm}`;
+        document.getElementById('clock-sec').textContent = ss;
+      }
+
+      function updateTrackInfoDisplay(title, artist) {
+        const tEl = document.getElementById('top-track-title') || document.getElementById('top-right-title') || document.getElementById('bottom-track-title');
+        const aEl = document.getElementById('top-track-artist') || document.getElementById('top-right-sub') || document.getElementById('bottom-track-artist');
+        if (tEl) tEl.textContent = title;
+        if (aEl) aEl.textContent = artist;
+      }
+
+      function applyTrackMetadataAndPalette(track) {
+        // Update DOM metadata
+        updateTrackInfoDisplay(track.title, track.artist);
+        document.getElementById('meta-album').textContent = `ALBUM / ${track.album}`;
+        document.getElementById('meta-year').textContent = `YEAR / ${track.year}`;
+        document.getElementById('meta-genre').textContent = `GENRE / ${track.genre}`;
+        document.getElementById('time-total').textContent = formatTime(track.duration);
+
+        // Developer HUD readouts
+        document.getElementById('hud-track').textContent = `${track.title} — ${track.artist}`;
+        document.getElementById('hud-personality').textContent = track.personalityName;
+
+        updateMiniThumbnail(track);
+
+        // Sample authentic track artwork directly into generative ASCII grid
+        const art = getTrackArtworkCanvas(track);
+        if (art) {
+          sampleImageIntoAsciiGrid(art);
+        }
+
+        // Extract palette from track's artwork
+        const pal = extractPaletteFromImage(art);
+        if (pal) {
+          setTargetPalette(pal);
+        } else {
+          setTargetPalette({
+            primary: track.accentRgb,
+            secondary: [Math.round(track.accentRgb[0] * 0.5), Math.round(track.accentRgb[1] * 0.5), Math.round(track.accentRgb[2] * 0.5)],
+            highlight: [241, 231, 232],
+            abyss: [5, 5, 6]
+          });
+        }
+      }
+
+      // Coordinated 1.4-Second Audiovisual Track Transition Sequence
+      function switchTrack(newIndex) {
+        const idx = (newIndex + TRACK_LIBRARY.length) % TRACK_LIBRARY.length;
+        State.currentTrackIndex = idx;
+        State.customArtworkCanvas = null;
+        State.customSilhouetteGrid = null;
+
+        const track = TRACK_LIBRARY[idx];
+        State.duration = track.duration;
+        State.currentTime = track.defaultStartTime || 0;
+        State.currentPhraseIndex = -1;
+        State.isTransitioning = true;
+        State.transitionProgress = 1.0;
+
+        // Trigger acrylic optical light sweep
+        const sweepEl = document.getElementById('optical-sweep');
+        sweepEl.classList.remove('sweeping');
+        void sweepEl.offsetWidth;
+        sweepEl.classList.add('sweeping');
+
+        applyTrackMetadataAndPalette(track);
+        syncLyricsToTimestamp(State.currentTime, performance.now() / 1000);
+        spawnLyricParticles(State.activeWord);
+      }
+
+      /* ===================================================================
+       * 10. LIVELY WALLPAPER, WALLPAPER ENGINE & SMTC WEBSOCKET ADAPTERS
+       * =================================================================== */
+      function triggerOpticalSweep() {
+        const sweepEl = document.getElementById('optical-sweep');
+        if (sweepEl) {
+          sweepEl.classList.remove('sweeping');
+          void sweepEl.offsetWidth;
+          sweepEl.classList.add('sweeping');
+        }
+      }
+
+      function rgbToHex(r, g, b) {
+        return '#' + [r, g, b].map(x => Math.max(0, Math.min(255, Math.round(x))).toString(16).padStart(2, '0')).join('');
+      }
+
+      function setTargetPalette(pal) {
+        if (!pal) return;
+        if (pal.primary && Array.isArray(pal.primary)) {
+          State.palette.target.primary = [pal.primary[0], pal.primary[1], pal.primary[2]];
+        }
+        if (pal.secondary && Array.isArray(pal.secondary)) {
+          State.palette.target.secondary = [pal.secondary[0], pal.secondary[1], pal.secondary[2]];
+        }
+        if (pal.highlight && Array.isArray(pal.highlight)) {
+          State.palette.target.highlight = [pal.highlight[0], pal.highlight[1], pal.highlight[2]];
+        }
+        if (pal.abyss && Array.isArray(pal.abyss)) {
+          State.palette.target.abyss = [pal.abyss[0], pal.abyss[1], pal.abyss[2]];
+        }
+
+        updateHudPaletteSwatches(State.palette.target);
+      }
+
+      function updateHudPaletteSwatches(pal) {
+        const p = pal.primary || State.palette.target.primary;
+        const s = pal.secondary || State.palette.target.secondary;
+        const h = pal.highlight || State.palette.target.highlight;
+        const a = pal.abyss || State.palette.target.abyss;
+
+        const pHex = rgbToHex(p[0], p[1], p[2]);
+        const sHex = rgbToHex(s[0], s[1], s[2]);
+        const hHex = rgbToHex(h[0], h[1], h[2]);
+        const aHex = rgbToHex(a[0], a[1], a[2]);
+
+        const elP = document.getElementById('swatch-primary');
+        const elS = document.getElementById('swatch-secondary');
+        const elH = document.getElementById('swatch-highlight');
+        const elA = document.getElementById('swatch-abyss');
+
+        if (elP) elP.style.backgroundColor = pHex;
+        if (elS) elS.style.backgroundColor = sHex;
+        if (elH) elH.style.backgroundColor = hHex;
+        if (elA) elA.style.backgroundColor = aHex;
+
+        const txtP = document.getElementById('hex-primary');
+        const txtS = document.getElementById('hex-secondary');
+        const txtH = document.getElementById('hex-highlight');
+        const txtA = document.getElementById('hex-abyss');
+
+        if (txtP) txtP.textContent = pHex.toUpperCase();
+        if (txtS) txtS.textContent = sHex.toUpperCase();
+        if (txtH) txtH.textContent = hHex.toUpperCase();
+        if (txtA) txtA.textContent = aHex.toUpperCase();
+      }
+
+      function extractPaletteFromImage(sourceImageOrCanvas) {
+        try {
+          const sampleSize = 48;
+          const c = document.createElement('canvas');
+          c.width = sampleSize;
+          c.height = sampleSize;
+          const ctx = c.getContext('2d', { willReadFrequently: true });
+          ctx.drawImage(sourceImageOrCanvas, 0, 0, sampleSize, sampleSize);
+          const data = ctx.getImageData(0, 0, sampleSize, sampleSize).data;
+
+          const candidates = [];
+          let sumR = 0, sumG = 0, sumB = 0;
+          let validPixels = 0;
+
+          for (let i = 0; i < data.length; i += 4) {
+            const r = data[i];
+            const g = data[i + 1];
+            const b = data[i + 2];
+
+            sumR += r;
+            sumG += g;
+            sumB += b;
+            validPixels++;
+
+            const max = Math.max(r, g, b);
+            const min = Math.min(r, g, b);
+            const delta = max - min;
+            const lum = (max + min) / 2;
+
+            if (lum < 20 || lum > 240) continue;
+
+            const sat = max === 0 ? 0 : delta / max;
+
+            if (sat > 0.16) {
+              const lightnessWeight = 1.0 - Math.abs(lum - 128) / 130;
+              const score = Math.pow(sat, 1.35) * lightnessWeight;
+              candidates.push({ r, g, b, sat, lum, score });
+            }
+          }
+
+          let primary = [197, 30, 67];
+          let secondary = [126, 18, 45];
+          let highlight = [241, 231, 232];
+          let abyss = [5, 5, 6];
+
+          if (candidates.length > 0) {
+            candidates.sort((a, b) => b.score - a.score);
+            const top = candidates[0];
+            primary = [top.r, top.g, top.b];
+
+            let foundSec = false;
+            for (let j = 1; j < candidates.length; j++) {
+              const c = candidates[j];
+              const dist = Math.abs(c.r - top.r) + Math.abs(c.g - top.g) + Math.abs(c.b - top.b);
+              if (dist > 75) {
+                secondary = [c.r, c.g, c.b];
+                foundSec = true;
+                break;
+              }
+            }
+
+            if (!foundSec) {
+              secondary = [
+                Math.max(10, Math.min(255, Math.round(top.r * 0.55 + 20))),
+                Math.max(10, Math.min(255, Math.round(top.g * 0.55 + 15))),
+                Math.max(10, Math.min(255, Math.round(top.b * 0.55 + 25)))
+              ];
+            }
+
+            highlight = [
+              Math.min(255, Math.round(top.r * 0.35 + 210)),
+              Math.min(255, Math.round(top.g * 0.35 + 210)),
+              Math.min(255, Math.round(top.b * 0.35 + 210))
+            ];
+
+            if (validPixels > 0) {
+              const avgR = sumR / validPixels;
+              const avgG = sumG / validPixels;
+              const avgB = sumB / validPixels;
+              abyss = [
+                Math.max(3, Math.min(14, Math.round(avgR * 0.06 + top.r * 0.02))),
+                Math.max(3, Math.min(14, Math.round(avgG * 0.06 + top.g * 0.02))),
+                Math.max(4, Math.min(18, Math.round(avgB * 0.08 + top.b * 0.03)))
+              ];
+            }
+          }
+
+          return { primary, secondary, highlight, abyss };
+        } catch (e) {
+          console.warn('[PaletteExtractor] Error analyzing image:', e);
+          return null;
+        }
+      }
+
+      function loadLiveArtwork(artworkSrc) {
+        if (!artworkSrc) return;
+        const img = new Image();
+        img.crossOrigin = 'anonymous';
+        img.onload = () => {
+          // 1. Offscreen 1024x1024 canvas for rotating optical disc
+          const c = document.createElement('canvas');
+          c.width = 1024;
+          c.height = 1024;
+          const ctx = c.getContext('2d');
+          ctx.drawImage(img, 0, 0, 1024, 1024);
+          State.customArtworkCanvas = c;
+
+          // 2. Mini thumbnail
+          if (miniThumbCtx) {
+            miniThumbCtx.clearRect(0, 0, 88, 88);
+            miniThumbCtx.drawImage(img, 0, 0, 88, 88);
+          }
+
+          // 3. Sample into generative ASCII grid
+          sampleImageIntoAsciiGrid(img);
+
+          // 4. Extract authentic album color palette & smoothly interpolate entire atmosphere!
+          const pal = extractPaletteFromImage(img);
+          if (pal) {
+            setTargetPalette(pal);
+          }
+        };
+        img.src = artworkSrc;
+      }
+
+      /* ===================================================================
+       * DUAL-LAYER LRCLIB LYRIC ENGINE (DIRECT IN-BROWSER & SMTC WEBSOCKET)
+       * =================================================================== */
+      function parseLrcToLines(lrcText) {
+        if (!lrcText) return [];
+        const lineRegex = /^\[(\d{2}):(\d{2}(?:\.\d+)?)\](.*)/;
+        const wordTagRegex = /<(\d{2}):(\d{2}(?:\.\d+)?)>([^<]+)/g;
+
+        function parseTimeMs(minStr, secStr) {
+          return Math.round((parseInt(minStr, 10) * 60 + parseFloat(secStr)) * 1000);
+        }
+
+        const rawLines = [];
+        let hasAnyWordTags = false;
+
+        const splitLines = lrcText.split(/\r?\n/);
+        for (const raw of splitLines) {
+          const m = raw.trim().match(lineRegex);
+          if (m) {
+            const startMs = parseTimeMs(m[1], m[2]);
+            const rest = m[3].trim();
+            const wordMatches = [...rest.matchAll(wordTagRegex)];
+
+            if (wordMatches.length > 0) {
+              hasAnyWordTags = true;
+              const words = [];
+              for (const wm of wordMatches) {
+                const wStart = parseTimeMs(wm[1], wm[2]);
+                const wText = wm[3].trim();
+                if (wText) {
+                  words.push({ text: wText, startMs: wStart, endMs: wStart + 400 });
+                }
+              }
+              for (let i = 0; i < words.length - 1; i++) {
+                words[i].endMs = words[i + 1].startMs;
+              }
+              rawLines.push({ startMs, endMs: startMs + 4000, words });
+            } else {
+              const plain = rest.replace(/<[^>]+>/g, '').trim();
+              if (plain) {
+                const tokens = plain.split(/\s+/).filter(Boolean);
+                rawLines.push({
+                  startMs,
+                  endMs: startMs + 4000,
+                  words: tokens.map(t => ({ text: t }))
+                });
+              }
+            }
+          }
+        }
+
+        rawLines.sort((a, b) => a.startMs - b.startMs);
+
+        for (let i = 0; i < rawLines.length; i++) {
+          const curr = rawLines[i];
+          if (i < rawLines.length - 1) {
+            curr.endMs = rawLines[i + 1].startMs;
+          } else {
+            curr.endMs = curr.startMs + 4500;
+          }
+
+          const words = curr.words || [];
+          if (words.length > 0) {
+            const lStart = curr.startMs;
+            const lEnd = Math.max(lStart + 1000, curr.endMs);
+            const wStep = (lEnd - lStart) / words.length;
+            for (let wIdx = 0; wIdx < words.length; wIdx++) {
+              if (words[wIdx].startMs === undefined) {
+                words[wIdx].startMs = Math.round(lStart + wIdx * wStep);
+                words[wIdx].endMs = Math.round(lStart + (wIdx + 1) * wStep);
+              }
+            }
+          }
+          if (hasAnyWordTags && words.length > 0 && words[words.length - 1].endMs !== undefined) {
+            words[words.length - 1].endMs = Math.min(curr.endMs, words[words.length - 1].endMs + 300);
+          }
+        }
+
+        return rawLines;
+      }
+
+      let activeFetchAbortController = null;
+      async function fetchLyricsDirect(title, artist, durationSec) {
+        if (!title) return;
+        if (activeFetchAbortController) {
+          activeFetchAbortController.abort();
+        }
+        activeFetchAbortController = new AbortController();
+        const signal = activeFetchAbortController.signal;
+
+        const cleanTitle = title.replace(/[\(\[\{].*?[\)\]\}]/g, '')
+                                .replace(/\s+[-–—]\s+.*$/, '')
+                                .replace(/\b(feat|ft|featuring|remix|version|edit|audio|video|official)\b.*$/i, '')
+                                .trim() || title.trim();
+        const cleanArtist = (artist || '').replace(/[\.\,\-]$/, '').trim();
+
+        // 1. Direct get query
+        try {
+          let directUrl = `https://lrclib.net/api/get?artist_name=${encodeURIComponent(cleanArtist)}&track_name=${encodeURIComponent(cleanTitle)}`;
+          if (durationSec > 10) {
+            directUrl += `&duration=${Math.round(durationSec)}`;
+          }
+          const res = await fetch(directUrl, { signal });
+          if (res.ok) {
+            const json = await res.json();
+            if (json && json.syncedLyrics) {
+              const lines = parseLrcToLines(json.syncedLyrics);
+              if (lines && lines.length > 0) {
+                console.log(`[LRCLIB Browser] Direct match: ${lines.length} lines for ${cleanArtist} - ${cleanTitle}`);
+                processLiveLyrics(lines);
+                return;
+              }
+            }
+          }
+        } catch (e) {
+          if (e.name === 'AbortError') return;
+        }
+
+        // 2. Search query fallbacks
+        const queries = [
+          `${cleanArtist} ${cleanTitle}`,
+          cleanArtist ? `${artist} ${cleanTitle}` : null,
+          cleanTitle
+        ].filter(Boolean);
+
+        for (const q of queries) {
+          try {
+            const searchUrl = `https://lrclib.net/api/search?q=${encodeURIComponent(q)}`;
+            const res = await fetch(searchUrl, { signal });
+            if (res.ok) {
+              const items = await res.json();
+              if (Array.isArray(items) && items.length > 0) {
+                const synced = items.filter(x => x && x.syncedLyrics);
+                if (synced.length > 0) {
+                  let best = synced[0];
+                  if (durationSec > 10) {
+                    best = synced.reduce((prev, curr) => {
+                      const prevDiff = Math.abs((prev.duration || 0) - durationSec);
+                      const currDiff = Math.abs((curr.duration || 0) - durationSec);
+                      return currDiff < prevDiff ? curr : prev;
+                    }, synced[0]);
+                  }
+                  const lines = parseLrcToLines(best.syncedLyrics);
+                  if (lines && lines.length > 0) {
+                    console.log(`[LRCLIB Browser] Search matched: ${lines.length} lines for query "${q}"`);
+                    processLiveLyrics(lines);
+                    return;
+                  }
+                }
+              }
+            }
+          } catch (e) {
+            if (e.name === 'AbortError') return;
+          }
+        }
+      }
+
+      function processLiveLyrics(lines) {
+        if (!lines || !Array.isArray(lines) || lines.length === 0) return;
+        const parsedCues = [];
+
+        for (let lIdx = 0; lIdx < lines.length; lIdx++) {
+          const line = lines[lIdx];
+          const words = line.words || [];
+
+          if (words.length > 0) {
+            for (let wIdx = 0; wIdx < words.length; wIdx++) {
+              const w = words[wIdx];
+              // Restrain prev and next to 1-3 nearest words for clean editorial layout
+              const prevWords = words.slice(Math.max(0, wIdx - 3), wIdx).map(x => x.text).join(' ');
+              const nextWords = words.slice(wIdx + 1, Math.min(words.length, wIdx + 4)).map(x => x.text).join(' ');
+
+              let prevText = prevWords;
+              if (!prevText && lIdx > 0) {
+                const prevLineWords = lines[lIdx - 1].words || [];
+                if (prevLineWords.length > 0) {
+                  prevText = prevLineWords.slice(-2).map(x => x.text).join(' ');
+                }
+              }
+
+              let nextText = nextWords;
+              if (!nextText && lIdx < lines.length - 1) {
+                const nextLineWords = lines[lIdx + 1].words || [];
+                if (nextLineWords.length > 0) {
+                  nextText = nextLineWords.slice(0, 2).map(x => x.text).join(' ');
+                }
+              }
+
+              parsedCues.push({
+                start: (w.startMs !== undefined ? w.startMs : line.startMs) / 1000.0,
+                end: (w.endMs !== undefined ? w.endMs : line.endMs) / 1000.0,
+                prev: prevText || '',
+                active: w.text || '',
+                next: nextText || ''
+              });
+            }
+          } else if (line.text) {
+            const tokens = line.text.trim().split(/\s+/).filter(Boolean);
+            const lineStart = (line.startMs || 0) / 1000.0;
+            const lineEnd = (line.endMs || (line.startMs + 4000)) / 1000.0;
+            const dur = Math.max(1.0, lineEnd - lineStart);
+            const step = dur / Math.max(1, tokens.length);
+
+            for (let tIdx = 0; tIdx < tokens.length; tIdx++) {
+              parsedCues.push({
+                start: lineStart + tIdx * step,
+                end: lineStart + (tIdx + 1) * step,
+                prev: tokens.slice(Math.max(0, tIdx - 3), tIdx).join(' '),
+                active: tokens[tIdx],
+                next: tokens.slice(tIdx + 1, Math.min(tokens.length, tIdx + 4)).join(' ')
+              });
+            }
+          }
+        }
+
+        parsedCues.sort((a, b) => a.start - b.start);
+
+        if (parsedCues.length > 0) {
+          State.livePhrases = parsedCues;
+          State.currentPhraseIndex = -1;
+          syncLyricsToTimestamp(State.currentTime, performance.now() / 1000);
+        }
+      }
+
+      let wsBridge = null;
+      let wsReconnectTimeout = null;
+
+      function connectSmtcBridge() {
+        try {
+          if (wsBridge) {
+            try { wsBridge.close(); } catch(e) {}
+          }
+          if (wsReconnectTimeout) {
+            clearTimeout(wsReconnectTimeout);
+            wsReconnectTimeout = null;
+          }
+
+          wsBridge = new WebSocket('ws://127.0.0.1:8765');
+
+          wsBridge.onopen = () => {
+            State.bridgeStatus = 'CONNECTED (SMTC LIVE)';
+            State.mediaSource = 'WINDOWS SMTC BRIDGE';
+            document.getElementById('hud-bridge').textContent = State.bridgeStatus;
+            document.getElementById('hud-bridge').className = 'text-emerald-400 font-semibold';
+            document.getElementById('hud-source').textContent = State.mediaSource;
+
+            // Immediately request current media snapshot
+            try {
+              wsBridge.send(JSON.stringify({ action: 'REQUEST_SNAPSHOT' }));
+            } catch(e) {}
+          };
+
+          wsBridge.onmessage = (event) => {
+            try {
+              const data = JSON.parse(event.data);
+              handleBridgeMessage(data);
+            } catch (err) {
+              // Ignore malformed packets
+            }
+          };
+
+          wsBridge.onerror = () => {
+            State.bridgeStatus = 'OFFLINE (SHOWCASE ACTIVE)';
+            document.getElementById('hud-bridge').textContent = State.bridgeStatus;
+            document.getElementById('hud-bridge').className = 'text-amber-400/90';
+          };
+
+          wsBridge.onclose = () => {
+            State.bridgeStatus = 'DISCONNECTED (RECONNECTING...)';
+            document.getElementById('hud-bridge').textContent = State.bridgeStatus;
+            document.getElementById('hud-bridge').className = 'text-amber-400/90';
+            // Auto reconnect after 3.5 seconds
+            wsReconnectTimeout = setTimeout(connectSmtcBridge, 3500);
+          };
+        } catch (e) {
+          // Local WebSocket optional in sandboxed preview
+        }
+      }
+
+      function handleBridgeMessage(data) {
+        if (!data || typeof data !== 'object') return;
+
+        // 1. Media Snapshot Packet
+        if (data.type === 'media.snapshot') {
+          const tr = data.track;
+          const pb = data.playback;
+
+          if (tr) {
+            const isNewTrack = (tr.title && (tr.title !== State.liveTrackTitle || tr.artist !== State.liveTrackArtist));
+
+            if (isNewTrack) {
+              State.isLiveSmtcMode = true;
+              State.liveTrackTitle = tr.title;
+              State.liveTrackArtist = tr.artist;
+              State.liveTrackAlbum = tr.album || '';
+              State.currentPhraseIndex = -1;
+
+              const cleanTitle = tr.title.toUpperCase();
+              const cleanArtist = (tr.artist || '').toUpperCase();
+              const cleanAlbum = (tr.album || 'SINGLE').toUpperCase();
+
+              updateTrackInfoDisplay(cleanTitle, cleanArtist);
+              document.getElementById('meta-album').textContent = `ALBUM / ${cleanAlbum}`;
+
+              if (tr.durationMs && tr.durationMs > 0) {
+                State.duration = tr.durationMs / 1000.0;
+                document.getElementById('time-total').textContent = formatTime(State.duration);
+              }
+
+              const hudTrack = document.getElementById('hud-track');
+              if (hudTrack) hudTrack.textContent = `${tr.title} — ${tr.artist}`;
+
+              // Apply color palette if pre-extracted by SMTC bridge
+              if (tr.colors) {
+                setTargetPalette(tr.colors);
+              }
+
+              // Load Live Album Artwork if present!
+              if (tr.artwork && tr.artwork.length > 20) {
+                loadLiveArtwork(tr.artwork);
+              } else {
+                State.customArtworkCanvas = null;
+                State.customSilhouetteGrid = null;
+                updateMiniThumbnail(TRACK_LIBRARY[State.currentTrackIndex]);
+                buildAsciiSilhouetteGrid(TRACK_LIBRARY[State.currentTrackIndex]);
+              }
+
+              triggerOpticalSweep();
+
+              // Clear previous live phrases and launch immediate direct in-browser fetch for zero-latency lyrics!
+              State.livePhrases = [];
+              fetchLyricsDirect(tr.title, tr.artist, tr.durationMs ? tr.durationMs / 1000.0 : 0);
+            }
+
+            // Playback updates
+            if (pb) {
+              State.isPlaying = (pb.status === 'playing');
+              const hudState = document.getElementById('hud-state');
+              if (hudState) {
+                hudState.textContent = State.isPlaying ? 'PLAYING' : 'PAUSED';
+                hudState.className = State.isPlaying ? 'text-emerald-400' : 'text-amber-400';
+              }
+
+              if (typeof pb.positionMs === 'number') {
+                const targetSec = pb.positionMs / 1000.0;
+                // Soft reconcile drift
+                if (Math.abs(State.currentTime - targetSec) > 0.4 || isNewTrack) {
+                  State.currentTime = targetSec;
+                }
+              }
+            }
+          }
+        }
+
+        // 2. Synced Lyrics Loaded Packet
+        else if (data.type === 'lyrics.loaded') {
+          if (data.lines && Array.isArray(data.lines) && data.lines.length > 0) {
+            processLiveLyrics(data.lines);
+          }
+        }
+      }
+
+      // Lively Wallpaper Global Hooks
+      window.livelyCurrentTrack = function(data) {
+        try {
+          const obj = typeof data === 'string' ? JSON.parse(data) : data;
+          if (!obj) return;
+          State.mediaSource = 'LIVELY WALLPAPER HOST';
+          document.getElementById('hud-source').textContent = State.mediaSource;
+          if (obj.Title) updateTrackInfoDisplay(obj.Title.toUpperCase(), (obj.Artist || '').toUpperCase());
+        } catch (err) {}
+      };
+
+      // Lively Wallpaper Audio Hook
+      window.livelyAudioListener = function(audioArray) {
+        if (!audioArray || audioArray.length < 64) return;
+        State.mediaSource = 'LIVELY WALLPAPER AUDIO';
+        document.getElementById('hud-source').textContent = State.mediaSource;
+        let b = 0, m = 0, h = 0;
+        for (let i = 0; i < 16; i++) b += audioArray[i];
+        for (let i = 16; i < 48; i++) m += audioArray[i];
+        for (let i = 48; i < 64; i++) h += audioArray[i];
+        const targetBass = Math.min(1, b / 16);
+        const targetMid = Math.min(1, m / 32);
+        const targetHigh = Math.min(1, h / 16);
+        State.audio.bass += (targetBass - State.audio.bass) * 0.35;
+        State.audio.mid += (targetMid - State.audio.mid) * 0.30;
+        State.audio.high += (targetHigh - State.audio.high) * 0.35;
+        State.audio.rms = State.audio.bass * 0.45 + State.audio.mid * 0.35 + State.audio.high * 0.2;
+      };
+
+      // Wallpaper Engine Audio Hook
+      if (window.wallpaperRegisterAudioListener) {
+        window.wallpaperRegisterAudioListener((audioArray) => {
+          if (!audioArray || audioArray.length < 64) return;
+          State.mediaSource = 'WALLPAPER ENGINE AUDIO';
+          let b = 0, m = 0, h = 0;
+          for (let i = 0; i < 12; i++) b += audioArray[i];
+          for (let i = 12; i < 36; i++) m += audioArray[i];
+          for (let i = 36; i < 64; i++) h += audioArray[i];
+          State.audio.bass = Math.min(1, b / 12);
+          State.audio.mid = Math.min(1, m / 24);
+          State.audio.high = Math.min(1, h / 28);
+          State.audio.rms = State.audio.bass * 0.45 + State.audio.mid * 0.35 + State.audio.high * 0.2;
+        });
+      }
+
+      /* ===================================================================
+       * 11. USER INTERACTIONS, FILE UPLOADERS & KEYBOARD SHORTCUTS
+       * =================================================================== */
+      function setupInteractions() {
+        // Acrylic Disc Casing is physical and rock-solid: NO hover tilt or expansion
+        State.targetTiltX = 0;
+        State.targetTiltY = 0;
+        State.tiltX = 0;
+        State.tiltY = 0;
+
+        // Click Acrylic Player to Play / Pause
+        document.getElementById('acrylic-player').addEventListener('click', () => {
+          togglePlayPause();
+        });
+
+        // Progress Scrubber Seek
+        const scrubber = document.getElementById('progress-scrubber');
+        let isDraggingScrubber = false;
+        const seekFromEvent = (e) => {
+          const rect = scrubber.getBoundingClientRect();
+          const ratio = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+          State.currentTime = ratio * State.duration;
+          const audioEl = document.getElementById('local-audio-element');
+          if (localAudioSourceConnected && audioEl.duration) {
+            audioEl.currentTime = State.currentTime;
+          }
+          State.currentPhraseIndex = -1;
+          syncLyricsToTimestamp(State.currentTime, performance.now() / 1000);
+        };
+        scrubber.addEventListener('mousedown', (e) => {
+          isDraggingScrubber = true;
+          seekFromEvent(e);
+        });
+        let lastMouseT = performance.now();
+        let lastMousePosX = 0;
+        let lastMousePosY = 0;
+        window.addEventListener('mousemove', (e) => {
+          const now = performance.now();
+          const dtSec = Math.max(0.001, (now - lastMouseT) / 1000);
+          State.mouse.vx = (e.clientX - lastMousePosX) / dtSec;
+          State.mouse.vy = (e.clientY - lastMousePosY) / dtSec;
+          lastMousePosX = e.clientX;
+          lastMousePosY = e.clientY;
+          lastMouseT = now;
+          State.mouse.x = e.clientX;
+          State.mouse.y = e.clientY;
+          State.mouse.active = true;
+          if (isDraggingScrubber) seekFromEvent(e);
+        });
+        window.addEventListener('mouseleave', () => {
+          State.mouse.active = false;
+        });
+        window.addEventListener('mouseup', () => {
+          isDraggingScrubber = false;
+        });
+
+        // Tactile Sonic Shockwave on ASCII Stage (except when interacting with player/scrubber/hud)
+        window.addEventListener('click', (e) => {
+          if (e.target.closest('#acrylic-player') || e.target.closest('#developer-hud') || e.target.closest('#progress-scrubber') || e.target.closest('#micro-eq-container')) {
+            return;
+          }
+          State.mouse.clickWave = 1.0;
+          State.mouse.clickX = e.clientX;
+          State.mouse.clickY = e.clientY;
+          triggerShockwave(e.clientX, e.clientY, 1.35);
+        });
+
+        // Keyboard Shortcuts
+        window.addEventListener('keydown', (e) => {
+          if (e.target.tagName === 'INPUT') return;
+          const key = e.key.toLowerCase();
+          if (key === 'h') {
+            toggleDeveloperHud();
+          } else if (key === 'a') {
+            toggleLiveAudioListening();
+          } else if (e.code === 'Space') {
+            e.preventDefault();
+            togglePlayPause();
+          } else if (key === 'm') {
+            toggleBuiltInSynth();
+          } else if (key === 'n') {
+            State.hasUserSwitchedTrack = true;
+            switchTrack(State.currentTrackIndex + 1);
+          } else if (key === 'p') {
+            State.hasUserSwitchedTrack = true;
+            switchTrack(State.currentTrackIndex - 1);
+          } else if (key === 'r') {
+            buildAsciiSilhouetteGrid(TRACK_LIBRARY[State.currentTrackIndex]);
+            spawnLyricParticles(State.activeWord);
+          } else if (['1', '2', '3', '4', '5', '6'].includes(key)) {
+            State.hasUserSwitchedTrack = true;
+            switchTrack(parseInt(key, 10) - 1);
+          }
+        });
+
+        // UI & Audio Listen Buttons
+        const btnListen = document.getElementById('btn-audio-listen');
+        if (btnListen) btnListen.addEventListener('click', () => toggleLiveAudioListening());
+        const btnHudListen = document.getElementById('btn-hud-audio');
+        if (btnHudListen) btnHudListen.addEventListener('click', () => toggleLiveAudioListening());
+
+        // Developer HUD Buttons
+        document.getElementById('hud-close-btn').addEventListener('click', toggleDeveloperHud);
+        document.getElementById('btn-toggle-play').addEventListener('click', togglePlayPause);
+        document.getElementById('btn-toggle-synth').addEventListener('click', () => toggleBuiltInSynth());
+        document.getElementById('btn-next-track').addEventListener('click', () => {
+          State.hasUserSwitchedTrack = true;
+          switchTrack(State.currentTrackIndex + 1);
+        });
+        document.getElementById('btn-regen-ascii').addEventListener('click', () => {
+          buildAsciiSilhouetteGrid(TRACK_LIBRARY[State.currentTrackIndex]);
+          spawnLyricParticles(State.activeWord);
+        });
+        document.getElementById('btn-reduced-motion').addEventListener('click', (e) => {
+          State.reducedMotion = !State.reducedMotion;
+          e.target.textContent = `Reduced Motion: ${State.reducedMotion ? 'ON' : 'OFF'}`;
+        });
+        document.getElementById('btn-low-power').addEventListener('click', (e) => {
+          State.lowPower30Fps = !State.lowPower30Fps;
+          e.target.textContent = `Low-Power 30FPS: ${State.lowPower30Fps ? 'ON' : 'OFF'}`;
+        });
+        document.getElementById('btn-reconnect-ws').addEventListener('click', connectSmtcBridge);
+
+        // Custom File Uploaders & Drag-and-Drop Support
+        document.getElementById('input-audio-file').addEventListener('change', (e) => {
+          if (e.target.files[0]) handleCustomFile(e.target.files[0]);
+        });
+        document.getElementById('input-image-file').addEventListener('change', (e) => {
+          if (e.target.files[0]) handleCustomFile(e.target.files[0]);
+        });
+        document.getElementById('input-lrc-file').addEventListener('change', (e) => {
+          if (e.target.files[0]) handleCustomFile(e.target.files[0]);
+        });
+
+        window.addEventListener('dragover', (e) => e.preventDefault());
+        window.addEventListener('drop', (e) => {
+          e.preventDefault();
+          if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+            handleCustomFile(e.dataTransfer.files[0]);
+          }
+        });
+      }
+
+      function handleCustomFile(file) {
+        const name = file.name.toLowerCase();
+        if (file.type.startsWith('image/')) {
+          const img = new Image();
+          img.onload = () => {
+            const c = document.createElement('canvas');
+            c.width = 1024;
+            c.height = 1024;
+            const ctx = c.getContext('2d');
+            ctx.drawImage(img, 0, 0, 1024, 1024);
+            State.customArtworkCanvas = c;
+            updateMiniThumbnail(TRACK_LIBRARY[State.currentTrackIndex]);
+
+            // Sample custom artwork directly into generative ASCII grid
+            sampleImageIntoAsciiGrid(c);
+
+            // Extract authentic palette from custom artwork
+            const pal = extractPaletteFromImage(img);
+            if (pal) setTargetPalette(pal);
+            triggerOpticalSweep();
+          };
+          img.src = URL.createObjectURL(file);
+        } else if (file.type.startsWith('audio/') || name.endsWith('.mp3') || name.endsWith('.wav') || name.endsWith('.ogg')) {
+          initWebAudio();
+          const audioEl = document.getElementById('local-audio-element');
+          audioEl.src = URL.createObjectURL(file);
+          if (!localAudioSourceConnected) {
+            const src = audioCtx.createMediaElementSource(audioEl);
+            src.connect(analyserNode);
+            analyserNode.connect(audioCtx.destination);
+            localAudioSourceConnected = true;
+          }
+          audioEl.onloadedmetadata = () => {
+            State.duration = audioEl.duration || 240;
+            State.currentTime = 0;
+            State.isPlaying = true;
+            State.mediaSource = 'LOCAL WEB AUDIO FILE';
+            document.getElementById('hud-source').textContent = State.mediaSource;
+            const cleanTitle = file.name.replace(/\.[^/.]+$/, '').toUpperCase();
+            updateTrackInfoDisplay(cleanTitle, 'LOCAL AUDIO FILE');
+            document.getElementById('time-total').textContent = formatTime(State.duration);
+            audioEl.play();
+          };
+        } else if (name.endsWith('.lrc') || name.endsWith('.txt')) {
+          const reader = new FileReader();
+          reader.onload = (ev) => parseCustomLrc(ev.target.result);
+          reader.readAsText(file);
+        }
+      }
+
+      function parseCustomLrc(lrcText) {
+        const lines = lrcText.split(/\r?\n/);
+        const parsed = [];
+        const timeReg = /\[(\d+):(\d+(?:\.\d+)?)\](.*)/;
+        for (const line of lines) {
+          const m = line.match(timeReg);
+          if (m) {
+            const sec = parseInt(m[1], 10) * 60 + parseFloat(m[2]);
+            const words = m[3].replace(/<[^>]+>/g, '').trim().split(/\s+/).filter(Boolean);
+            if (words.length > 0) {
+              const mid = Math.floor(words.length / 2);
+              parsed.push({
+                start: sec,
+                prev: words.slice(0, mid).join(' ') || '...',
+                active: words[mid] || words[0],
+                next: words.slice(mid + 1).join(' ') || ''
+              });
+            }
+          }
+        }
+        if (parsed.length > 0) {
+          TRACK_LIBRARY[State.currentTrackIndex].phrases = parsed;
+          State.currentPhraseIndex = -1;
+          syncLyricsToTimestamp(State.currentTime, performance.now() / 1000);
+        }
+      }
+
+      function togglePlayPause() {
+        State.isPlaying = !State.isPlaying;
+        const audioEl = document.getElementById('local-audio-element');
+        if (localAudioSourceConnected) {
+          if (State.isPlaying) audioEl.play();
+          else audioEl.pause();
+        }
+        const hudState = document.getElementById('hud-state');
+        if (hudState) {
+          hudState.textContent = State.isPlaying ? 'PLAYING' : 'PAUSED';
+          hudState.className = State.isPlaying ? 'text-emerald-400' : 'text-amber-400';
+        }
+      }
+
+      function toggleDeveloperHud() {
+        State.hudVisible = !State.hudVisible;
+        document.getElementById('developer-hud').classList.toggle('hidden', !State.hudVisible);
+      }
+
+      /* ===================================================================
+       * 12. MASTER ANIMATION LOOP (60 FPS FRAME-RATE AWARE)
+       * =================================================================== */
+      let lastFrameTime = performance.now();
+      let fpsCounterFrames = 0;
+      let fpsLastCheck = performance.now();
+
+      function animate(nowMs) {
+        requestAnimationFrame(animate);
+
+        const dtRaw = (nowMs - lastFrameTime) / 1000;
+        if (State.lowPower30Fps && dtRaw < 1 / 31) return;
+        const dt = Math.min(0.1, dtRaw);
+        lastFrameTime = nowMs;
+        const timeSec = nowMs / 1000;
+
+        // FPS Counter
+        fpsCounterFrames++;
+        if (nowMs - fpsLastCheck >= 500) {
+          State.fps = Math.round((fpsCounterFrames * 1000) / (nowMs - fpsLastCheck));
+          fpsCounterFrames = 0;
+          fpsLastCheck = nowMs;
+          if (State.hudVisible) {
+            document.getElementById('hud-fps').textContent = `${GRID_COLS}×${GRID_ROWS} • ${State.fps} FPS (ATLAS GPU)`;
+          }
+        }
+
+        // Advance Playback Position & Disc Rotation with Smooth Inertia
+        if (State.isPlaying) {
+          const audioEl = document.getElementById('local-audio-element');
+          if (localAudioSourceConnected && !audioEl.paused) {
+            State.currentTime = audioEl.currentTime;
+          } else {
+            State.currentTime += dt;
+            if (State.currentTime >= State.duration) {
+              State.currentTime = 0;
+            }
+          }
+          State.discAngularVelocity += (0.42 - State.discAngularVelocity) * 0.08;
+        } else {
+          State.discAngularVelocity *= 0.94;
+        }
+        State.discAngle += State.discAngularVelocity * dt;
+
+        // Decay transition progress
+        if (State.transitionProgress > 0) {
+          State.transitionProgress = Math.max(0, State.transitionProgress - dt * 0.85);
+        }
+
+        // Acrylic player is rock-solid and physical with NO hover tilt or expansion
+        const playerEl = document.getElementById('acrylic-player');
+        if (playerEl && playerEl.style.transform !== 'none') {
+          playerEl.style.transform = 'none';
+        }
+
+        // Update Audio Features & Lyric Synchronization
+        updateAudioFeatures(timeSec, dt);
+        syncLyricsToTimestamp(State.currentTime, timeSec);
+
+        // Subtle ASCII micro-glitch transient on heavy bass hits
+        if (State.audio.flux > 0.74 && !State.reducedMotion && !scrambleAnimFrame && State.activeWord && State.activeWord.length > 2) {
+          if (Math.random() < 0.25) {
+            const chars = Array.from(State.activeWord);
+            const glitchPos = Math.floor(Math.random() * chars.length);
+            chars[glitchPos] = ASCII_SCRAMBLE_POOL[Math.floor(Math.random() * ASCII_SCRAMBLE_POOL.length)];
+            elActiveText.textContent = chars.join('');
+            setTimeout(() => {
+              if (!scrambleAnimFrame) elActiveText.textContent = State.activeWord;
+            }, 42);
+          }
+        }
+
+        // Update Progress Bar & Timestamp Readout
+        const progressPct = Math.max(0, Math.min(100, (State.currentTime / State.duration) * 100));
+        document.getElementById('progress-fill').style.width = `${progressPct.toFixed(2)}%`;
+        document.getElementById('progress-playhead').style.left = `${progressPct.toFixed(2)}%`;
+        document.getElementById('time-current').textContent = formatTime(State.currentTime);
+
+        // Smooth Color Palette Interpolation
+        const lerpFactor = Math.min(1.0, dt * 3.8);
+        const cur = State.palette.current;
+        const tgt = State.palette.target;
+
+        let palChanged = false;
+        for (const k of ['primary', 'secondary', 'highlight', 'abyss']) {
+          for (let c = 0; c < 3; c++) {
+            const diff = tgt[k][c] - cur[k][c];
+            if (Math.abs(diff) > 0.15) {
+              cur[k][c] += diff * lerpFactor;
+              palChanged = true;
+            } else {
+              cur[k][c] = tgt[k][c];
+            }
+          }
+        }
+
+        if (palChanged || State.isTransitioning) {
+          const pr = Math.round(cur.primary[0]);
+          const pg = Math.round(cur.primary[1]);
+          const pb = Math.round(cur.primary[2]);
+
+          const sr = Math.round(cur.secondary[0]);
+          const sg = Math.round(cur.secondary[1]);
+          const sb = Math.round(cur.secondary[2]);
+
+          const hr = Math.round(cur.highlight[0]);
+          const hg = Math.round(cur.highlight[1]);
+          const hb = Math.round(cur.highlight[2]);
+
+          const ar = Math.round(cur.abyss[0]);
+          const ag = Math.round(cur.abyss[1]);
+          const ab = Math.round(cur.abyss[2]);
+
+          document.documentElement.style.setProperty('--accent-primary', `rgb(${pr}, ${pg}, ${pb})`);
+          document.documentElement.style.setProperty('--accent-secondary', `rgb(${sr}, ${sg}, ${sb})`);
+          document.documentElement.style.setProperty('--accent-rgb', `${pr}, ${pg}, ${pb}`);
+          document.documentElement.style.setProperty('--accent-highlight', `rgb(${hr}, ${hg}, ${hb})`);
+          document.documentElement.style.setProperty('--bg-primary', `rgb(${ar}, ${ag}, ${ab})`);
+
+          const statusDot = document.getElementById('status-dot');
+          if (statusDot) {
+            statusDot.style.backgroundColor = `rgb(${pr}, ${pg}, ${pb})`;
+            statusDot.style.boxShadow = `0 0 10px rgba(${pr}, ${pg}, ${pb}, 0.85)`;
+          }
+
+          const vignette = document.querySelector('.vignette-layer');
+          if (vignette) {
+            vignette.style.background = `
+              radial-gradient(circle at 24% 48%, rgba(${pr}, ${pg}, ${pb}, 0.08) 0%, transparent 45%),
+              radial-gradient(circle at 68% 52%, rgba(${sr}, ${sg}, ${sb}, 0.05) 0%, transparent 55%),
+              radial-gradient(ellipse at 50% 50%, transparent 58%, rgba(${ar}, ${ag}, ${ab}, 0.88) 100%)
+            `;
+          }
+        }
+
+        // Update Micro-Equalizer Bars
+        for (let i = 0; i < microEqBars.length; i++) {
+          const wave = Math.abs(Math.sin(timeSec * 4.2 + i * 0.55));
+          const energy = i < 7 ? State.audio.bass : (i < 14 ? State.audio.mid : State.audio.high);
+          const hPx = State.isPlaying ? Math.max(2, Math.round(3 + wave * energy * 18)) : 2;
+          microEqBars[i].style.height = `${hPx}px`;
+          if (i < 8) {
+            microEqBars[i].style.backgroundColor = `rgba(var(--accent-rgb), 0.92)`;
+          } else {
+            microEqBars[i].style.backgroundColor = '#9E9A9F';
+          }
+        }
+
+        // Update HUD Audio Meters if open
+        if (State.hudVisible) {
+          document.getElementById('meter-rms').style.width = `${Math.round(State.audio.rms * 100)}%`;
+          document.getElementById('meter-bass').style.width = `${Math.round(State.audio.bass * 100)}%`;
+          document.getElementById('meter-mid').style.width = `${Math.round(State.audio.mid * 100)}%`;
+          document.getElementById('meter-high').style.width = `${Math.round(State.audio.high * 100)}%`;
+          document.getElementById('meter-flux').style.width = `${Math.round(State.audio.flux * 100)}%`;
+        }
+
+        // Decay interactive ASCII click shockwave
+        if (State.mouse.clickWave > 0) {
+          State.mouse.clickWave = Math.max(0, State.mouse.clickWave - dt * 1.6);
+        }
+
+        // Render All Visual Canvases
+        renderOpticalDisc(timeSec);
+        renderAsciiStage(timeSec, dt);
+      }
+
+      /* ===================================================================
+       * 13. BOOTSTRAP & INITIALIZATION
+       * =================================================================== */
+      window.onload = function() {
+        initMicroEqualizerAndRuler();
+        updateClock();
+        setInterval(updateClock, 1000);
+
+        applyTrackMetadataAndPalette(TRACK_LIBRARY[0]);
+        setupInteractions();
+        connectSmtcBridge();
+
+        // Fade out the subtle bottom keyboard hint after 4.5 seconds
+        setTimeout(() => {
+          const hint = document.getElementById('onboarding-hint');
+          if (hint) hint.style.opacity = '0';
+        }, 4500);
+
+        requestAnimationFrame(animate);
+      };
+    })();
+  </script>
 </body>
 </html>
